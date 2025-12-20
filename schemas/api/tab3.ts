@@ -9,9 +9,9 @@ const ProductItemSchema = ItemSchema.pick({
 
 export const ArrayProductItemSchema = z.array(ProductItemSchema);
 
-export const ProductSendSchema = z.array(
+export const PatchProductSchema = z.array(
   z.object({
-    itemname_id: z.number(),
-    producted_count: z.number().min(0),
+    id: z.string(),
+    productedInInput: z.string().min(0),
   }),
 );

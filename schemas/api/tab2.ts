@@ -9,9 +9,9 @@ export const StockItemSchema = ItemSchema.pick({
 
 export const ArrayStockItemSchema = z.array(StockItemSchema);
 
-export const StockSendSchema = z.array(
+export const PatchStockSchema = z.array(
   z.object({
-    itemname_id: z.number(),
-    stock_count: z.number().min(0),
+    id: z.string(),
+    stockInInput: z.string().min(0),
   }),
 );

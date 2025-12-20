@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
 export const ItemnameTableSchema = z.object({
-  id: z.number(),
-  itemname: z.string(),
+  id: z.string(),
+  item_name: z.string(),
 });
 
 export const AddItemSchema = ItemnameTableSchema.pick({
-  itemname: true,
+  item_name: true,
 });
 
 export const ArrayItemnameTableSchema = z.array(ItemnameTableSchema);

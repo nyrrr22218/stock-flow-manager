@@ -1,8 +1,7 @@
-import createsupabaseServerClient from '@/lib/supabaseServer';
 import { NextResponse } from 'next/server';
-import { ArrayProductItemSchema, ProductSendSchema } from '@/schemas/api/tab3';
-import { TProductSend } from '@/types/Tabtype/tab3';
+import { ArrayProductItemSchema, PatchProductSchema } from '@/schemas/api/tab3';
 import { prisma } from '@/lib/prisma';
+import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 
 export async function GET() {
   try {
@@ -11,7 +10,7 @@ export async function GET() {
         producttable: true,
       },
     });
-    const parsedData = ArrayProductItemSchema.parse(items);
+    const parsedData = ArrayProductItemSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({
       items: parsedData,
     });
@@ -21,28 +20,51 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
-  const supabase = await createsupabaseServerClient();
+export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const items: TProductSend[] = body.items;
-    const itemsToSave = ProductSendSchema.parse(
-      items.map((item) => ({
-        itemname_id: item.id,
-        producted_count: item.productedInInput === '' ? 0 : Number(item.productedInInput),
-      })),
-    );
-    const { error } = await supabase
-      .from('product')
-      .upsert(itemsToSave, { onConflict: 'itemname_id' });
-    if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-    }
+    const parsedData = PatchProductSchema.parse(body.items ?? []);
+    await prisma.$transaction(async (tx) => {
+      for (const item of parsedData) {
+        const itemid = BigInt(item.id);
+        const count =
+          item.productedInInput === undefined || item.productedInInput === ''
+            ? 0
+            : Number(item.productedInInput);
+        const current = await tx.producttable.findUnique({
+          where: {
+            itemname_id: itemid,
+          },
+          include: {
+            itemnametable: true,
+          },
+        });
+        const oldValue = current?.producted_count ?? 0;
+        const itemName = current?.itemnametable?.item_name ?? '不明な商品';
+
+        if (oldValue !== count) {
+          await tx.logtable.create({
+            data: {
+              logs: `[Tab3]${itemName}を${oldValue}から${count}に変更しました`,
+            },
+          });
+        }
+        await tx.producttable.upsert({
+          where: {
+            itemname_id: itemid,
+          },
+          update: {
+            producted_count: count,
+          },
+          create: {
+            itemname_id: itemid,
+            producted_count: count,
+          },
+        });
+      }
+    });
     return NextResponse.json({ success: true });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }

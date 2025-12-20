@@ -3,9 +3,9 @@ import { ItemSchema } from '../commons';
 
 export const ArrayItemSchema = z.array(ItemSchema);
 
-export const OrderSendSchema = z.array(
+export const PatchOrderSchema = z.array(
   z.object({
-    itemname_id: z.number(),
-    order_count: z.number().min(0),
+    id: z.string(),
+    orderInInput: z.string().min(0),
   }),
 );

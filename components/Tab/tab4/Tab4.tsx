@@ -14,16 +14,13 @@ export default function Tab4() {
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/tab4', { itemname: addNewItemName });
+      const { data } = await axios.post('/api/tab4', { item_name: addNewItemName });
       if (data.success) {
         setItemnameList((prev) => [
           ...prev,
           {
             id: data.newItem.id,
-            itemname: data.newItem.itemname,
-            orderCount: 0,
-            stockCount: 0,
-            productCount: 0,
+            item_name: data.newItem.item_name,
           },
         ]);
         console.log('送信成功');
@@ -41,7 +38,7 @@ export default function Tab4() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get('/api/tab4');
-        setItemnameList(data.itemnameTableData ?? []);
+        setItemnameList(data.items);
       } catch (error) {
         const err = handleAxiosError(error);
         console.error('通信エラー', err.message);
@@ -50,14 +47,14 @@ export default function Tab4() {
     fetchData();
   }, []);
 
-  const deleteItemnameTable = async (id: number) => {
+  const deleteItemnameTable = async (id: string) => {
     try {
       const { data } = await axios.delete('/api/tab4', { data: { id } });
       if (!data.success) {
         setError(data.error);
         return;
       }
-      setItemnameList((prev) => prev.filter((item) => item.id !== id));
+      setItemnameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
       const err = handleAxiosError(error);
       console.error('通信エラー', err.message);
@@ -86,9 +83,9 @@ export default function Tab4() {
         </fieldset>
       </form>
       <Box>
-        {itemnameList.map((item: { id: number; itemname: string }) => (
+        {itemnameList.map((item) => (
           <Box key={item.id}>
-            <Typography>{item.itemname}</Typography>
+            <Typography>{item.item_name}</Typography>
             <Button onClick={() => deleteItemnameTable(item.id)}>削除</Button>
           </Box>
         ))}

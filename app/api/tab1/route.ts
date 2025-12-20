@@ -1,8 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { ItemSchema } from '@/schemas/commons';
-import { TItemAndInput } from '@/types/Tabtype/tab1';
+import { ArrayItemSchema, PatchOrderSchema } from '@/schemas/api/tab1';
+import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 
 export async function GET() {
   try {
@@ -13,7 +12,7 @@ export async function GET() {
         stocktable: true,
       },
     });
-    const parsedData = z.array(ItemSchema).parse(items);
+    const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({ items: parsedData });
   } catch (err) {
     console.error(err);
@@ -24,24 +23,41 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const items: TItemAndInput[] = body.items;
-    const itemsToSave = items.map((item) => ({
-      itemname_id: BigInt(item.id),
-      order_count: item.orderInInput === undefined ? 0 : Number(item.orderInInput),
-    }));
-    await prisma.$transaction(
-      itemsToSave.map((item) =>
-        prisma.ordertable.upsert({
+    const parsedData = PatchOrderSchema.parse(body.items ?? []);
+    await prisma.$transaction(async (tx) => {
+      for (const item of parsedData) {
+        const itemid = BigInt(item.id);
+        const count =
+          item.orderInInput === undefined || item.orderInInput === ''
+            ? 0
+            : Number(item.orderInInput);
+        const current = await tx.ordertable.findUnique({
+          where: { itemname_id: itemid },
+          include: { itemnametable: true },
+        });
+        const oldValue = current?.order_count ?? 0;
+        const itemName = current?.itemnametable?.item_name ?? '不明な商品';
+        if (oldValue !== count) {
+          await tx.logtable.create({
+            data: {
+              logs: `[Tab1]${itemName}を${oldValue}から${count}に変更しました`,
+            },
+          });
+        }
+        await tx.ordertable.upsert({
           where: {
-            itemname_id: BigInt(item.itemname_id),
+            itemname_id: itemid,
           },
           update: {
-            order_count: item.order_count ? Number(item.order_count) : undefined,
+            order_count: count,
           },
-          create: item,
-        }),
-      ),
-    );
+          create: {
+            itemname_id: itemid,
+            order_count: count,
+          },
+        });
+      }
+    });
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ success: false }, { status: 500 });

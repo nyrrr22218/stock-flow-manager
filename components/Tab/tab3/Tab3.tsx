@@ -35,7 +35,7 @@ export default function Tab3() {
 
   const handleSave = async () => {
     try {
-      const { data }: { data: { success: boolean; error?: string } } = await axios.post(
+      const { data }: { data: { success: boolean; error?: string } } = await axios.patch(
         '/api/tab3',
         { items: product },
       );
