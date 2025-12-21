@@ -1,62 +1,62 @@
 'use client';
 
-import { useState } from 'react';
-import { createSupabaseClient } from '@/lib/supabaseClient';
-import { useRouter } from 'next/navigation';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useSignIn } from '@/hooks/useSignIn';
+import { Box, Container, Paper, TextField, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { ButtonToSignIn } from '@/components/sign-In/Sign-InButton';
+import { VisibilityIconButton } from '@/components/sign-In/VisibilityIconButton';
 
 export default function SignInPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showpassword, setShowpassword] = useState(false);
-  const [error, setError] = useState('');
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    showpassword,
+    error,
+    loading,
+    handleLogin,
+    reverseVisibility,
+  } = useSignIn();
 
-  const supabase = createSupabaseClient();
+  const [mount, setMount] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      setError(error.message);
-      return;
-    }
-    router.push('/MainPage');
-  };
+  useEffect(() => {
+    setMount(true);
+  }, []);
+
+  if (!mount) return null;
+
   return (
-    <form onSubmit={handleLogin}>
-      <fieldset>
-        <legend>ログイン</legend>
-        <Box>
+    <Container maxWidth="xs" sx={{ mt: 15 }}>
+      <Paper elevation={3} sx={{ p: 2, borderRadius: 2 }}>
+        <Typography variant="h5" component="h1" gutterBottom align="center">
+          ログイン
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleLogin}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+        >
+          <TextField label="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <TextField
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></TextField>
-          <TextField
-            placeholder="password"
+            label="password"
             type={showpassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowpassword(!showpassword)}>
-                    {showpassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
+                <VisibilityIconButton
+                  reverseVisibility={reverseVisibility}
+                  showpassword={showpassword}
+                />
               ),
             }}
-          ></TextField>
+          />
           {error && <Typography>{error}</Typography>}
-          <Button type="submit">signIn</Button>
+          <ButtonToSignIn loading={loading} />
         </Box>
-      </fieldset>
-    </form>
+      </Paper>
+    </Container>
   );
 }

@@ -3,20 +3,25 @@ import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import InventoryAnalytics from './tab6Graph';
+import { handleAxiosError } from '@/utils/axiosError';
 
 export default function Tab6() {
   const [graphdata, setGraphData] = useState<TItemAndInput[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (signal?: AbortSignal) => {
       try {
-        const res = await axios.get('/api/tab1');
+        const res = await axios.get('/api/tab1', { signal });
         setGraphData(res.data.items || []);
-      } catch {
-        console.error('error');
+      } catch (error) {
+        if (axios.isCancel(error)) return;
+        const err = handleAxiosError(error);
+        console.error('通信エラー', err.message);
       }
     };
-    fetchData();
+    const controller = new AbortController();
+    fetchData(controller.signal);
+    return () => controller.abort();
   }, []);
 
   return (
@@ -27,7 +32,7 @@ export default function Tab6() {
       {graphdata.length > 0 ? (
         <InventoryAnalytics data={graphdata} />
       ) : (
-        <Typography>分析するデータがありません</Typography>
+        <Typography variant="h5">Loading...</Typography>
       )}
     </Box>
   );

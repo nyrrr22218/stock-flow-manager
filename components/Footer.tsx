@@ -1,5 +1,18 @@
-import { Box } from "@mui/material";
+import { Box, Link, Typography } from '@mui/material';
 
 export default function Footer() {
-  return <Box>Footerですあまりにも未定</Box>;
+  return (
+    <Box
+      component="footer"
+      sx={{ textAlign: 'center', bgcolor: '#c19a6b', py: '5px', mt: '10', height: '80px' }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <Typography>Footerですあまりにも未定</Typography>
+        <Link color="inherit" href="https://github.com/nyrrr22218">
+          Go to My GitHub
+        </Link>
+      </Box>
+      <Typography>© 2025 Stock-Flow-Manager All rights reserved.</Typography>
+    </Box>
+  );
 }

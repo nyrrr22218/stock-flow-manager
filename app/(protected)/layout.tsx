@@ -1,15 +1,17 @@
-import createsupabaseServerClient from "@/lib/supabaseServer";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import createsupabaseServerClient from '@/lib/supabaseServer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Box } from '@mui/material';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function ProtectedLayout({ children }: any) {
+export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   await createsupabaseServerClient();
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
-      {children}
+      <Box component="main" sx={{ flexGrow: 1 }}>
+        {children}
+      </Box>
       <Footer />
-    </>
+    </Box>
   );
 }

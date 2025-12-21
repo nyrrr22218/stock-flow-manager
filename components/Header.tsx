@@ -1,10 +1,12 @@
-import { Box } from "@mui/material";
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 export default function Header() {
   return (
     <>
-      <Box>Headerです</Box>
-      <Box>下用</Box>
+      <AppBar sx={{ height: '60px' }}>
+        <Typography variant="h3">Headerです</Typography>
+      </AppBar>
+      <Toolbar sx={{ height: '60px' }}>下用</Toolbar>
     </>
   );
 }

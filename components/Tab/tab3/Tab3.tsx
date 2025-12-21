@@ -1,72 +1,37 @@
-'use client';
-
-import { TItemProductAndInput } from '@/types/Tabtype/tab3';
-import { handleAxiosError } from '@/utils/axiosError';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { ButtonCommon } from '@/components/ButtonStyle';
+import { useHandleEditToggle } from '@/hooks/useHandleEditToggle';
+import { useTab3 } from '@/hooks/useTab3';
+import { gridCommon, paperCommon } from '@/styles/commons';
+import { Box, Paper, TextField, Typography } from '@mui/material';
 
 export default function Tab3() {
-  const [product, setProduct] = useState<TItemProductAndInput[]>([]);
-  const [editmode, setEditmode] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get('/api/tab3');
-        const itemAndInput: TItemProductAndInput[] = (data.items ?? []).map(
-          (item: TItemProductAndInput) => ({
-            ...item,
-            productedInInput: item.producttable ? String(item.producttable.producted_count) : '0',
-          }),
-        );
-        setProduct(itemAndInput);
-      } catch (error) {
-        const err = handleAxiosError(error);
-        console.error('通信エラー', err.message);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleEditToggle = () => {
-    setEditmode(!editmode);
-  };
-
-  const handleSave = async () => {
-    try {
-      const { data }: { data: { success: boolean; error?: string } } = await axios.patch(
-        '/api/tab3',
-        { items: product },
-      );
-      if (data.success) {
-        setEditmode(false);
-      } else {
-        console.error(data.error);
-      }
-    } catch (error) {
-      const err = handleAxiosError(error);
-      console.error('通信エラー', err.message);
-    }
-  };
+  const { product, setProduct, editMode, loading, handleSave } = useTab3();
+  const { handleEditToggle } = useHandleEditToggle();
 
   return (
     <Box>
-      <Box>
-        <Button variant="contained" size="small" onClick={handleEditToggle}>
-          編集
-        </Button>
-        <Button variant="contained" size="small" disabled={!editmode} onClick={handleSave}>
-          保存
-        </Button>
-      </Box>
-      <Box>
+      <Typography variant="h4">生産数管理</Typography>
+      <ButtonCommon
+        editmode={editMode}
+        loading={loading}
+        handleEditToggle={handleEditToggle}
+        handleSave={handleSave}
+      />
+      <Box
+        sx={{
+          ...gridCommon,
+        }}
+      >
+        {product.length === 0 && <Typography variant="h5">Loading...</Typography>}
         {product.map((pr) => (
-          <Box key={pr.id}>
-            <Typography>{pr.item_name}</Typography>
+          <Paper key={pr.id} elevation={1} variant="outlined" sx={{ ...paperCommon }}>
+            <Typography variant="subtitle1" fontWeight="bold">
+              {pr.item_name}
+            </Typography>
             <TextField
+              type="number"
               value={pr.productedInInput}
-              disabled={!editmode}
+              disabled={!editMode}
               onChange={(e) =>
                 setProduct((prev) =>
                   prev.map((i) =>
@@ -75,7 +40,7 @@ export default function Tab3() {
                 )
               }
             />
-          </Box>
+          </Paper>
         ))}
       </Box>
     </Box>
