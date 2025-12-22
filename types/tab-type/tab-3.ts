@@ -1,6 +1,6 @@
 import { TItem } from '@/schemas/commons';
 
-type TItemProduct = Pick<TItem, 'id' | 'item_name' | 'product'>;
+export type TItemProduct = Pick<TItem, 'id' | 'item_name' | 'product'>;
 
 export type TItemProductAndInput = TItemProduct & { productedInInput: string };
 

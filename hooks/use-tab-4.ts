@@ -5,14 +5,18 @@ import { handleAxiosError } from '@/utils/axiosError';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useTab4 = () => {
+export const useTab4 = (Tab4Data: TItemnameTable[]) => {
   const [addNewItemName, setAddNewItemName] = useState('');
   const [error, setError] = useState('');
-  const [itemnameList, setItemnameList] = useState<TItemnameTable[]>([]);
+  const [itemnameList, setItemnameList] = useState<TItemnameTable[]>(() => {
+    if (Tab4Data) return Tab4Data;
+    return [];
+  });
   const [loading, setLoading] = useState(false);
   const API_PATH = '/api/tab4';
 
   useEffect(() => {
+    if (Tab4Data && Tab4Data.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
@@ -26,7 +30,7 @@ export const useTab4 = () => {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [Tab4Data]);
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -5,13 +5,17 @@ import { handleAxiosError } from '@/utils/axiosError';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useTab3 = () => {
+export const useTab3 = (formattedData?: TItemProductAndInput[]) => {
   const [editMode, setEditMode] = useState(false);
-  const [product, setProduct] = useState<TItemProductAndInput[]>([]);
+  const [product, setProduct] = useState<TItemProductAndInput[]>(() => {
+    if (formattedData) return formattedData;
+    return [];
+  });
   const [loading, setLoading] = useState(false);
   const API_PATH = '/api/tab3';
 
   useEffect(() => {
+    if (formattedData && formattedData.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
@@ -31,7 +35,7 @@ export const useTab3 = () => {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [formattedData]);
 
   const handleSave = async () => {
     if (loading) return;

@@ -7,11 +7,15 @@ import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 
-export default function Tab5() {
-  const [log, setLog] = useState<TLogTable[]>([]);
+export default function Tab5({ Tab5Data }: { Tab5Data: TLogTable[] }) {
+  const [log, setLog] = useState<TLogTable[]>(() => {
+    if (Tab5Data) return Tab5Data;
+    return [];
+  });
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>(() => 'desc');
 
   useEffect(() => {
+    if (Tab5Data && Tab5Data.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get('/api/tab5', { signal });
@@ -25,7 +29,7 @@ export default function Tab5() {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [Tab5Data]);
 
   const sortLogs = useMemo(() => {
     return Array.from(log).sort((a, b) => {

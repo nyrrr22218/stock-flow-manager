@@ -6,11 +6,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const useTab1 = (formattedData?: TItemAndInput[]) => {
-  const [editMode, setEditMode] = useState(false);
   const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(() => {
     if (formattedData) return formattedData;
     return [];
   });
+  const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const API_PATH = '/api/tab1';
 

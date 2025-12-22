@@ -3,9 +3,10 @@
 import { Tab4Form } from '@/components/tab/tab4/tab-4-paper';
 import { useTab4 } from '@/hooks/use-tab-4';
 import { gridCommon, paperCommon } from '@/styles/commons';
+import { TItemnameTable } from '@/types/tab-type/tab-4';
 import { Box, Button, Paper, Typography } from '@mui/material';
 
-export default function Tab4() {
+export default function Tab4({ Tab4Data }: { Tab4Data: TItemnameTable[] }) {
   const {
     addNewItemName,
     setAddNewItemName,
@@ -14,7 +15,7 @@ export default function Tab4() {
     loading,
     handleItemAdd,
     deleteItemnameTable,
-  } = useTab4();
+  } = useTab4(Tab4Data);
 
   return (
     <Box>

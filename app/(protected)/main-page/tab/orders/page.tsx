@@ -1,9 +1,9 @@
-// app/main-page/tab/tab-1/page.tsx
 import Tab1 from '@/components/tab/tab1/tab-1';
-import { prisma } from '@/lib/prisma'; // サーバーから直接DBを呼ぶ
+import { prisma } from '@/lib/prisma';
+import { ArrayItemSchema } from '@/schemas/api/tab-1';
+import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 
 export default async function Page() {
-  // 1. fetchを使わず、直接DBから取得（これが一番速い）
   const items = await prisma.item_name.findMany({
     include: {
       stock: true,
@@ -12,10 +12,8 @@ export default async function Page() {
     },
   });
 
-  // 2. BigIntを文字列に変換（APIと同じシリアライズ）
-  const serialized = JSON.parse(
-    JSON.stringify(items, (_, v) => (typeof v === 'bigint' ? v.toString() : v)),
-  );
+  const serialized = itemsFromBigintToString(items);
+  const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(serialized));
 
-  return <Tab1 tab1Data={serialized} />;
+  return <Tab1 tab1Data={parsedData} />;
 }

@@ -6,10 +6,10 @@ import { numberColumnLayout } from '@/components/tab/tab1/tab-1-grid-layout';
 import { Tab1TextField } from '@/components/tab/tab1/tab-1-text-field';
 import { Tab1TypeOfDisplayName } from '@/components/tab/tab1/tab-1-type-of-display-name';
 import { useTab1 } from '@/hooks/use-tab-1';
+import { TItem } from '@/schemas/commons';
 import { Box, Typography } from '@mui/material';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Tab1({ tab1Data }: { tab1Data: any[] }) {
+export default function Tab1({ tab1Data }: { tab1Data: TItem[] }) {
   const formattedData = tab1Data.map((item) => ({
     ...item,
     orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',

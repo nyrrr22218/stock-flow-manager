@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { ArrayLogTableSchema } from '@/schemas/api/tab-5';
+import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -9,12 +10,8 @@ export async function GET() {
         logged_at: 'desc',
       },
     });
-    const logList = logs.map((log) => ({
-      ...log,
-      id: log.id.toString(),
-      logged_at: log.logged_at.toISOString(),
-    }));
-    const parsedData = ArrayLogTableSchema.parse(logList);
+    const serialized = itemsFromBigintToString(logs);
+    const parsedData = ArrayLogTableSchema.parse(serialized);
     return NextResponse.json({ logsData: parsedData });
   } catch (err) {
     console.error(err);

@@ -7,10 +7,14 @@ import { useEffect, useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
 import InventoryAnalytics from '@/components/tab/tab6/tab-6-graph';
 
-export default function Tab6() {
-  const [graphdata, setGraphData] = useState<TItemAndInput[]>([]);
+export default function Tab6({ tab1Data }: { tab1Data: TItemAndInput[] }) {
+  const [graphdata, setGraphData] = useState<TItemAndInput[]>(() => {
+    if (tab1Data) return tab1Data;
+    return [];
+  });
 
   useEffect(() => {
+    if (tab1Data && tab1Data.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const res = await axios.get('/api/tab1', { signal });
@@ -24,7 +28,7 @@ export default function Tab6() {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [tab1Data]);
 
   return (
     <Box sx={{ p: 2 }}>

@@ -4,9 +4,16 @@ import { useTab3 } from '@/hooks/use-tab-3';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ButtonCommon } from '../button-style';
+import { TItemProduct } from '@/types/tab-type/tab-3';
 
-export default function Tab3() {
-  const { product, setProduct, editMode, setEditMode, loading, handleSave } = useTab3();
+export default function Tab3({ tab3Data }: { tab3Data: TItemProduct[] }) {
+  const formattedData = tab3Data.map((item) => ({
+    ...item,
+    productedInInput:
+      item.product?.producted_count !== undefined ? String(item.product.producted_count) : '0',
+  }));
+  const { product, setProduct, editMode, setEditMode, loading, handleSave } =
+    useTab3(formattedData);
   const handleEditToggle = () => setEditMode((prev: boolean) => !prev);
 
   return (
