@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { item_name } = AddItemSchema.parse(body);
-    const newItem = await prisma.$transaction(async (tx) => {
+    const newItem = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return await tx.item_name.create({
         data: {
           item_name: item_name,

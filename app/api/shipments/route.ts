@@ -1,13 +1,14 @@
 import { TItemAndInputSchema } from '@/schemas/commons';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const parsedData = TItemAndInputSchema.parse(body.items ?? []);
     const shipmentItems: { id: string; name: string; count: number }[] = [];
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of parsedData) {
         const itemid = BigInt(item.id);
         const ordercount = Number(item.orderInInput) || 0;

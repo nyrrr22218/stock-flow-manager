@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { ArrayProductItemSchema, PatchProductSchema } from '@/schemas/api/tab-3';
 import { prisma } from '@/lib/prisma';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
+import { Prisma } from '@prisma/client';
 
 export async function GET() {
   try {
@@ -24,7 +25,7 @@ export async function PATCH(req: Request) {
   try {
     const body = await req.json();
     const parsedData = PatchProductSchema.parse(body.items ?? []);
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of parsedData) {
         const itemid = BigInt(item.id);
         const count =

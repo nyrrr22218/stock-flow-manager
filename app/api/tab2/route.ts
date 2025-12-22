@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { ArrayStockItemSchema, PatchStockSchema } from '@/schemas/api/tab-2';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
+import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -22,7 +23,7 @@ export async function PATCH(req: Request) {
   try {
     const body = await req.json();
     const parsedData = PatchStockSchema.parse(body.items ?? []);
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of parsedData) {
         const itemid = BigInt(item.id);
         const count =
