@@ -1,6 +1,6 @@
-import createsupabaseServerClient from '@/lib/supabaseServer';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import createsupabaseServerClient from '@/lib/supabase-server';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 import { Box } from '@mui/material';
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {

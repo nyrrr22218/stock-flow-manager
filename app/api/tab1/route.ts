@@ -1,15 +1,15 @@
 import { prisma } from '@/lib/prisma';
-import { ArrayItemSchema, PatchOrderSchema } from '@/schemas/api/tab1';
+import { ArrayItemSchema, PatchOrderSchema } from '@/schemas/api/tab-1';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const items = await prisma.itemnametable.findMany({
+    const items = await prisma.item_name.findMany({
       include: {
-        ordertable: true,
-        producttable: true,
-        stocktable: true,
+        order: true,
+        product: true,
+        stock: true,
       },
     });
     const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(items));
@@ -31,28 +31,28 @@ export async function PATCH(req: Request) {
           item.orderInInput === undefined || item.orderInInput === ''
             ? 0
             : Number(item.orderInInput);
-        const current = await tx.ordertable.findUnique({
-          where: { itemname_id: itemid },
-          include: { itemnametable: true },
+        const current = await tx.order.findUnique({
+          where: { item_name_id: itemid },
+          include: { item_name: true },
         });
         const oldValue = current?.order_count ?? 0;
-        const itemName = current?.itemnametable?.item_name ?? '不明な商品';
+        const itemName = current?.item_name?.item_name ?? '不明な商品';
         if (oldValue !== count) {
-          await tx.logtable.create({
+          await tx.logs.create({
             data: {
-              logs: `[Tab1]${itemName}を${oldValue}から${count}に変更しました`,
+              log_message: `[注文数]${itemName}を${oldValue}から${count}に変更しました`,
             },
           });
         }
-        await tx.ordertable.upsert({
+        await tx.order.upsert({
           where: {
-            itemname_id: itemid,
+            item_name_id: itemid,
           },
           update: {
             order_count: count,
           },
           create: {
-            itemname_id: itemid,
+            item_name_id: itemid,
             order_count: count,
           },
         });

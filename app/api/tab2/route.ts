@@ -1,13 +1,13 @@
 import { prisma } from '@/lib/prisma';
-import { ArrayStockItemSchema, PatchStockSchema } from '@/schemas/api/tab2';
+import { ArrayStockItemSchema, PatchStockSchema } from '@/schemas/api/tab-2';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const items = await prisma.itemnametable.findMany({
+    const items = await prisma.item_name.findMany({
       include: {
-        stocktable: true,
+        stock: true,
       },
     });
     const parsedData = ArrayStockItemSchema.parse(itemsFromBigintToString(items));
@@ -29,30 +29,30 @@ export async function PATCH(req: Request) {
           item.stockInInput === undefined || item.stockInInput === ''
             ? 0
             : Number(item.stockInInput);
-        const current = await tx.stocktable.findUnique({
+        const current = await tx.stock.findUnique({
           where: {
-            itemname_id: itemid,
+            item_name_id: itemid,
           },
-          include: { itemnametable: true },
+          include: { item_name: true },
         });
         const oldValue = current?.stock_count ?? 0;
-        const itemName = current?.itemnametable?.item_name ?? '不明な商品';
+        const itemName = current?.item_name?.item_name ?? '不明な商品';
         if (oldValue !== count) {
-          await tx.logtable.create({
+          await tx.logs.create({
             data: {
-              logs: `[Tab2]${itemName}を${oldValue}から${count}に変更しました`,
+              log_message: `[在庫数]${itemName}を${oldValue}から${count}に変更しました`,
             },
           });
         }
-        await tx.stocktable.upsert({
+        await tx.stock.upsert({
           where: {
-            itemname_id: itemid,
+            item_name_id: itemid,
           },
           update: {
             stock_count: count,
           },
           create: {
-            itemname_id: itemid,
+            item_name_id: itemid,
             stock_count: count,
           },
         });

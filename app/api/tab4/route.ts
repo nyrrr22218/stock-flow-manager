@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { AddItemSchema, ArrayItemnameTableSchema } from '@/schemas/api/tab4';
+import { AddItemSchema, ArrayItemnameTableSchema } from '@/schemas/api/tab-4';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -7,7 +7,7 @@ import { ZodError } from 'zod';
 
 export async function GET() {
   try {
-    const items = await prisma.itemnametable.findMany();
+    const items = await prisma.item_name.findMany();
     const parsedData = ArrayItemnameTableSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({
       items: parsedData,
@@ -23,17 +23,17 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { item_name } = AddItemSchema.parse(body);
     const newItem = await prisma.$transaction(async (tx) => {
-      return await tx.itemnametable.create({
+      return await tx.item_name.create({
         data: {
           item_name: item_name,
-          ordertable: { create: { order_count: 0 } },
-          stocktable: { create: { stock_count: 0 } },
-          producttable: { create: { producted_count: 0 } },
+          order: { create: { order_count: 0 } },
+          stock: { create: { stock_count: 0 } },
+          product: { create: { producted_count: 0 } },
         },
         include: {
-          ordertable: true,
-          stocktable: true,
-          producttable: true,
+          order: true,
+          stock: true,
+          product: true,
         },
       });
     });
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
-    await prisma.itemnametable.delete({
+    await prisma.item_name.delete({
       where: {
         id: BigInt(id),
       },

@@ -1,10 +1,10 @@
 'use client';
 
-import { useSignIn } from '@/hooks/useSignIn';
+import { useSignIn } from '@/hooks/use-sign-in';
 import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { ButtonToSignIn } from '@/components/sign-In/Sign-InButton';
-import { VisibilityIconButton } from '@/components/sign-In/VisibilityIconButton';
+import { ButtonToSignIn } from '@/components/sign-in/sign-in-button';
+import { VisibilityIconButton } from '@/components/sign-in/visibility-icon-button';
 
 export default function SignInPage() {
   const {

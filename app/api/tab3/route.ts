@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { ArrayProductItemSchema, PatchProductSchema } from '@/schemas/api/tab3';
+import { ArrayProductItemSchema, PatchProductSchema } from '@/schemas/api/tab-3';
 import { prisma } from '@/lib/prisma';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
 
 export async function GET() {
   try {
-    const items = await prisma.itemnametable.findMany({
+    const items = await prisma.item_name.findMany({
       include: {
-        producttable: true,
+        product: true,
       },
     });
     const parsedData = ArrayProductItemSchema.parse(itemsFromBigintToString(items));
@@ -31,33 +31,33 @@ export async function PATCH(req: Request) {
           item.productedInInput === undefined || item.productedInInput === ''
             ? 0
             : Number(item.productedInInput);
-        const current = await tx.producttable.findUnique({
+        const current = await tx.product.findUnique({
           where: {
-            itemname_id: itemid,
+            item_name_id: itemid,
           },
           include: {
-            itemnametable: true,
+            item_name: true,
           },
         });
         const oldValue = current?.producted_count ?? 0;
-        const itemName = current?.itemnametable?.item_name ?? '不明な商品';
+        const itemName = current?.item_name?.item_name ?? '不明な商品';
 
         if (oldValue !== count) {
-          await tx.logtable.create({
+          await tx.logs.create({
             data: {
-              logs: `[Tab3]${itemName}を${oldValue}から${count}に変更しました`,
+              log_message: `[生産数]${itemName}を${oldValue}から${count}に変更しました`,
             },
           });
         }
-        await tx.producttable.upsert({
+        await tx.product.upsert({
           where: {
-            itemname_id: itemid,
+            item_name_id: itemid,
           },
           update: {
             producted_count: count,
           },
           create: {
-            itemname_id: itemid,
+            item_name_id: itemid,
             producted_count: count,
           },
         });

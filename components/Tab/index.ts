@@ -1,17 +1,10 @@
-import Tab1 from './tab1/Tab1';
-import Tab2 from './tab2/Tab2';
-import Tab3 from './tab3/Tab3';
-import Tab4 from './tab4/Tab4';
-import Tab5 from './tab5/Tab5';
-import Tab6 from './tab6/Tab6';
-
 export const tabList = [
-  { label: '注文管理', value: 'tab1', component: Tab1 },
-  { label: '在庫管理', value: 'tab2', component: Tab2 },
-  { label: '生産数管理', value: 'tab3', component: Tab3 },
-  { label: '商品追加', value: 'tab4', component: Tab4 },
-  { label: '変更・出荷履歴', value: 'tab5', component: Tab5 },
-  { label: 'グラフ', value: 'tab6', component: Tab6 },
+  { label: '注文管理', value: 'tab1', href: '/main-page/tab/orders' },
+  { label: '在庫管理', value: 'tab2', href: '/main-page/tab/stocks' },
+  { label: '生産数管理', value: 'tab3', href: '/main-page/tab/products' },
+  { label: '商品追加', value: 'tab4', href: '/main-page/tab/item-add' },
+  { label: '変更・出荷履歴', value: 'tab5', href: '/main-page/tab/log-history' },
+  { label: 'グラフ', value: 'tab6', href: '/main-page/tab/graph' },
 ] as const;
 
 export const tab1DisplayName = [

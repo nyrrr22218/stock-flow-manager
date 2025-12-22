@@ -6,45 +6,45 @@ datasource db {
   provider = "postgresql"
 }
 
-model itemnametable {
-  id           BigInt        @id(map: "itemName_pkey") @default(autoincrement())
-  item_name    String        @unique(map: "itemname_itemname_key")
-  ordertable   ordertable?
-  producttable producttable?
-  stocktable   stocktable?
+model item_name {
+  id        BigInt   @id(map: "itemName_pkey") @default(autoincrement())
+  item_name String   @unique(map: "itemname_itemname_key")
+  order     order?
+  product   product?
+  stock     stock?
 }
 
-model logtable {
-  id        BigInt   @id(map: "log_pkey") @default(autoincrement())
-  logs      String
-  logged_at DateTime @default(now()) @db.Timestamptz(6)
+model logs {
+  id          BigInt   @id(map: "log_pkey") @default(autoincrement())
+  log_message String
+  logged_at   DateTime @default(now()) @db.Timestamptz(6)
 }
 
-model ordertable {
-  id            BigInt         @id(map: "order_pkey") @default(autoincrement())
-  order_count   Int?
-  itemname_id   BigInt        @unique(map: "order_itemname_id_key")
-  ordered_at    DateTime       @default(now()) @db.Timestamptz(6)
-  itemnametable itemnametable? @relation(fields: [itemname_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "order_itemname_id_fkey")
+model order {
+  id           BigInt    @id @default(autoincrement())
+  order_count  Int?
+  item_name_id BigInt    @unique(map: "order_itemname_id_key")
+  ordered_at   DateTime  @default(now()) @db.Timestamptz(6)
+  item_name    item_name @relation(fields: [item_name_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model producttable {
-  id              BigInt        @id(map: "product_pkey") @default(autoincrement())
+model product {
+  id              BigInt    @id @default(autoincrement())
   producted_count Int
-  itemname_id     BigInt        @unique(map: "product_itemname_id_key")
-  produced_at     DateTime      @default(now()) @db.Timestamptz(6)
-  itemnametable   itemnametable @relation(fields: [itemname_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_itemname_id_fkey")
+  item_name_id    BigInt    @unique(map: "product_itemname_id_key")
+  produced_at     DateTime  @default(now()) @db.Timestamptz(6)
+  item_name       item_name @relation(fields: [item_name_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model shipmentstable {
-  id             BigInt   @id(map: "shipments_pkey") @default(autoincrement())
+model shipments {
+  id             BigInt   @id @default(autoincrement())
   order_snapshot Json     @db.Json
   created_at     DateTime @default(now()) @db.Timestamptz(6)
 }
 
-model stocktable {
-  id            BigInt        @id(map: "stock_pkey") @default(autoincrement())
-  stock_count   Int
-  itemname_id   BigInt        @unique(map: "stock_itemname_id_key")
-  itemnametable itemnametable @relation(fields: [itemname_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "stock_itemname_id_fkey")
+model stock {
+  id           BigInt    @id @default(autoincrement())
+  stock_count  Int
+  item_name_id BigInt    @unique(map: "stock_itemname_id_key")
+  item_name    item_name @relation(fields: [item_name_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
