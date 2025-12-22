@@ -1,16 +1,21 @@
+// app/main-page/tab/tab-1/page.tsx
 import Tab1 from '@/components/tab/tab1/tab-1';
+import { prisma } from '@/lib/prisma'; // サーバーから直接DBを呼ぶ
 
-async function getUrl() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!siteUrl) return { item: [] };
-  const res = await fetch(`${siteUrl}/api/tab1`, {
-    cache: 'no-store',
+export default async function Page() {
+  // 1. fetchを使わず、直接DBから取得（これが一番速い）
+  const items = await prisma.item_name.findMany({
+    include: {
+      stock: true,
+      order: true,
+      product: true,
+    },
   });
-  if (!res.ok) return { item: [] };
-  return res.json();
-}
 
-export default async function page() {
-  const data = await getUrl();
-  return <Tab1 tab1Data={data.items ?? []} />;
+  // 2. BigIntを文字列に変換（APIと同じシリアライズ）
+  const serialized = JSON.parse(
+    JSON.stringify(items, (_, v) => (typeof v === 'bigint' ? v.toString() : v)),
+  );
+
+  return <Tab1 tab1Data={serialized} />;
 }
