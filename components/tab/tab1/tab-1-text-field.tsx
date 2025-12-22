@@ -25,9 +25,9 @@ export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) 
             return {
               ...i,
               orderInInput: inputValue,
-              ordertable: i.ordertable
+              ordertable: i.order
                 ? {
-                    ...i.ordertable,
+                    ...i.order,
                     order_count: numInputValue,
                   }
                 : {
