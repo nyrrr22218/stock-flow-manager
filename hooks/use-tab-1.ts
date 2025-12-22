@@ -34,7 +34,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [formattedData]);
 
   const handleSave = async () => {
     if (loading) return;
