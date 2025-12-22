@@ -1,4 +1,4 @@
-import Tab6 from '@/components/tab/tab1/tab-1';
+import Tab6 from '@/components/tab/tab6/tab-6';
 import { prisma } from '@/lib/prisma';
 import { ArrayItemSchema } from '@/schemas/api/tab-1';
 import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';

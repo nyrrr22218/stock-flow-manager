@@ -6,10 +6,15 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { handleAxiosError } from '@/utils/axiosError';
 import InventoryAnalytics from '@/components/tab/tab6/tab-6-graph';
+import { TItem } from '@/schemas/commons';
 
-export default function Tab6({ tab1Data }: { tab1Data: TItemAndInput[] }) {
+export default function Tab6({ tab1Data }: { tab1Data: TItem[] }) {
+  const formattedData = tab1Data.map((item) => ({
+    ...item,
+    orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+  }));
   const [graphdata, setGraphData] = useState<TItemAndInput[]>(() => {
-    if (tab1Data) return tab1Data;
+    if (formattedData) return formattedData;
     return [];
   });
 
