@@ -8,7 +8,12 @@ import { Tab1TypeOfDisplayName } from '@/components/tab/tab1/tab-1-type-of-displ
 import { useTab1 } from '@/hooks/use-tab-1';
 import { Box, Typography } from '@mui/material';
 
-export default function Tab1() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function Tab1({ tab1Data }: { tab1Data: any[] }) {
+  const formattedData = tab1Data.map((item) => ({
+    ...item,
+    orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+  }));
   const {
     tabOneItemList,
     setTabOneItemList,
@@ -17,7 +22,7 @@ export default function Tab1() {
     handleSave,
     handleEditToggle,
     handleShippingCompleted,
-  } = useTab1();
+  } = useTab1(formattedData);
 
   return (
     <Box sx={{ width: '100%', overflowX: 'auto' }}>

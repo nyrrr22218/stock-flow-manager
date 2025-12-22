@@ -5,13 +5,17 @@ import { handleAxiosError } from '@/utils/axiosError';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useTab1 = () => {
+export const useTab1 = (formattedData?: TItemAndInput[]) => {
   const [editMode, setEditMode] = useState(false);
-  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>([]);
+  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(() => {
+    if (formattedData) return formattedData;
+    return [];
+  });
   const [loading, setLoading] = useState(false);
   const API_PATH = '/api/tab1';
 
   useEffect(() => {
+    if (formattedData && formattedData.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
