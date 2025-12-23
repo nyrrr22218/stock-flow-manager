@@ -1,7 +1,7 @@
-import { TItemAndInputSchema } from '@/schemas/commons';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
+import { TItemAndInputSchema } from '@/schemas';
 
 export async function POST(req: Request) {
   try {

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { ArrayLogTableSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
 
-export default async function page() {
+export default async function Page() {
   const logs = await prisma.logs.findMany({
     orderBy: {
       logged_at: 'desc',

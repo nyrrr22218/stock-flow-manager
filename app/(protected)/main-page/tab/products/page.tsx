@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { ArrayProductItemSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
 
-export default async function page() {
+export default async function Page() {
   const items = await prisma.item_name.findMany({
     include: {
       product: true,

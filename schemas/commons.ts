@@ -38,12 +38,13 @@ const ShipmentsTableSchema = z.object({
 });
 
 export const TItemAndInputSchema = z.array(
-  z.object({
-    ItemSchema,
-    logs: LogTableSchema.nullable().optional(),
-    shipments: ShipmentsTableSchema.nullable().optional(),
-    orderInInput: z.string(),
-  }),
+  ItemSchema.merge(
+    z.object({
+      logs: LogTableSchema.nullable().optional(),
+      shipments: ShipmentsTableSchema.nullable().optional(),
+      orderInInput: z.string(),
+    }),
+  ),
 );
 
 export type TItem = z.infer<typeof ItemSchema>;
