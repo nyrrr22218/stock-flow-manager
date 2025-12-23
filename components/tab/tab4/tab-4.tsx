@@ -10,7 +10,8 @@ export default function Tab4({ Tab4Data }: { Tab4Data: TItemnameTable[] }) {
   const {
     addNewItemName,
     setAddNewItemName,
-    error,
+    errorMessage,
+    setErrorMessage,
     itemnameList,
     loading,
     handleItemAdd,
@@ -23,7 +24,8 @@ export default function Tab4({ Tab4Data }: { Tab4Data: TItemnameTable[] }) {
         handleItemAdd={handleItemAdd}
         addNewItemName={addNewItemName}
         setAddNewItemName={setAddNewItemName}
-        error={error}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
         loading={loading}
       />
       <Box sx={{ ml: 2 }}>

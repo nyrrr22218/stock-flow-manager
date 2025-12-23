@@ -1,7 +1,7 @@
 'use client';
 
 import { TItemnameTable } from '@/types/tab-type/tab-4';
-import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
+import { handleAxiosError } from '@/utils/axiosError';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -11,8 +11,8 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
     return [];
   });
   const [addNewItemName, setAddNewItemName] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const API_PATH = '/api/tab4';
 
   useEffect(() => {
@@ -22,7 +22,9 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
         const { data } = await axios.get(API_PATH, { signal });
         setItemnameList(data.items);
       } catch (error) {
-        axiosErrorIsCancel(error);
+        if (axios.isCancel(error)) return;
+        const err = handleAxiosError(error);
+        console.error('通信エラー', err.message);
       }
     };
     const controller = new AbortController();
@@ -50,7 +52,8 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
       }
       setAddNewItemName('');
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      console.error('通信エラー', err.message);
     } finally {
       setLoading(false);
     }
@@ -62,16 +65,17 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
     try {
       const { data } = await axios.delete(API_PATH, { data: { id } });
       if (!data.success) {
-        setError(data.error);
+        setErrorMessage(data.error);
         return;
       }
       setItemnameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      console.error('通信エラー', err.message);
       if (error instanceof Error) {
-        setError(error.message);
+        setErrorMessage(error.message);
       } else {
-        setError('unknownError');
+        setErrorMessage('unknownError');
       }
     } finally {
       setLoading(false);
@@ -80,7 +84,8 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
   return {
     addNewItemName,
     setAddNewItemName,
-    error,
+    errorMessage,
+    setErrorMessage,
     itemnameList,
     loading,
     handleItemAdd,

@@ -23,8 +23,10 @@ export type Tab1ButtonCommonProps = {
   open: boolean;
   loading: boolean;
   editMode: boolean;
+  setEditMode: Dispatch<SetStateAction<boolean>>;
   handleSave: () => void;
-  handleEditToggle: () => void;
+  errorMessage: string | null;
+  setErrorMessage: Dispatch<SetStateAction<string | null>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleShippingCompleted: () => Promise<void>;
 };

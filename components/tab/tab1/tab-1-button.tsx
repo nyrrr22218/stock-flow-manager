@@ -1,10 +1,14 @@
 import { Box, Button, Typography } from '@mui/material';
 import { DialogStyle } from './tab-1-button-dialog';
 import { Tab1ButtonCommonProps } from '@/types/tab-type/tab-1';
+import { ErrorMessageStyle } from '@/utils/error-message';
+import { handleEditToggle } from '@/utils/handle-edit-toggle';
 
 export const Tab1ButtonCommon = ({
-  handleEditToggle,
+  errorMessage,
+  setErrorMessage,
   editMode,
+  setEditMode,
   loading,
   handleSave,
   open,
@@ -17,6 +21,7 @@ export const Tab1ButtonCommon = ({
   return (
     <>
       <Typography variant="h4">注文管理</Typography>
+      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Box sx={{ display: 'flex', gap: 3, mt: 4, mb: 4 }}>
         <Button
           variant="contained"
@@ -37,7 +42,7 @@ export const Tab1ButtonCommon = ({
           <Button
             variant="contained"
             size="small"
-            onClick={handleEditToggle}
+            onClick={() => handleEditToggle(setEditMode)}
             color={editMode ? 'inherit' : 'primary'}
           >
             {editMode ? 'キャンセル' : '編集'}

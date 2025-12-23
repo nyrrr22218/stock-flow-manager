@@ -1,25 +1,20 @@
+import { Tab4PaperProps } from '@/types/tab-type/tab-4';
+import { ErrorMessageStyle } from '@/utils';
 import { Box, Button, Paper, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Dispatch, FormEvent, SetStateAction } from 'react';
-
-interface Tab4PaperProps {
-  error: string;
-  loading: boolean;
-  handleItemAdd: (e: FormEvent<Element>) => Promise<void>;
-  addNewItemName: string;
-  setAddNewItemName: Dispatch<SetStateAction<string>>;
-}
 
 export const Tab4Form = ({
   handleItemAdd,
   addNewItemName,
   setAddNewItemName,
-  error,
   loading,
+  errorMessage,
+  setErrorMessage,
 }: Tab4PaperProps) => {
   return (
     <>
       <Typography variant="h4">商品追加</Typography>
+      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Box sx={{ mt: 4, mb: 4 }}>
         <Paper elevation={0} variant="outlined" sx={{ p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
           <Box
@@ -40,8 +35,8 @@ export const Tab4Form = ({
                 placeholder="例: 商品A"
                 value={addNewItemName}
                 onChange={(e) => setAddNewItemName(e.target.value)}
-                error={!!error}
-                helperText={error}
+                error={!!errorMessage}
+                helperText={errorMessage}
               />
             </Box>
             <Button

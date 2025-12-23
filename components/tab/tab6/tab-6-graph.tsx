@@ -10,9 +10,6 @@ export default function InventoryAnalytics({ data }: { data: TItemAndInput[] }) 
     生産数: Number(item.product?.producted_count ?? 0),
   }));
 
-  const MaxGraphWidth = Math.max(800, data.length * 60);
-  const MaxGraphHeight = 600;
-
   return (
     <Paper sx={{ p: 3, width: '100%', mt: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -20,9 +17,9 @@ export default function InventoryAnalytics({ data }: { data: TItemAndInput[] }) 
       </Typography>
       <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#f9f9f9' }}>
         <BarChart
-          width={MaxGraphWidth}
-          height={MaxGraphHeight}
           data={chartData}
+          width={Math.max(800, data.length * 60)}
+          height={600}
           margin={{ top: 20, right: 20, left: 20, bottom: 50 }}
         >
           <CartesianGrid strokeDasharray="3 3" />

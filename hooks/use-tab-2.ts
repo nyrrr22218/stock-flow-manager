@@ -1,6 +1,6 @@
 'use client';
 import { TItemStockAndInput } from '@/types/tab-type/tab-2';
-import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
+import { handleAxiosError } from '@/utils/axiosError';
 import { FormatData } from '@/utils/formatdata';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ export const useTab2 = (formattedData?: TItemStockAndInput[]) => {
   const [stockList, setStockList] = useState<TItemStockAndInput[]>(FormatData(formattedData));
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const API_PATH = '/api/tab2';
 
   useEffect(() => {
@@ -24,7 +25,9 @@ export const useTab2 = (formattedData?: TItemStockAndInput[]) => {
         );
         setStockList(itemAndInput);
       } catch (error) {
-        axiosErrorIsCancel(error);
+        if (axios.isCancel(error)) return;
+        const err = handleAxiosError(error);
+        setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
@@ -45,21 +48,21 @@ export const useTab2 = (formattedData?: TItemStockAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEditToggle = () => setEditMode((prev: boolean) => !prev);
-
   return {
+    setErrorMessage,
     stockList,
+    errorMessage,
     setStockList,
     editMode,
     setEditMode,
     loading,
     handleSave,
-    handleEditToggle,
   };
 };

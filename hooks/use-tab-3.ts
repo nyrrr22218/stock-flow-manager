@@ -1,7 +1,7 @@
 'ise client';
 
 import { TItemProductAndInput } from '@/types/tab-type/tab-3';
-import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
+import { handleAxiosError } from '@/utils/axiosError';
 import { FormatData } from '@/utils/formatdata';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ export const useTab3 = (formattedData?: TItemProductAndInput[]) => {
   const [product, setProduct] = useState<TItemProductAndInput[]>(FormatData(formattedData));
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const API_PATH = '/api/tab3';
 
   useEffect(() => {
@@ -25,7 +26,9 @@ export const useTab3 = (formattedData?: TItemProductAndInput[]) => {
         );
         setProduct(itemAndInput);
       } catch (error) {
-        axiosErrorIsCancel(error);
+        if (axios.isCancel(error)) return;
+        const err = handleAxiosError(error);
+        setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
@@ -46,7 +49,8 @@ export const useTab3 = (formattedData?: TItemProductAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -56,6 +60,8 @@ export const useTab3 = (formattedData?: TItemProductAndInput[]) => {
     product,
     setProduct,
     loading,
+    errorMessage,
+    setErrorMessage,
     handleSave,
     editMode,
     setEditMode,

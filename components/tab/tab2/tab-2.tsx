@@ -5,6 +5,7 @@ import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ButtonCommon } from '../button-common';
 import { TItemStock } from '@/types/tab-type/tab-2';
+import { ErrorMessageStyle } from '@/utils';
 
 export default function Tab2({ tab2Data }: { tab2Data: TItemStock[] }) {
   const formattedData = tab2Data.map((item) => ({
@@ -12,16 +13,25 @@ export default function Tab2({ tab2Data }: { tab2Data: TItemStock[] }) {
     stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
   }));
 
-  const { stockList, setStockList, editMode, handleEditToggle, loading, handleSave } =
-    useTab2(formattedData);
+  const {
+    setErrorMessage,
+    stockList,
+    setStockList,
+    editMode,
+    setEditMode,
+    loading,
+    handleSave,
+    errorMessage,
+  } = useTab2(formattedData);
 
   return (
     <Box>
       <Typography variant="h4">在庫管理</Typography>
+      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <ButtonCommon
         editmode={editMode}
         loading={loading}
-        handleEditToggle={handleEditToggle}
+        setEditMode={setEditMode}
         handleSave={handleSave}
       />
       <Box

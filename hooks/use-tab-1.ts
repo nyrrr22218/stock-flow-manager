@@ -1,7 +1,7 @@
 'use client';
 
 import { TItemAndInput } from '@/types/tab-type/tab-1';
-import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
+import { handleAxiosError } from '@/utils/axiosError';
 import { FormatData } from '@/utils/formatdata';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
   const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(FormatData(formattedData));
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const API_PATH = '/api/tab1';
 
@@ -25,7 +26,9 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         }));
         setTabOneItemList(itemAndInput);
       } catch (error) {
-        axiosErrorIsCancel(error);
+        if (axios.isCancel(error)) return;
+        const err = handleAxiosError(error);
+        setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
@@ -46,7 +49,8 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -73,19 +77,20 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      axiosError(error);
+      const err = handleAxiosError(error);
+      setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEditToggle = () => setEditMode((prev: boolean) => !prev);
-
   return {
+    errorMessage,
+    setErrorMessage,
     tabOneItemList,
     setTabOneItemList,
     editMode,
-    handleEditToggle,
+    setEditMode,
     loading,
     handleSave,
     open,

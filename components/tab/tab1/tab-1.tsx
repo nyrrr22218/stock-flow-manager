@@ -15,21 +15,25 @@ export default function Tab1({ tab1Data }: { tab1Data: TItem[] }) {
     orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
   }));
   const {
+    errorMessage,
+    setErrorMessage,
     tabOneItemList,
     setTabOneItemList,
     editMode,
+    setEditMode,
     loading,
     handleSave,
     open,
     setOpen,
-    handleEditToggle,
     handleShippingCompleted,
   } = useTab1(formattedData);
 
   return (
     <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <Tab1ButtonCommon
-        handleEditToggle={handleEditToggle}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+        setEditMode={setEditMode}
         editMode={editMode}
         loading={loading}
         open={open}

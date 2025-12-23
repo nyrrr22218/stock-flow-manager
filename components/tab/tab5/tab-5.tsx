@@ -2,16 +2,17 @@
 
 import { TLogTable } from '@/types/tab-type/tab-5';
 import { Tab5LogSort } from './tab-5-sort';
-import { handleAxiosError } from '@/utils/axiosError';
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
+import { ErrorMessageStyle, handleAxiosError } from '@/utils';
 
 export default function Tab5({ Tab5Data }: { Tab5Data: TLogTable[] }) {
   const [log, setLog] = useState<TLogTable[]>(() => {
     if (Tab5Data) return Tab5Data;
     return [];
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>(() => 'desc');
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function Tab5({ Tab5Data }: { Tab5Data: TLogTable[] }) {
       } catch (error) {
         if (axios.isCancel(error)) return;
         const err = handleAxiosError(error);
-        console.error('通信エラー', err.message);
+        setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
@@ -42,6 +43,7 @@ export default function Tab5({ Tab5Data }: { Tab5Data: TLogTable[] }) {
   return (
     <Box>
       <Typography variant="h4">各種変更・出荷履歴</Typography>
+      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Tab5LogSort sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, gap: 2 }}>
         {sortLogs.length === 0 && <Typography variant="h5">Loading...</Typography>}

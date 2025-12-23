@@ -5,6 +5,7 @@ import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ButtonCommon } from '../button-common';
 import { TItemProduct } from '@/types/tab-type/tab-3';
+import { ErrorMessageStyle } from '@/utils';
 
 export default function Tab3({ tab3Data }: { tab3Data: TItemProduct[] }) {
   const formattedData = tab3Data.map((item) => ({
@@ -12,17 +13,25 @@ export default function Tab3({ tab3Data }: { tab3Data: TItemProduct[] }) {
     productedInInput:
       item.product?.producted_count !== undefined ? String(item.product.producted_count) : '0',
   }));
-  const { product, setProduct, editMode, setEditMode, loading, handleSave } =
-    useTab3(formattedData);
-  const handleEditToggle = () => setEditMode((prev: boolean) => !prev);
+  const {
+    product,
+    setProduct,
+    editMode,
+    setEditMode,
+    loading,
+    handleSave,
+    errorMessage,
+    setErrorMessage,
+  } = useTab3(formattedData);
 
   return (
     <Box>
       <Typography variant="h4">生産数管理</Typography>
+      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <ButtonCommon
         editmode={editMode}
         loading={loading}
-        handleEditToggle={handleEditToggle}
+        setEditMode={setEditMode}
         handleSave={handleSave}
       />
       <Box
