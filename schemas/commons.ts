@@ -21,9 +21,9 @@ const ProductTableSchema = z.object({
 export const ItemSchema = z.object({
   id: z.string(),
   item_name: z.string().min(1),
-  order: OrderTableSchema.nullable().optional(),
-  stock: StockTableSchema.nullable().optional(),
-  product: ProductTableSchema.nullable().optional(),
+  order: OrderTableSchema.nullish(),
+  stock: StockTableSchema.nullish(),
+  product: ProductTableSchema.nullish(),
 });
 
 export const LogTableSchema = z.object({
@@ -38,13 +38,11 @@ const ShipmentsTableSchema = z.object({
 });
 
 export const TItemAndInputSchema = z.array(
-  ItemSchema.extend(
-    z.object({
-      logs: LogTableSchema.nullable().optional(),
-      shipments: ShipmentsTableSchema.nullable().optional(),
-      orderInInput: z.string(),
-    }),
-  ),
+  ItemSchema.extend({
+    logs: LogTableSchema.nullish(),
+    shipments: ShipmentsTableSchema.nullish(),
+    orderInInput: z.string(),
+  }),
 );
 
 export type TItem = z.infer<typeof ItemSchema>;
