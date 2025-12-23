@@ -1,9 +1,5 @@
-import { TItemAndInput } from '@/types/tab-type/tab-1';
+import { CalculateFunctionProps } from '@/types/tab-type/tab-1';
 import { Typography } from '@mui/material';
-
-interface CalculateFunctionProps {
-  item: TItemAndInput;
-}
 
 export const CalculateFunction = ({ item }: CalculateFunctionProps) => {
   const order = Number(item.order?.order_count ?? 0);

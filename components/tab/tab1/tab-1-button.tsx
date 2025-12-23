@@ -1,20 +1,19 @@
 import { Box, Button, Typography } from '@mui/material';
-
-interface Tab1ButtonCommonProps {
-  editmode: boolean;
-  loading: boolean;
-  handleSave: () => void;
-  handleEditToggle: () => void;
-  handleShippingCompleted: () => void;
-}
+import { DialogStyle } from './tab-1-button-dialog';
+import { Tab1ButtonCommonProps } from '@/types/tab-type/tab-1';
 
 export const Tab1ButtonCommon = ({
   handleEditToggle,
-  editmode,
+  editMode,
   loading,
   handleSave,
+  open,
+  setOpen,
   handleShippingCompleted,
 }: Tab1ButtonCommonProps) => {
+  const openDialog = () => setOpen(true);
+  const closeDialog = () => setOpen(false);
+
   return (
     <>
       <Typography variant="h4">注文管理</Typography>
@@ -22,25 +21,31 @@ export const Tab1ButtonCommon = ({
         <Button
           variant="contained"
           size="large"
-          disabled={editmode || loading}
-          onClick={handleShippingCompleted}
+          disabled={editMode || loading}
+          onClick={openDialog}
           sx={{ bgcolor: 'blueviolet', mr: 'auto' }}
         >
           {loading ? 'Loading...' : '出荷'}
         </Button>
+        <DialogStyle
+          open={open}
+          closeDialog={closeDialog}
+          handleShippingCompleted={handleShippingCompleted}
+          loading={loading}
+        />
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
             variant="contained"
             size="small"
             onClick={handleEditToggle}
-            color={editmode ? 'inherit' : 'primary'}
+            color={editMode ? 'inherit' : 'primary'}
           >
-            {editmode ? 'キャンセル' : '編集'}
+            {editMode ? 'キャンセル' : '編集'}
           </Button>
           <Button
             variant="contained"
             size="small"
-            disabled={!editmode || loading}
+            disabled={!editMode || loading}
             onClick={handleSave}
             sx={{ bgcolor: 'yellowgreen' }}
           >

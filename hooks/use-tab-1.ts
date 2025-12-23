@@ -1,17 +1,16 @@
 'use client';
 
 import { TItemAndInput } from '@/types/tab-type/tab-1';
-import { handleAxiosError } from '@/utils/axiosError';
+import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
+import { FormatData } from '@/utils/formatdata';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const useTab1 = (formattedData?: TItemAndInput[]) => {
-  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(() => {
-    if (formattedData) return formattedData;
-    return [];
-  });
+  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(FormatData(formattedData));
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const API_PATH = '/api/tab1';
 
   useEffect(() => {
@@ -26,9 +25,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         }));
         setTabOneItemList(itemAndInput);
       } catch (error) {
-        if (axios.isCancel(error)) return;
-        const err = handleAxiosError(error);
-        console.error('通信エラー', err.message);
+        axiosErrorIsCancel(error);
       }
     };
     const controller = new AbortController();
@@ -49,8 +46,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      const err = handleAxiosError(error);
-      console.error('通信エラー', err.message);
+      axiosError(error);
     } finally {
       setLoading(false);
     }
@@ -59,6 +55,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
   const handleShippingCompleted = async () => {
     if (loading) return;
     setLoading(true);
+    setOpen(false);
     try {
       const { data } = await axios.post('/api/shipments', {
         items: tabOneItemList,
@@ -76,8 +73,7 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
         console.error(data.error);
       }
     } catch (error) {
-      const err = handleAxiosError(error);
-      console.error('通信エラー', err.message);
+      axiosError(error);
     } finally {
       setLoading(false);
     }
@@ -92,6 +88,8 @@ export const useTab1 = (formattedData?: TItemAndInput[]) => {
     handleEditToggle,
     loading,
     handleSave,
+    open,
+    setOpen,
     handleShippingCompleted,
   };
 };

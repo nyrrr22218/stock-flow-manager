@@ -1,17 +1,17 @@
 'use client';
 
 import { TItemnameTable } from '@/types/tab-type/tab-4';
-import { handleAxiosError } from '@/utils/axiosError';
+import { axiosError, axiosErrorIsCancel } from '@/utils/axiosError';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const useTab4 = (Tab4Data: TItemnameTable[]) => {
-  const [addNewItemName, setAddNewItemName] = useState('');
-  const [error, setError] = useState('');
   const [itemnameList, setItemnameList] = useState<TItemnameTable[]>(() => {
     if (Tab4Data) return Tab4Data;
     return [];
   });
+  const [addNewItemName, setAddNewItemName] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const API_PATH = '/api/tab4';
 
@@ -22,9 +22,7 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
         const { data } = await axios.get(API_PATH, { signal });
         setItemnameList(data.items);
       } catch (error) {
-        if (axios.isCancel(error)) return;
-        const err = handleAxiosError(error);
-        console.error('通信エラー', err.message);
+        axiosErrorIsCancel(error);
       }
     };
     const controller = new AbortController();
@@ -52,8 +50,7 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
       }
       setAddNewItemName('');
     } catch (error) {
-      const err = handleAxiosError(error);
-      console.error('通信エラー', err.message);
+      axiosError(error);
     } finally {
       setLoading(false);
     }
@@ -70,8 +67,7 @@ export const useTab4 = (Tab4Data: TItemnameTable[]) => {
       }
       setItemnameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
-      const err = handleAxiosError(error);
-      console.error('通信エラー', err.message);
+      axiosError(error);
       if (error instanceof Error) {
         setError(error.message);
       } else {

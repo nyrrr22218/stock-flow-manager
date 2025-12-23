@@ -1,12 +1,12 @@
 import { buttonPositionCommon } from '@/styles/commons';
 import { Box, Button } from '@mui/material';
 
-interface buttonCommonProps {
+type buttonCommonProps = {
   editmode: boolean;
   loading: boolean;
   handleSave: () => void;
   handleEditToggle: () => void;
-}
+};
 
 export const ButtonCommon = ({
   handleEditToggle,

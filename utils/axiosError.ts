@@ -23,3 +23,14 @@ export function handleAxiosError(error: unknown): {
     message: 'Unknown error',
   };
 }
+
+export const axiosError = (error: unknown) => {
+  const err = handleAxiosError(error);
+  console.error('通信エラー', err.message);
+};
+
+export const axiosErrorIsCancel = (error: unknown) => {
+  if (axios.isCancel(error)) return;
+  const err = handleAxiosError(error);
+  console.error('通信エラー', err.message);
+};

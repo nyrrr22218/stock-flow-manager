@@ -3,7 +3,7 @@
 import { useTab3 } from '@/hooks/use-tab-3';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { ButtonCommon } from '../button-style';
+import { ButtonCommon } from '../button-common';
 import { TItemProduct } from '@/types/tab-type/tab-3';
 
 export default function Tab3({ tab3Data }: { tab3Data: TItemProduct[] }) {

@@ -3,7 +3,7 @@
 import { useTab2 } from '@/hooks/use-tab-2';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { ButtonCommon } from '../button-style';
+import { ButtonCommon } from '../button-common';
 import { TItemStock } from '@/types/tab-type/tab-2';
 
 export default function Tab2({ tab2Data }: { tab2Data: TItemStock[] }) {
@@ -12,10 +12,8 @@ export default function Tab2({ tab2Data }: { tab2Data: TItemStock[] }) {
     stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
   }));
 
-  const { stockList, setStockList, editMode, setEditMode, loading, handleSave } =
+  const { stockList, setStockList, editMode, handleEditToggle, loading, handleSave } =
     useTab2(formattedData);
-
-  const handleEditToggle = () => setEditMode((prev: boolean) => !prev);
 
   return (
     <Box>

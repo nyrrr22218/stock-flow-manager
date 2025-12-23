@@ -20,6 +20,8 @@ export default function Tab1({ tab1Data }: { tab1Data: TItem[] }) {
     editMode,
     loading,
     handleSave,
+    open,
+    setOpen,
     handleEditToggle,
     handleShippingCompleted,
   } = useTab1(formattedData);
@@ -28,8 +30,10 @@ export default function Tab1({ tab1Data }: { tab1Data: TItem[] }) {
     <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <Tab1ButtonCommon
         handleEditToggle={handleEditToggle}
-        editmode={editMode}
+        editMode={editMode}
         loading={loading}
+        open={open}
+        setOpen={setOpen}
         handleSave={handleSave}
         handleShippingCompleted={handleShippingCompleted}
       />

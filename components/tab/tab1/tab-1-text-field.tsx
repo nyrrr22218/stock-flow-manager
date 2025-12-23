@@ -1,12 +1,5 @@
-import { TItemAndInput } from '@/types/tab-type/tab-1';
+import { ItemProps, TItemAndInput } from '@/types/tab-type/tab-1';
 import { TextField } from '@mui/material';
-import { SetStateAction } from 'react';
-
-interface ItemProps {
-  item: TItemAndInput;
-  editMode: boolean;
-  setTabOneItemList: (value: SetStateAction<TItemAndInput[]>) => void;
-}
 
 export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) => {
   return (
@@ -19,7 +12,7 @@ export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) 
         const inputValue = e.target.value;
         if (inputValue !== '' && !/^[0-9]+$/.test(inputValue)) return;
         const numInputValue = Number(inputValue) || 0;
-        setTabOneItemList((prev) =>
+        setTabOneItemList((prev: TItemAndInput[]) =>
           prev.map((i) => {
             if (i.id !== item.id) return i;
             return {
