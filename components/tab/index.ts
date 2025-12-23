@@ -1,10 +1,10 @@
 export const tabList = [
-  { label: '注文管理', value: 'tab1', href: '/main-page/tab/orders' },
-  { label: '在庫管理', value: 'tab2', href: '/main-page/tab/stocks' },
-  { label: '生産数管理', value: 'tab3', href: '/main-page/tab/products' },
-  { label: '商品追加', value: 'tab4', href: '/main-page/tab/item-add' },
-  { label: '変更・出荷履歴', value: 'tab5', href: '/main-page/tab/log-history' },
-  { label: 'グラフ', value: 'tab6', href: '/main-page/tab/graph' },
+  { label: '注文管理', href: '/main-page/tab/orders' },
+  { label: '在庫管理', href: '/main-page/tab/stocks' },
+  { label: '生産数管理', href: '/main-page/tab/products' },
+  { label: '商品追加', href: '/main-page/tab/item-add' },
+  { label: '変更・出荷履歴', href: '/main-page/tab/log-history' },
+  { label: 'グラフ', href: '/main-page/tab/graph' },
 ] as const;
 
 export const tab1DisplayName = [

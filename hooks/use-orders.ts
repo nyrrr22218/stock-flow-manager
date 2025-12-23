@@ -1,0 +1,96 @@
+'use client';
+
+import { handleAxiosErrorAndLog } from '@/lib/axios-error';
+import { TItemAndInput } from '@/types';
+import { FormatData } from '@/utils';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+export const useOrders = (formattedData?: TItemAndInput[]) => {
+  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(FormatData(formattedData));
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const API_PATH = '/api/tab1';
+
+  useEffect(() => {
+    if (formattedData && formattedData.length > 0) return;
+    setErrorMessage(null);
+    const fetchData = async (signal?: AbortSignal) => {
+      try {
+        const { data } = await axios.get(API_PATH, { signal });
+        const itemAndInput: TItemAndInput[] = (data.items ?? []).map((item: TItemAndInput) => ({
+          ...item,
+          orderInInput:
+            item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+        }));
+        setTabOneItemList(itemAndInput);
+      } catch (error) {
+        const err = handleAxiosErrorAndLog(error, 'tab1-useEffect');
+        if (err) setErrorMessage(err.message);
+      }
+    };
+    const controller = new AbortController();
+    fetchData(controller.signal);
+    return () => controller.abort();
+  }, [formattedData]);
+
+  const handleSave = async () => {
+    if (loading) return;
+    setLoading(true);
+    setErrorMessage(null);
+    try {
+      await axios.patch(API_PATH, {
+        items: tabOneItemList,
+      });
+      setEditMode(false);
+    } catch (error) {
+      const err = handleAxiosErrorAndLog(error, 'tab1-handleSave');
+      if (err) setErrorMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShippingCompleted = async () => {
+    if (loading) return;
+    setOpen(false);
+    setLoading(true);
+    setErrorMessage(null);
+    try {
+      const { data } = await axios.post('/api/shipments', {
+        items: tabOneItemList,
+      });
+      if (data.success) {
+        setTabOneItemList((prev) =>
+          prev.map((order) => ({
+            ...order,
+            orderInInput: '0',
+            order: order.order ? { ...order.order, order_count: 0 } : order.order,
+          })),
+        );
+        setEditMode(false);
+      }
+    } catch (error) {
+      const err = handleAxiosErrorAndLog(error, 'tab1-handleShippingCompleted');
+      if (err) setErrorMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    errorMessage,
+    setErrorMessage,
+    tabOneItemList,
+    setTabOneItemList,
+    editMode,
+    setEditMode,
+    loading,
+    handleSave,
+    open,
+    setOpen,
+    handleShippingCompleted,
+  };
+};

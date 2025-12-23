@@ -1,4 +1,4 @@
-import Tab5 from '@/components/tab/tab5/tab-5';
+import Tab5 from '@/components/tab/log-history/log-history';
 import { prisma } from '@/lib/prisma';
 import { ArrayLogTableSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
@@ -11,5 +11,5 @@ export default async function Page() {
   });
   const serialized = itemsFromBigintToString(logs);
   const parsedData = ArrayLogTableSchema.parse(serialized);
-  return <Tab5 Tab5Data={parsedData} />;
+  return <Tab5 logData={parsedData} />;
 }

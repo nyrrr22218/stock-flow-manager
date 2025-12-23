@@ -1,5 +1,6 @@
 'use client';
 
+import { getSupabaseErrorMessage } from '@/lib/handle-supabase-error';
 import { createSupabaseClient } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -24,12 +25,14 @@ export const useSignIn = () => {
         password,
       });
       if (error) {
-        setError(error.message);
+        const msg = getSupabaseErrorMessage(error, 'Login');
+        setError(msg);
         return;
       }
       router.push('/main-page/tab/orders');
-    } catch {
-      setError('予期せぬエラー');
+    } catch (err) {
+      console.error('[Login_Fatal]', err);
+      setError('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }

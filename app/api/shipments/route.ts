@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { TItemAndInputSchema } from '@/schemas';
+import { handleApiError } from '@/lib/handle-api-error';
 
 export async function POST(req: Request) {
   try {
@@ -69,10 +70,7 @@ export async function POST(req: Request) {
       }
     });
     return NextResponse.json({ success: true });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
+  } catch (err) {
+    handleApiError(err);
   }
 }

@@ -1,4 +1,4 @@
-import Tab3 from '@/components/tab/tab3/tab-3';
+import Tab3 from '@/components/tab/products/products';
 import { prisma } from '@/lib/prisma';
 import { ArrayProductItemSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
@@ -13,5 +13,5 @@ export default async function Page() {
   const serialized = itemsFromBigintToString(items);
   const parsedData = ArrayProductItemSchema.parse(itemsFromBigintToString(serialized));
 
-  return <Tab3 tab3Data={parsedData} />;
+  return <Tab3 productsData={parsedData} />;
 }

@@ -1,10 +1,9 @@
 'use client';
 
+import { ButtonToSignIn, VisibilityIconButton } from '@/components/sign-in';
 import { useSignIn } from '@/hooks/use-sign-in';
 import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { ButtonToSignIn } from '@/components/sign-in/sign-in-button';
-import { VisibilityIconButton } from '@/components/sign-in/visibility-icon-button';
 
 export default function SignInPage() {
   const {
@@ -38,7 +37,13 @@ export default function SignInPage() {
           onSubmit={handleLogin}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
-          <TextField label="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField
+            label="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
           <TextField
             label="password"
             type={showpassword ? 'text' : 'password'}
