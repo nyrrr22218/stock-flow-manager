@@ -1,8 +1,4 @@
-import { ItemnameTableSchema } from '@/schemas/api/tab-4';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
-import { z } from 'zod';
-
-export type TItemnameTable = z.infer<typeof ItemnameTableSchema>;
 
 export type Tab4PaperProps = {
   loading: boolean;

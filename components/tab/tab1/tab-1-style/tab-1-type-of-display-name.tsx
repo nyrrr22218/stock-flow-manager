@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { columnLayout } from './tab-1-grid-layout';
-import { tab1DisplayName } from '..';
+import { columnLayout } from '..';
+import { tab1DisplayName } from '../..';
 
 export const Tab1TypeOfDisplayName = () => {
   return (

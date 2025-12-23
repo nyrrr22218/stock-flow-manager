@@ -3,9 +3,9 @@
 import { useTab3 } from '@/hooks/use-tab-3';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { ButtonCommon } from '../button-common';
-import { TItemProduct } from '@/types/tab-type/tab-3';
 import { ErrorMessageStyle } from '@/utils';
+import { TItemProduct } from '@/types';
+import { ButtonCommon } from '@/components/commons';
 
 export default function Tab3({ tab3Data }: { tab3Data: TItemProduct[] }) {
   const formattedData = tab3Data.map((item) => ({

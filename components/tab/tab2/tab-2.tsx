@@ -3,9 +3,9 @@
 import { useTab2 } from '@/hooks/use-tab-2';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { ButtonCommon } from '../button-common';
-import { TItemStock } from '@/types/tab-type/tab-2';
 import { ErrorMessageStyle } from '@/utils';
+import { TItemStock } from '@/types';
+import { ButtonCommon } from '@/components/commons';
 
 export default function Tab2({ tab2Data }: { tab2Data: TItemStock[] }) {
   const formattedData = tab2Data.map((item) => ({

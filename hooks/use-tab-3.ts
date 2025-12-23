@@ -1,8 +1,7 @@
 'ise client';
 
-import { TItemProductAndInput } from '@/types/tab-type/tab-3';
-import { handleAxiosError } from '@/utils/axiosError';
-import { FormatData } from '@/utils/formatdata';
+import { TItemProductAndInput } from '@/types';
+import { FormatData, handleAxiosError } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

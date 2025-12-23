@@ -1,4 +1,4 @@
-import { Tab4PaperProps } from '@/types/tab-type/tab-4';
+import { Tab4PaperProps } from '@/types';
 import { ErrorMessageStyle } from '@/utils';
 import { Box, Button, Paper, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';

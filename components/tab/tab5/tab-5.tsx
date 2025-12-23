@@ -1,11 +1,11 @@
 'use client';
 
-import { TLogTable } from '@/types/tab-type/tab-5';
 import { Tab5LogSort } from './tab-5-sort';
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import { ErrorMessageStyle, handleAxiosError } from '@/utils';
+import { TLogTable } from '@/schemas';
 
 export default function Tab5({ Tab5Data }: { Tab5Data: TLogTable[] }) {
   const [log, setLog] = useState<TLogTable[]>(() => {

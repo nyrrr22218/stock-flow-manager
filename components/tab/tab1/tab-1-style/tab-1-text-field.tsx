@@ -1,4 +1,4 @@
-import { ItemProps, TItemAndInput } from '@/types/tab-type/tab-1';
+import { ItemProps, TItemAndInput } from '@/types';
 import { TextField } from '@mui/material';
 
 export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) => {

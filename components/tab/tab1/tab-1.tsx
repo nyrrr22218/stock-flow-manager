@@ -1,13 +1,15 @@
 'use client';
 
-import { CalculateFunction } from '@/components/tab/tab1/calculate-function';
-import { Tab1ButtonCommon } from '@/components/tab/tab1/tab-1-button';
-import { numberColumnLayout } from '@/components/tab/tab1/tab-1-grid-layout';
-import { Tab1TextField } from '@/components/tab/tab1/tab-1-text-field';
-import { Tab1TypeOfDisplayName } from '@/components/tab/tab1/tab-1-type-of-display-name';
 import { useTab1 } from '@/hooks/use-tab-1';
-import { TItem } from '@/schemas/commons';
 import { Box, Typography } from '@mui/material';
+import {
+  CalculateFunction,
+  numberColumnLayout,
+  Tab1ButtonCommon,
+  Tab1TextField,
+  Tab1TypeOfDisplayName,
+} from '.';
+import { TItem } from '@/schemas';
 
 export default function Tab1({ tab1Data }: { tab1Data: TItem[] }) {
   const formattedData = tab1Data.map((item) => ({

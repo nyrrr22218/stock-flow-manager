@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import { tabList } from '.';
+import { tabList } from '../tab';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 

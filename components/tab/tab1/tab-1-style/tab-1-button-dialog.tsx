@@ -1,4 +1,4 @@
-import { DialogStyleProps } from '@/types/tab-type/tab-1';
+import { DialogStyleProps } from '@/types';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 export const DialogStyle = ({

@@ -1,4 +1,4 @@
-import { CalculateFunctionProps } from '@/types/tab-type/tab-1';
+import { CalculateFunctionProps } from '@/types';
 import { Typography } from '@mui/material';
 
 export const CalculateFunction = ({ item }: CalculateFunctionProps) => {

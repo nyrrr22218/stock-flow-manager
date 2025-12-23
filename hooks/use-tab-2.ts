@@ -1,7 +1,7 @@
 'use client';
-import { TItemStockAndInput } from '@/types/tab-type/tab-2';
-import { handleAxiosError } from '@/utils/axiosError';
-import { FormatData } from '@/utils/formatdata';
+
+import { TItemStockAndInput } from '@/types';
+import { FormatData, handleAxiosError } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

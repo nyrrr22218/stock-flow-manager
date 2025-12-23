@@ -1,11 +1,10 @@
 'use client';
 
+import { LoadingMotion, TabsStyle } from '@/components/commons';
 import { AnimatePage } from '@/components/sign-in/sign-in-motion';
-import { TabsStyle } from '@/components/tab/main-page-tabs-style';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, ReactNode } from 'react';
-import { LoadingMotion } from '@/components/tab/loading-motion';
 
 export default function MainPageLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();

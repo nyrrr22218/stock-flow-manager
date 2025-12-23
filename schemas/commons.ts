@@ -39,11 +39,7 @@ const ShipmentsTableSchema = z.object({
 
 export const TItemAndInputSchema = z.array(
   z.object({
-    id: z.string(),
-    item_name: z.string().min(1),
-    order: OrderTableSchema.nullable().optional(),
-    stock: StockTableSchema.nullable().optional(),
-    product: ProductTableSchema.nullable().optional(),
+    ItemSchema,
     logs: LogTableSchema.nullable().optional(),
     shipments: ShipmentsTableSchema.nullable().optional(),
     orderInInput: z.string(),

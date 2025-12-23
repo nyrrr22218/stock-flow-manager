@@ -1,7 +1,7 @@
 'use client';
 
-import { TItemnameTable } from '@/types/tab-type/tab-4';
-import { handleAxiosError } from '@/utils/axiosError';
+import { TItemnameTable } from '@/schemas';
+import { handleAxiosError } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

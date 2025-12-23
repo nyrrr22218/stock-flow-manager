@@ -1,13 +1,12 @@
 'use client';
 
-import { TItemAndInput } from '@/types/tab-type/tab-1';
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import InventoryAnalytics from '@/components/tab/tab6/tab-6-graph';
 import { TItem } from '@/schemas/commons';
-import { FormatData } from '@/utils/formatdata';
-import { ErrorMessageStyle, handleAxiosError } from '@/utils';
+import { ErrorMessageStyle, FormatData, handleAxiosError } from '@/utils';
+import { TItemAndInput } from '@/types';
+import InventoryAnalytics from './tab-6-graph';
 
 export default function Tab6({ tab1Data }: { tab1Data: TItem[] }) {
   const formattedData = tab1Data.map((item) => ({

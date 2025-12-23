@@ -1,7 +1,7 @@
 import Tab3 from '@/components/tab/tab3/tab-3';
 import { prisma } from '@/lib/prisma';
-import { ArrayProductItemSchema } from '@/schemas/api/tab-3';
-import { itemsFromBigintToString } from '@/utils/itemsFromBigintToString';
+import { ArrayProductItemSchema } from '@/schemas';
+import { itemsFromBigintToString } from '@/utils';
 
 export default async function page() {
   const items = await prisma.item_name.findMany({

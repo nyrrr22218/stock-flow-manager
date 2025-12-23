@@ -10,3 +10,5 @@ export const AddItemSchema = ItemnameTableSchema.pick({
 });
 
 export const ArrayItemnameTableSchema = z.array(ItemnameTableSchema);
+
+export type TItemnameTable = z.infer<typeof ItemnameTableSchema>;

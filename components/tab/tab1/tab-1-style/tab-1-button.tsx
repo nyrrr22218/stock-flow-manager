@@ -1,8 +1,7 @@
+import { Tab1ButtonCommonProps } from '@/types';
+import { ErrorMessageStyle, handleEditToggle } from '@/utils';
 import { Box, Button, Typography } from '@mui/material';
-import { DialogStyle } from './tab-1-button-dialog';
-import { Tab1ButtonCommonProps } from '@/types/tab-type/tab-1';
-import { ErrorMessageStyle } from '@/utils/error-message';
-import { handleEditToggle } from '@/utils/handle-edit-toggle';
+import { DialogStyle } from '..';
 
 export const Tab1ButtonCommon = ({
   errorMessage,

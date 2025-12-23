@@ -1,10 +1,10 @@
 'use client';
 
-import { Tab4Form } from '@/components/tab/tab4/tab-4-paper';
 import { useTab4 } from '@/hooks/use-tab-4';
 import { gridCommon, paperCommon } from '@/styles/commons';
-import { TItemnameTable } from '@/types/tab-type/tab-4';
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { Tab4Form } from './tab-4-paper';
+import { TItemnameTable } from '@/schemas';
 
 export default function Tab4({ Tab4Data }: { Tab4Data: TItemnameTable[] }) {
   const {

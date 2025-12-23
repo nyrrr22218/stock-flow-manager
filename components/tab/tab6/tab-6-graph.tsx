@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { TItemAndInput } from '@/types/tab-type/tab-1';
 import { Box, Paper, Typography } from '@mui/material';
+import { TItemAndInput } from '@/types';
 
 export default function InventoryAnalytics({ data }: { data: TItemAndInput[] }) {
   const chartData = data.map((item) => ({
