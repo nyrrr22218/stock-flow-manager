@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonToSignIn, VisibilityIconButton } from '@/components/sign-in';
+import { SignInButton, VisibilityIconButton } from '@/components/sign-in';
 import { useSignIn } from '@/hooks/use-sign-in';
 import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -59,7 +59,7 @@ export default function SignInPage() {
             }}
           />
           {error && <Typography>{error}</Typography>}
-          <ButtonToSignIn loading={loading} />
+          <SignInButton loading={loading} />
         </Box>
       </Paper>
     </Container>

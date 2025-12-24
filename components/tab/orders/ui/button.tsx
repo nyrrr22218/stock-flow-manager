@@ -1,10 +1,10 @@
-import { Tab1ButtonCommonProps } from '@/types';
+import { OrdersButtonProps } from '@/types';
 import { handleEditToggle } from '@/utils';
 import { Box, Button, Typography } from '@mui/material';
-import { DialogStyle } from '..';
-import { ErrorMessageStyle } from '@/components/commons';
+import { Dialogs } from '../../../commons';
+import { ErrorMessage } from '@/components';
 
-export const Tab1ButtonCommon = ({
+export const OrdersButton = ({
   errorMessage,
   setErrorMessage,
   editMode,
@@ -14,14 +14,14 @@ export const Tab1ButtonCommon = ({
   open,
   setOpen,
   handleShippingCompleted,
-}: Tab1ButtonCommonProps) => {
+}: OrdersButtonProps) => {
   const openDialog = () => setOpen(true);
   const closeDialog = () => setOpen(false);
 
   return (
     <>
       <Typography variant="h4">注文管理</Typography>
-      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
+      <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Box sx={{ display: 'flex', gap: 3, mt: 4, mb: 4 }}>
         <Button
           variant="contained"
@@ -32,7 +32,7 @@ export const Tab1ButtonCommon = ({
         >
           {loading ? 'Loading...' : '出荷'}
         </Button>
-        <DialogStyle
+        <Dialogs
           open={open}
           closeDialog={closeDialog}
           handleShippingCompleted={handleShippingCompleted}

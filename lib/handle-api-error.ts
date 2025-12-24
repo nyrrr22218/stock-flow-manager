@@ -12,9 +12,10 @@ export const handleApiError = (err: unknown) => {
   }
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
-      case 'P2002':
-        return NextResponse.json({ error: 'その名前は既に使用されています' }, { status: 409 });
-
+      case 'P2002': {
+        const target = (err.meta?.target as string[])?.join(', ') || '項目';
+        return NextResponse.json({ error: `その${target}は既に使用されています` }, { status: 409 });
+      }
       case 'P2025':
         return NextResponse.json({ error: '対象のデータが見つかりませんでした' }, { status: 404 });
     }

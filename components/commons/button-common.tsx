@@ -1,18 +1,18 @@
-import { buttonPositionCommon } from '@/styles/commons';
+import { buttonCommonStyles } from '@/styles/commons';
 import { handleEditToggle } from '@/utils';
 import { Box, Button } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-type buttonCommonProps = {
+type ButtonCommonProps = {
   editmode: boolean;
   setEditMode: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
   handleSave: () => void;
 };
 
-export const ButtonCommon = ({ editmode, setEditMode, loading, handleSave }: buttonCommonProps) => {
+export const ButtonCommon = ({ editmode, setEditMode, loading, handleSave }: ButtonCommonProps) => {
   return (
-    <Box sx={{ ...buttonPositionCommon }}>
+    <Box sx={{ ...buttonCommonStyles }}>
       <Button variant="contained" size="small" onClick={() => handleEditToggle(setEditMode)}>
         編集
       </Button>

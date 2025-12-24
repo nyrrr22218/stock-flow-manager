@@ -1,37 +1,36 @@
 'use client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { TItemnameTable } from '@/schemas';
+import { ItemName } from '@/schemas';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useItemAdd = (itemAddData: TItemnameTable[]) => {
-  const [itemnameList, setItemnameList] = useState<TItemnameTable[]>(() => {
-    if (itemAddData) return itemAddData;
-    return [];
-  });
-  const [addNewItemName, setAddNewItemName] = useState('');
+export const useItemManagement = (itemAddData: ItemName[]) => {
+  const [newItemName, setNewItemName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const API_PATH = '/api/tab4';
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ItemName | null>(null);
+  const [itemNameList, setItemNameList] = useState(itemAddData);
+
+  const API_PATH = '/api/item-management';
 
   useEffect(() => {
-    if (itemAddData && itemAddData.length > 0) return;
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
-        setItemnameList(data.items);
+        setItemNameList(data.items);
       } catch (error) {
         if (axios.isCancel(error)) return;
-        const err = handleAxiosErrorAndLog(error, 'tab4-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'itemManagement-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, [itemAddData]);
+  }, []);
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +38,9 @@ export const useItemAdd = (itemAddData: TItemnameTable[]) => {
     setLoading(true);
     setErrorMessage(null);
     try {
-      const { data } = await axios.post(API_PATH, { item_name: addNewItemName });
+      const { data } = await axios.post(API_PATH, { item_name: newItemName });
       if (data.success) {
-        setItemnameList((prev) => [
+        setItemNameList((prev) => [
           ...prev,
           {
             id: data.newItem.id,
@@ -50,37 +49,54 @@ export const useItemAdd = (itemAddData: TItemnameTable[]) => {
         ]);
         console.log('送信成功');
       }
-      setAddNewItemName('');
+      setNewItemName('');
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'tab4-handleItemAdd');
+      const err = handleAxiosErrorAndLog(error, 'itemManagement-handleItemAdd');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteItemnameTable = async (id: string) => {
+  const deleteItem = async (id: string, itemName: string) => {
     if (loading) return;
     setLoading(true);
+    setOpen(false);
     setErrorMessage(null);
     try {
-      await axios.delete(API_PATH, { data: { id } });
-      setItemnameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
+      await axios.delete(API_PATH, { data: { id, itemName } });
+      setItemNameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'tab4-deleteItemnameTable');
+      const err = handleAxiosErrorAndLog(error, 'itemManagement-deleteItemnameTable');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  const openDialog = (item: ItemName) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
+
+  const closeDialog = () => {
+    setSelectedItem(null);
+    setOpen(false);
+  };
+
   return {
-    addNewItemName,
-    setAddNewItemName,
+    newItemName,
+    setNewItemName,
     errorMessage,
     setErrorMessage,
-    itemnameList,
+    itemNameList,
     loading,
     handleItemAdd,
-    deleteItemnameTable,
+    deleteItem,
+    open,
+    setOpen,
+    selectedItem,
+    openDialog,
+    closeDialog,
   };
 };

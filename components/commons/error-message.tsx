@@ -1,11 +1,11 @@
 import { Alert } from '@mui/material';
 
-type ErrorMessageStyleProps = {
+type ErrorMessageProps = {
   errorMessage: string | null;
   clearError: () => void;
 };
 
-export const ErrorMessageStyle = ({ errorMessage, clearError }: ErrorMessageStyleProps) => {
+export const ErrorMessage = ({ errorMessage, clearError }: ErrorMessageProps) => {
   if (!errorMessage) return null;
   return (
     errorMessage && (

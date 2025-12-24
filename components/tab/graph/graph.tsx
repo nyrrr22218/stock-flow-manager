@@ -3,46 +3,45 @@
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { TItem } from '@/schemas/commons';
-import { FormatData } from '@/utils';
-import { TItemAndInput } from '@/types';
-import InventoryAnalytics from './graph-style';
-import { ErrorMessageStyle } from '@/components/commons';
+import { Item } from '@/schemas/commons';
+import { formatData } from '@/utils';
+import { ItemDataWithInput } from '@/types';
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
+import { ErrorMessage } from '@/components';
+import GraphDisplay from './graph-ui';
 
-export default function Graph({ graphOfData }: { graphOfData: TItem[] }) {
-  const formattedData = graphOfData.map((item) => ({
+export default function Graph({ graphData }: { graphData: Item[] }) {
+  const graphDataWithInput = graphData.map((item) => ({
     ...item,
     orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
   }));
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [graphdata, setGraphData] = useState<TItemAndInput[]>(FormatData(formattedData));
+  const [itemGraphData, setItemGraphData] = useState<ItemDataWithInput[]>(
+    formatData(graphDataWithInput),
+  );
 
   useEffect(() => {
-    if (graphOfData && graphOfData.length > 0) return;
+    if (graphData && graphData.length > 0) return;
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
-        const res = await axios.get('/api/tab1', { signal });
-        setGraphData(res.data.items || []);
+        const res = await axios.get('/api/orders', { signal });
+        setItemGraphData(res.data.items || []);
       } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'tab6-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'graph-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, [graphOfData]);
+  }, [graphData]);
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        状況分析
-      </Typography>
-      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      {graphdata.length > 0 ? (
-        <InventoryAnalytics graphOfData={graphdata} />
+      <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
+      {itemGraphData.length > 0 ? (
+        <GraphDisplay graphData={itemGraphData} />
       ) : (
         <Typography variant="h5">Loading...</Typography>
       )}

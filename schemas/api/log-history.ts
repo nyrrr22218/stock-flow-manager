@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { LogTableSchema } from '../commons';
+import { LogSchema } from '../commons';
 
-export const ArrayLogTableSchema = z.array(LogTableSchema);
+export const LogsSchema = z.array(LogSchema);
 
-export type TLogTable = z.infer<typeof LogTableSchema>;
+export type Log = z.infer<typeof LogSchema>;

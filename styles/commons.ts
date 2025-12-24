@@ -4,7 +4,7 @@ export const gridCommon = {
   gap: 2,
 };
 
-export const buttonPositionCommon = {
+export const buttonCommonStyles = {
   display: 'flex',
   gap: 5,
   mt: 4,

@@ -1,15 +1,15 @@
-import Tab5 from '@/components/tab/log-history/log-history';
+import LogHistory from '@/components/tab/log-history/log-history';
 import { prisma } from '@/lib/prisma';
-import { ArrayLogTableSchema } from '@/schemas';
+import { LogsSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
 
-export default async function Page() {
+export default async function LogsPage() {
   const logs = await prisma.logs.findMany({
     orderBy: {
       logged_at: 'desc',
     },
   });
-  const serialized = itemsFromBigintToString(logs);
-  const parsedData = ArrayLogTableSchema.parse(serialized);
-  return <Tab5 logData={parsedData} />;
+  const itemsAsString = itemsFromBigintToString(logs);
+  const itemsParsed = LogsSchema.parse(itemsAsString);
+  return <LogHistory logData={itemsParsed} />;
 }

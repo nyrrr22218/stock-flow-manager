@@ -1,20 +1,20 @@
-import { ErrorMessageStyle } from '@/components/commons';
-import { Tab4PaperProps } from '@/types';
+import { ErrorMessage } from '@/components';
+import { AddItemFormProps } from '@/types';
 import { Box, Button, Paper, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-export const Tab4Form = ({
+export const AddItemForm = ({
   handleItemAdd,
-  addNewItemName,
-  setAddNewItemName,
+  newItemName,
+  setNewItemName,
   loading,
   errorMessage,
   setErrorMessage,
-}: Tab4PaperProps) => {
+}: AddItemFormProps) => {
   return (
     <>
       <Typography variant="h4">商品追加</Typography>
-      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
+      <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Box sx={{ mt: 4, mb: 4 }}>
         <Paper elevation={0} variant="outlined" sx={{ p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
           <Box
@@ -33,8 +33,8 @@ export const Tab4Form = ({
                 size="small"
                 fullWidth
                 placeholder="例: 商品A"
-                value={addNewItemName}
-                onChange={(e) => setAddNewItemName(e.target.value)}
+                value={newItemName}
+                onChange={(e) => setNewItemName(e.target.value)}
                 error={!!errorMessage}
                 helperText={errorMessage}
               />
@@ -42,7 +42,7 @@ export const Tab4Form = ({
             <Button
               type="submit"
               variant="contained"
-              disabled={loading || !addNewItemName.trim()}
+              disabled={loading || !newItemName.trim()}
               sx={{
                 height: 40,
                 px: 4,

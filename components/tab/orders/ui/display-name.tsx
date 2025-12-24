@@ -1,15 +1,15 @@
 import { Box, Typography } from '@mui/material';
-import { columnLayout } from '..';
-import { tab1DisplayName } from '../..';
+import { columnLayout } from '../../../commons';
+import { displayName } from '../..';
 
-export const Tab1TypeOfDisplayName = () => {
+export const DisplayName = () => {
   return (
     <Box
       sx={{
         ...columnLayout,
       }}
     >
-      {tab1DisplayName.map((li) => (
+      {displayName.map((li) => (
         <Typography key={li.id} variant="h5" fontWeight="bold">
           {li.value}
         </Typography>

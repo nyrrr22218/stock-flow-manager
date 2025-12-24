@@ -1,10 +1,10 @@
-import { TItem } from '@/schemas/commons';
+import { Item } from '@/schemas/commons';
 
-export type TItemStock = Pick<TItem, 'id' | 'item_name' | 'stock'>;
+export type Stock = Pick<Item, 'id' | 'item_name' | 'stock'>;
 
-export type TItemStockAndInput = TItemStock & { stockInInput: string };
+export type StockDataWithInput = Stock & { stockInInput: string };
 
-export type TStockSend = {
+export type StocksDataToSend = {
   id: string;
   stockInInput: string;
 };

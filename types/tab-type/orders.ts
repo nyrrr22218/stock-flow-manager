@@ -1,26 +1,26 @@
-import { TItem } from '@/schemas/commons';
+import { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
 
-export type TItemAndInput = TItem & { orderInInput: string };
+export type ItemDataWithInput = Item & { orderInInput: string };
 
-export type TOrderSend = {
+export type OrderDataToSend = {
   id: string;
   orderInInput: string;
 };
 
-export type CalculateFunctionProps = {
-  item: TItemAndInput;
+export type CalculateProps = {
+  item: ItemDataWithInput;
 };
 
-export type DialogStyleProps = {
+export type DialogsProps = {
   open: boolean;
   loading: boolean;
   closeDialog: () => void;
   handleShippingCompleted: () => Promise<void>;
 };
 
-export type Tab1ButtonCommonProps = Pick<
-  DialogStyleProps,
+export type OrdersButtonProps = Pick<
+  DialogsProps,
   'open' | 'loading' | 'handleShippingCompleted'
 > & {
   editMode: boolean;
@@ -31,8 +31,8 @@ export type Tab1ButtonCommonProps = Pick<
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export type ItemProps = {
+export type TextFieldsProps = {
   editMode: boolean;
-  item: TItemAndInput;
-  setTabOneItemList: (value: SetStateAction<TItemAndInput[]>) => void;
+  item: ItemDataWithInput;
+  setTabOneItemList: (value: SetStateAction<ItemDataWithInput[]>) => void;
 };

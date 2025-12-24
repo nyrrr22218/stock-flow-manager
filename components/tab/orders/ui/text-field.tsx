@@ -1,7 +1,7 @@
-import { ItemProps, TItemAndInput } from '@/types';
+import { TextFieldsProps, ItemDataWithInput } from '@/types';
 import { TextField } from '@mui/material';
 
-export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) => {
+export const TextFields = ({ item, editMode, setTabOneItemList }: TextFieldsProps) => {
   return (
     <TextField
       type="number"
@@ -12,7 +12,7 @@ export const Tab1TextField = ({ item, editMode, setTabOneItemList }: ItemProps) 
         const inputValue = e.target.value;
         if (inputValue !== '' && !/^[0-9]+$/.test(inputValue)) return;
         const numInputValue = Number(inputValue) || 0;
-        setTabOneItemList((prev: TItemAndInput[]) =>
+        setTabOneItemList((prev: ItemDataWithInput[]) =>
           prev.map((i) => {
             if (i.id !== item.id) return i;
             return {

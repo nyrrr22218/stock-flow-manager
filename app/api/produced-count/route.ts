@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ArrayProductItemSchema, PatchProductSchema } from '@/schemas/api/products';
+import { ProductsSchema, ProductsPatchSchema } from '@/schemas/api/produced-count';
 import { prisma } from '@/lib/prisma';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 import { Prisma } from '@prisma/client';
@@ -12,9 +12,9 @@ export async function GET() {
         product: true,
       },
     });
-    const parsedData = ArrayProductItemSchema.parse(itemsFromBigintToString(items));
+    const itemsParsed = ProductsSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({
-      items: parsedData,
+      items: itemsParsed,
     });
   } catch (err) {
     handleApiError(err);
@@ -24,17 +24,14 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const parsedData = PatchProductSchema.parse(body.items ?? []);
+    const itemsParsed = ProductsPatchSchema.parse(body.items ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      for (const item of parsedData) {
-        const itemid = BigInt(item.id);
-        const count =
-          item.productedInInput === undefined || item.productedInInput === ''
-            ? 0
-            : Number(item.productedInInput);
+      for (const item of itemsParsed) {
+        const itemId = BigInt(item.id);
+        const count = Number(item.productedInInput) || 0;
         const current = await tx.product.findUnique({
           where: {
-            item_name_id: itemid,
+            item_name_id: itemId,
           },
           include: {
             item_name: true,
@@ -46,19 +43,19 @@ export async function PATCH(req: Request) {
         if (oldValue !== count) {
           await tx.logs.create({
             data: {
-              log_message: `[生産数]${itemName}を${oldValue}から${count}に変更しました`,
+              log_message: `[生産数]${itemName} : ${oldValue} => ${count}へ変更しました`,
             },
           });
         }
         await tx.product.upsert({
           where: {
-            item_name_id: itemid,
+            item_name_id: itemId,
           },
           update: {
             producted_count: count,
           },
           create: {
-            item_name_id: itemid,
+            item_name_id: itemId,
             producted_count: count,
           },
         });

@@ -1,9 +1,9 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Box, Paper, Typography } from '@mui/material';
-import { TItemAndInput } from '@/types';
+import { ItemDataWithInput } from '@/types';
 
-export default function InventoryAnalytics({ graphOfData }: { graphOfData: TItemAndInput[] }) {
-  const chartData = graphOfData.map((item) => ({
+export default function GraphDisplay({ graphData }: { graphData: ItemDataWithInput[] }) {
+  const chartData = graphData.map((item) => ({
     name: item.item_name,
     注文数: Number(item.order?.order_count ?? 0),
     在庫数: Number(item.stock?.stock_count ?? 0),
@@ -12,13 +12,13 @@ export default function InventoryAnalytics({ graphOfData }: { graphOfData: TItem
 
   return (
     <Paper sx={{ p: 3, width: '100%', mt: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        グラフ
+      <Typography variant="h4" gutterBottom>
+        製品数値比較
       </Typography>
       <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#f9f9f9' }}>
         <BarChart
           data={chartData}
-          width={Math.max(800, graphOfData.length * 60)}
+          width={Math.max(800, graphData.length * 60)}
           height={600}
           margin={{ top: 20, right: 20, left: 20, bottom: 50 }}
         >

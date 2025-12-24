@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-export const AnimatePage = ({ children }: { children: React.ReactNode }) => {
+export const SignInMotion = ({ children }: { children: React.ReactNode }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}

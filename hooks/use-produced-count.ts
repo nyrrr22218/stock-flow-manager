@@ -1,40 +1,42 @@
 'ise client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { TItemProductAndInput } from '@/types';
-import { FormatData } from '@/utils';
+import { ProductedCountDataWithInput } from '@/types';
+import { formatData } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useProducts = (formattedData?: TItemProductAndInput[]) => {
-  const [product, setProduct] = useState<TItemProductAndInput[]>(FormatData(formattedData));
+export const useProducedCount = (productDataWithInput?: ProductedCountDataWithInput[]) => {
+  const [producedCountList, setProducedCountList] = useState<ProductedCountDataWithInput[]>(
+    formatData(productDataWithInput),
+  );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const API_PATH = '/api/tab3';
+  const API_PATH = '/api/produced-count';
 
   useEffect(() => {
-    if (formattedData && formattedData.length > 0) return;
+    if (productDataWithInput && productDataWithInput.length > 0) return;
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
-        const itemAndInput: TItemProductAndInput[] = (data.items ?? []).map(
-          (item: TItemProductAndInput) => ({
+        const itemAndInput: ProductedCountDataWithInput[] = (data.items ?? []).map(
+          (item: ProductedCountDataWithInput) => ({
             ...item,
             productedInInput: item.product ? String(item.product.producted_count) : '0',
           }),
         );
-        setProduct(itemAndInput);
+        setProducedCountList(itemAndInput);
       } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'tab3-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'producedCount-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, [formattedData]);
+  }, [productDataWithInput]);
 
   const handleSave = async () => {
     if (loading) return;
@@ -42,11 +44,11 @@ export const useProducts = (formattedData?: TItemProductAndInput[]) => {
     setErrorMessage(null);
     try {
       await axios.patch(API_PATH, {
-        items: product,
+        items: producedCountList,
       });
       setEditMode(false);
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'tab3-handleSave');
+      const err = handleAxiosErrorAndLog(error, 'producedCount-handleSave');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);
@@ -54,8 +56,8 @@ export const useProducts = (formattedData?: TItemProductAndInput[]) => {
   };
 
   return {
-    product,
-    setProduct,
+    producedCountList,
+    setProducedCountList,
     loading,
     errorMessage,
     setErrorMessage,

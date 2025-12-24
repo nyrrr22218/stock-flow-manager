@@ -1,6 +1,6 @@
 import { handleApiError } from '@/lib/handle-api-error';
 import { prisma } from '@/lib/prisma';
-import { ArrayItemSchema, PatchOrderSchema } from '@/schemas/api/orders';
+import { ItemsSchema, OrdersPatchSchema } from '@/schemas/api/orders';
 import { itemsFromBigintToString } from '@/utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -14,8 +14,8 @@ export async function GET() {
         stock: true,
       },
     });
-    const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(items));
-    return NextResponse.json({ items: parsedData });
+    const itemsParsed = ItemsSchema.parse(itemsFromBigintToString(items));
+    return NextResponse.json({ items: itemsParsed });
   } catch (err) {
     handleApiError(err);
   }
@@ -24,16 +24,13 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const parsedData = PatchOrderSchema.parse(body.items ?? []);
+    const itemsParsed = OrdersPatchSchema.parse(body.items ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      for (const item of parsedData) {
-        const itemid = BigInt(item.id);
-        const count =
-          item.orderInInput === undefined || item.orderInInput === ''
-            ? 0
-            : Number(item.orderInInput);
+      for (const item of itemsParsed) {
+        const itemId = BigInt(item.id);
+        const count = Number(item.orderInInput) || 0;
         const current = await tx.order.findUnique({
-          where: { item_name_id: itemid },
+          where: { item_name_id: itemId },
           include: { item_name: true },
         });
         const oldValue = current?.order_count ?? 0;
@@ -41,19 +38,19 @@ export async function PATCH(req: Request) {
         if (oldValue !== count) {
           await tx.logs.create({
             data: {
-              log_message: `[注文数]${itemName}を${oldValue}から${count}に変更しました`,
+              log_message: `[注文数]${itemName} : ${oldValue} => ${count}へ変更しました`,
             },
           });
         }
         await tx.order.upsert({
           where: {
-            item_name_id: itemid,
+            item_name_id: itemId,
           },
           update: {
             order_count: count,
           },
           create: {
-            item_name_id: itemid,
+            item_name_id: itemId,
             order_count: count,
           },
         });

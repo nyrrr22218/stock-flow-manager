@@ -3,11 +3,11 @@
 import { useStocks } from '@/hooks/use-stocks';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { TItemStock } from '@/types';
-import { ButtonCommon, ErrorMessageStyle } from '@/components/commons';
+import { Stock } from '@/types';
+import { ButtonCommon, ErrorMessage } from '@/components';
 
-export default function Stocks({ stocksData }: { stocksData: TItemStock[] }) {
-  const formattedData = stocksData.map((item) => ({
+export default function Stocks({ stockData }: { stockData: Stock[] }) {
+  const stockDataWithInput = stockData.map((item) => ({
     ...item,
     stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
   }));
@@ -21,12 +21,12 @@ export default function Stocks({ stocksData }: { stocksData: TItemStock[] }) {
     loading,
     handleSave,
     errorMessage,
-  } = useStocks(formattedData);
+  } = useStocks(stockDataWithInput);
 
   return (
     <Box>
       <Typography variant="h4">在庫管理</Typography>
-      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
+      <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <ButtonCommon
         editmode={editMode}
         loading={loading}

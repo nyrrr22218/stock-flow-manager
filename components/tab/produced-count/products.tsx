@@ -1,12 +1,12 @@
 'use client';
 
-import { ButtonCommon, ErrorMessage } from '@/components';
 import { useProducedCount } from '@/hooks/use-produced-count';
 import { gridCommon, paperCommon } from '@/styles/commons';
+import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ProductedCount } from '@/types';
-import { Box, Typography, Paper, TextField } from '@mui/material';
+import { ButtonCommon, ErrorMessage } from '@/components';
 
-export default function Products({ productData }: { productData: ProductedCount[] }) {
+export default function ProducedCount({ productData }: { productData: ProductedCount[] }) {
   const productDataWithInput = productData.map((item) => ({
     ...item,
     productedInInput:

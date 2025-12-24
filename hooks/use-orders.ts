@@ -1,40 +1,45 @@
 'use client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { TItemAndInput } from '@/types';
-import { FormatData } from '@/utils';
+import { ItemDataWithInput } from '@/types';
+import { formatData } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useOrders = (formattedData?: TItemAndInput[]) => {
-  const [tabOneItemList, setTabOneItemList] = useState<TItemAndInput[]>(FormatData(formattedData));
+export const useOrders = (orderDataWithInput?: ItemDataWithInput[]) => {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const API_PATH = '/api/tab1';
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [ordersPageList, setOrdersPageList] = useState<ItemDataWithInput[]>(
+    formatData(orderDataWithInput),
+  );
+
+  const API_PATH = '/api/orders';
 
   useEffect(() => {
-    if (formattedData && formattedData.length > 0) return;
+    if (orderDataWithInput && orderDataWithInput.length > 0) return;
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
-        const itemAndInput: TItemAndInput[] = (data.items ?? []).map((item: TItemAndInput) => ({
-          ...item,
-          orderInInput:
-            item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
-        }));
-        setTabOneItemList(itemAndInput);
+        const itemAndInput: ItemDataWithInput[] = (data.items ?? []).map(
+          (item: ItemDataWithInput) => ({
+            ...item,
+            orderInInput:
+              item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+          }),
+        );
+        setOrdersPageList(itemAndInput);
       } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'tab1-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'orders-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, [formattedData]);
+  }, [orderDataWithInput]);
 
   const handleSave = async () => {
     if (loading) return;
@@ -42,11 +47,11 @@ export const useOrders = (formattedData?: TItemAndInput[]) => {
     setErrorMessage(null);
     try {
       await axios.patch(API_PATH, {
-        items: tabOneItemList,
+        items: ordersPageList,
       });
       setEditMode(false);
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'tab1-handleSave');
+      const err = handleAxiosErrorAndLog(error, 'orders-handleSave');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);
@@ -60,10 +65,10 @@ export const useOrders = (formattedData?: TItemAndInput[]) => {
     setErrorMessage(null);
     try {
       const { data } = await axios.post('/api/shipments', {
-        items: tabOneItemList,
+        items: ordersPageList,
       });
       if (data.success) {
-        setTabOneItemList((prev) =>
+        setOrdersPageList((prev) =>
           prev.map((order) => ({
             ...order,
             orderInInput: '0',
@@ -73,7 +78,7 @@ export const useOrders = (formattedData?: TItemAndInput[]) => {
         setEditMode(false);
       }
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'tab1-handleShippingCompleted');
+      const err = handleAxiosErrorAndLog(error, 'orders-handleShippingCompleted');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);
@@ -83,8 +88,8 @@ export const useOrders = (formattedData?: TItemAndInput[]) => {
   return {
     errorMessage,
     setErrorMessage,
-    tabOneItemList,
-    setTabOneItemList,
+    ordersPageList,
+    setOrdersPageList,
     editMode,
     setEditMode,
     loading,

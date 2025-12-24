@@ -1,9 +1,9 @@
-import Tab1 from '@/components/tab/orders/orders';
+import Orders from '@/components/tab/orders/orders';
 import { prisma } from '@/lib/prisma';
-import { ArrayItemSchema } from '@/schemas';
+import { ItemsSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
 
-export default async function Page() {
+export default async function OrdersPage() {
   const items = await prisma.item_name.findMany({
     include: {
       stock: true,
@@ -12,8 +12,8 @@ export default async function Page() {
     },
   });
 
-  const serialized = itemsFromBigintToString(items);
-  const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(serialized));
+  const itemsAsString = itemsFromBigintToString(items);
+  const itemsParsed = ItemsSchema.parse(itemsAsString);
 
-  return <Tab1 ordersData={parsedData} />;
+  return <Orders orderData={itemsParsed} />;
 }

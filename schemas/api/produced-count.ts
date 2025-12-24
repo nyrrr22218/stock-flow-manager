@@ -1,15 +1,15 @@
 import { ItemSchema } from '../commons';
 import { z } from 'zod';
 
-const ProductItemSchema = ItemSchema.pick({
+const ProductSchema = ItemSchema.pick({
   id: true,
   item_name: true,
   product: true,
 });
 
-export const ArrayProductItemSchema = z.array(ProductItemSchema);
+export const ProductsSchema = z.array(ProductSchema);
 
-export const PatchProductSchema = z.array(
+export const ProductsPatchSchema = z.array(
   z.object({
     id: z.string(),
     productedInInput: z.string().min(0),

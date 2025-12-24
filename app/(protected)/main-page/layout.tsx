@@ -1,7 +1,7 @@
 'use client';
 
-import { LoadingMotion, TabsStyle } from '@/components/commons';
-import { AnimatePage } from '@/components/sign-in/sign-in-motion';
+import { TabContents, LoadingMotion } from '@/components';
+import { SignInMotion } from '@/components/sign-in';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, ReactNode } from 'react';
@@ -17,12 +17,12 @@ export default function MainPageLayout({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <AnimatePage>
-      <TabsStyle />
+    <SignInMotion>
+      <TabContents />
       <Box sx={{ p: 2, position: 'relative', minHeight: '200px' }}>
         {loading && <LoadingMotion />}
         <Box sx={{ opacity: loading ? 0.3 : 1 }}>{children}</Box>
       </Box>
-    </AnimatePage>
+    </SignInMotion>
   );
 }

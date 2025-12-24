@@ -1,9 +1,9 @@
-import Tab6 from '@/components/tab/graph/graph';
+import Graph from '@/components/tab/graph/graph';
 import { prisma } from '@/lib/prisma';
-import { ArrayItemSchema } from '@/schemas';
+import { ItemsSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils';
 
-export default async function Page() {
+export default async function GraphPage() {
   const items = await prisma.item_name.findMany({
     include: {
       stock: true,
@@ -12,8 +12,8 @@ export default async function Page() {
     },
   });
 
-  const serialized = itemsFromBigintToString(items);
-  const parsedData = ArrayItemSchema.parse(itemsFromBigintToString(serialized));
+  const itemsAsString = itemsFromBigintToString(items);
+  const itemsParsed = ItemsSchema.parse(itemsAsString);
 
-  return <Tab6 graphOfData={parsedData} />;
+  return <Graph graphData={itemsParsed} />;
 }

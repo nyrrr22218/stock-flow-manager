@@ -1,12 +1,7 @@
-import { DialogStyleProps } from '@/types';
+import { DialogsProps } from '@/types';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
-export const DialogStyle = ({
-  open,
-  closeDialog,
-  handleShippingCompleted,
-  loading,
-}: DialogStyleProps) => {
+export const Dialogs = ({ open, closeDialog, handleShippingCompleted, loading }: DialogsProps) => {
   return (
     <Dialog open={open} onClose={closeDialog}>
       <DialogTitle>確認</DialogTitle>

@@ -3,7 +3,7 @@ import { tabList } from '../tab';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-export const TabsStyle = () => {
+export const TabContents = () => {
   const pathname = usePathname();
 
   return (

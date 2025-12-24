@@ -1,12 +1,12 @@
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-type tab5SortProps = {
+type SortLogsProps = {
   sortOrder: 'desc' | 'asc';
   setSortOrder: Dispatch<SetStateAction<'desc' | 'asc'>>;
 };
 
-export const Tab5LogSort = ({ sortOrder, setSortOrder }: tab5SortProps) => {
+export const SortLogs = ({ sortOrder, setSortOrder }: SortLogsProps) => {
   const handleSortChange = (event: SelectChangeEvent<'desc' | 'asc'>) => {
     setSortOrder(event.target.value as 'desc' | 'asc');
   };

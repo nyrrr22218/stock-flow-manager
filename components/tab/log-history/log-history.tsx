@@ -1,51 +1,20 @@
 'use client';
 
-import { Tab5LogSort } from './sort';
+import { SortLogs } from './sort';
 import { Box, Typography } from '@mui/material';
-import axios from 'axios';
-import { useEffect, useMemo, useState } from 'react';
-import { TLogTable } from '@/schemas';
-import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { ErrorMessageStyle } from '@/components/commons';
+import { Log } from '@/schemas';
+import { useLogHistory } from '@/hooks/use-log-history';
+import { ErrorMessage } from '@/components';
 
-export default function LogHistory({ logData }: { logData: TLogTable[] }) {
-  const [log, setLog] = useState<TLogTable[]>(() => {
-    if (logData) return logData;
-    return [];
-  });
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>(() => 'desc');
-
-  useEffect(() => {
-    setErrorMessage(null);
-    if (logData && logData.length > 0) return;
-    const fetchData = async (signal?: AbortSignal) => {
-      try {
-        const { data } = await axios.get('/api/tab5', { signal });
-        setLog(data.logsData || []);
-      } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'tab5-useEffect');
-        if (err) setErrorMessage(err.message);
-      }
-    };
-    const controller = new AbortController();
-    fetchData(controller.signal);
-    return () => controller.abort();
-  }, [logData]);
-
-  const sortLogs = useMemo(() => {
-    return Array.from(log).sort((a, b) => {
-      const dateA = new Date(a.logged_at).getTime();
-      const dateB = new Date(b.logged_at).getTime();
-      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
-    });
-  }, [log, sortOrder]);
+export default function LogHistory({ logData }: { logData: Log[] }) {
+  const { errorMessage, setErrorMessage, sortOrder, setSortOrder, sortLogs } =
+    useLogHistory(logData);
 
   return (
     <Box>
       <Typography variant="h4">各種変更・出荷履歴</Typography>
-      <ErrorMessageStyle errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <Tab5LogSort sortOrder={sortOrder} setSortOrder={setSortOrder} />
+      <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
+      <SortLogs sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, gap: 2 }}>
         {sortLogs.length === 0 && <Typography variant="h5">Loading...</Typography>}
         {sortLogs.map((l) => (
