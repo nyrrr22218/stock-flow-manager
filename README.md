@@ -1,22 +1,25 @@
-# stock-flow-manager
+stock-flow-manager
 
-## 前職での業務を通じて感じた在庫管理の不便さを解決したいと考えこのアプリを作成
+前職の現場課題を正確性と速度で解決する在庫管理システム
 
-## 環境
-#### Node 20
-#### Nextjs 15.5.7
-#### React 19.1
-#### TypeScript 5
+🚀 パフォーマンスへのこだわり
+「現場のストレスをゼロにする」ことを目標に、応答速度の最適化を追求しました。
+応答速度（TTFB）: 約60msを実現（Google Lighthouseにて計測）
 
-#### Zod 4.2.1
-#### Axios 1.13.2
-#### Prisma 7.2
+改善のポイント:
+Server Componentsによるデータ取得: useEffect（クライアントサイド）での取得から、Prismaを用いたサーバーサイドでの最速取得も可能なコードへ。
+通信の最適化: 開発過程で発生していたfetchとXHRの重複を検知し、通信経路を極力一本化。不要なレンダリングとリクエストを徹底的に削減しました。
 
-### UI
-#### MaterialUI 7.3.6
+🛠 解決したかった課題
+前職の在庫管理では、数日おきに手作業での在庫確認が行われており、把握漏れや管理の煩雑さに繋がっていました。
+現場で即座に状況を確認できるレスポンス速度と、Zod × TypeScript による、人為的な入力ミスを許さない堅牢なデータバリデーションによって、管理を正確かつ時短で行う事が可能です。
 
-### DB
-#### Supabase
+常にさらにより良くできないかを追求しており、今後も機能の追加･拡充に努めてまいります。
 
-### Login認証
-#### SupabaseAuth
+💻 技術スタック
+Framework: Next.js 15.1.7 (App Router) / React 19.1
+Language: TypeScript 5
+Database/ORM: Supabase / Prisma 7.2
+Validation: Zod
+Auth: Supabase Auth
+UI: Material UI 7.3.6
