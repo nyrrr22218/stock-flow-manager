@@ -1,5 +1,9 @@
 stock-flow-manager
 
+ログイン用
+email : kyomo@gmail.com
+password : 19941203
+
 前職の現場課題を正確性と速度で解決する在庫管理システム
 
 🚀 パフォーマンスへのこだわり
