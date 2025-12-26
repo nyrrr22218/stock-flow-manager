@@ -5,6 +5,7 @@ import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import { Stock } from '@/types';
 import { ButtonCommon, ErrorMessage } from '@/components';
+import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 
 export default function Stocks({ stockData }: { stockData: Stock[] }) {
   const stockDataWithInput = stockData.map((item) => ({
@@ -23,12 +24,14 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
     errorMessage,
   } = useStocks(stockDataWithInput);
 
+  useHandleBeforeUnload(editMode);
+
   return (
     <Box>
       <Typography variant="h4">在庫管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <ButtonCommon
-        editmode={editMode}
+        editMode={editMode}
         loading={loading}
         setEditMode={setEditMode}
         handleSave={handleSave}
@@ -55,6 +58,13 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
               type="number"
               value={st.stockInInput ?? ''}
               disabled={!editMode}
+              onBlur={() => {
+                if (st.stockInInput === '') {
+                  setStockList((prev) =>
+                    prev.map((i) => (i.id === st.id ? { ...i, stockInInput: '0' } : i)),
+                  );
+                }
+              }}
               onChange={(e) =>
                 setStockList((prev) =>
                   prev.map((i) => (i.id === st.id ? { ...i, stockInInput: e.target.value } : i)),

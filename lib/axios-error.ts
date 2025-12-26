@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-interface AxiosErrorResponse {
+type AxiosErrorResponse = {
   message: string;
   status?: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: any;
-}
+  data?: unknown;
+};
+
 function handleAxiosError(error: unknown): AxiosErrorResponse {
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;

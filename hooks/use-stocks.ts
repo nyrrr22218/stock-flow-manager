@@ -2,12 +2,11 @@
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
 import { StockDataWithInput } from '@/types';
-import { formatData } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useStocks = (stockDataWithInput?: StockDataWithInput[]) => {
-  const [stockList, setStockList] = useState<StockDataWithInput[]>(formatData(stockDataWithInput));
+export const useStocks = (stockDataWithInput: StockDataWithInput[] = []) => {
+  const [stockList, setStockList] = useState(stockDataWithInput);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

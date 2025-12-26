@@ -7,8 +7,8 @@ type SortLogsProps = {
 };
 
 export const SortLogs = ({ sortOrder, setSortOrder }: SortLogsProps) => {
-  const handleSortChange = (event: SelectChangeEvent<'desc' | 'asc'>) => {
-    setSortOrder(event.target.value as 'desc' | 'asc');
+  const handleSortChange = (e: SelectChangeEvent<'desc' | 'asc'>) => {
+    setSortOrder(e.target.value);
   };
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

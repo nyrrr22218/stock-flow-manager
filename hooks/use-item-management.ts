@@ -5,17 +5,18 @@ import { ItemName } from '@/schemas';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useItemManagement = (itemAddData: ItemName[]) => {
+export const useItemManagement = (itemNameData: ItemName[] = []) => {
   const [newItemName, setNewItemName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ItemName | null>(null);
-  const [itemNameList, setItemNameList] = useState(itemAddData);
+  const [itemNameList, setItemNameList] = useState(itemNameData);
 
   const API_PATH = '/api/item-management';
 
   useEffect(() => {
+    if (itemNameData) return;
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
@@ -30,7 +31,7 @@ export const useItemManagement = (itemAddData: ItemName[]) => {
     const controller = new AbortController();
     fetchData(controller.signal);
     return () => controller.abort();
-  }, []);
+  }, [itemNameData]);
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ export const useItemManagement = (itemAddData: ItemName[]) => {
       await axios.delete(API_PATH, { data: { id, itemName } });
       setItemNameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'itemManagement-deleteItemnameTable');
+      const err = handleAxiosErrorAndLog(error, 'itemManagement-deleteItem');
       if (err) setErrorMessage(err.message);
     } finally {
       setLoading(false);

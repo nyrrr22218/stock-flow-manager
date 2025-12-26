@@ -4,7 +4,6 @@ import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Item } from '@/schemas/commons';
-import { formatData } from '@/utils';
 import { ItemDataWithInput } from '@/types';
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
 import { ErrorMessage } from '@/components';
@@ -16,9 +15,7 @@ export default function Graph({ graphData }: { graphData: Item[] }) {
     orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
   }));
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [itemGraphData, setItemGraphData] = useState<ItemDataWithInput[]>(
-    formatData(graphDataWithInput),
-  );
+  const [itemGraphData, setItemGraphData] = useState<ItemDataWithInput[]>(graphDataWithInput);
 
   useEffect(() => {
     if (graphData && graphData.length > 0) return;

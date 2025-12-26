@@ -1,7 +1,7 @@
 'use client';
 
 import { getSupabaseErrorMessage } from '@/lib/handle-supabase-error';
-import { createSupabaseClient } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -12,7 +12,6 @@ export const useSignIn = () => {
   const [showpassword, setShowpassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const supabase = createSupabaseClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,13 +28,13 @@ export const useSignIn = () => {
         setError(msg);
         return;
       }
-      router.push('/main-page/tab/orders');
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('[Login_Fatal]', err);
       setError('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }
+    router.push('/main-page/tab/orders');
   };
 
   const reverseVisibility = () => setShowpassword(!showpassword);

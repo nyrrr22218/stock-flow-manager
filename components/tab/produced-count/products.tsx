@@ -5,6 +5,7 @@ import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ProductedCount } from '@/types';
 import { ButtonCommon, ErrorMessage } from '@/components';
+import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 
 export default function ProducedCount({ productData }: { productData: ProductedCount[] }) {
   const productDataWithInput = productData.map((item) => ({
@@ -23,12 +24,14 @@ export default function ProducedCount({ productData }: { productData: ProductedC
     setErrorMessage,
   } = useProducedCount(productDataWithInput);
 
+  useHandleBeforeUnload(editMode);
+
   return (
     <Box>
       <Typography variant="h4">生産数管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <ButtonCommon
-        editmode={editMode}
+        editMode={editMode}
         loading={loading}
         setEditMode={setEditMode}
         handleSave={handleSave}
@@ -48,6 +51,13 @@ export default function ProducedCount({ productData }: { productData: ProductedC
               type="number"
               value={pr.productedInInput}
               disabled={!editMode}
+              onBlur={() => {
+                if (pr.productedInInput === '') {
+                  setProducedCountList((prev) =>
+                    prev.map((i) => (i.id === pr.id ? { ...i, productedInInput: '0' } : i)),
+                  );
+                }
+              }}
               onChange={(e) =>
                 setProducedCountList((prev) =>
                   prev.map((i) =>

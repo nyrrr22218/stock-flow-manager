@@ -7,11 +7,8 @@ import { useState, useEffect, useMemo } from 'react';
 
 export const useLogHistory = (logData: Log[]) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>(() => 'desc');
-  const [log, setLog] = useState<Log[]>(() => {
-    if (logData) return logData;
-    return [];
-  });
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
+  const [log, setLog] = useState(logData || []);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -21,7 +18,7 @@ export const useLogHistory = (logData: Log[]) => {
         const { data } = await axios.get('/api/log-history', { signal });
         setLog(data.logsData || []);
       } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'log-history-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'loghistory-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };

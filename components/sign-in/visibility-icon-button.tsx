@@ -1,10 +1,10 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
 
-interface VisibilityIconButtonProps {
+type VisibilityIconButtonProps = {
   reverseVisibility: () => void;
   showpassword: boolean;
-}
+};
 
 export const VisibilityIconButton = ({
   reverseVisibility,

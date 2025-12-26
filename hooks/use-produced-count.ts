@@ -2,14 +2,11 @@
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
 import { ProductedCountDataWithInput } from '@/types';
-import { formatData } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useProducedCount = (productDataWithInput?: ProductedCountDataWithInput[]) => {
-  const [producedCountList, setProducedCountList] = useState<ProductedCountDataWithInput[]>(
-    formatData(productDataWithInput),
-  );
+export const useProducedCount = (productDataWithInput: ProductedCountDataWithInput[] = []) => {
+  const [producedCountList, setProducedCountList] = useState(productDataWithInput);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

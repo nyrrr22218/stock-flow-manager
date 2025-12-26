@@ -10,6 +10,7 @@ import {
   DisplayName,
 } from '../../commons';
 import { Item } from '@/schemas';
+import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 
 export default function Orders({ orderData }: { orderData: Item[] }) {
   const orderDataWithInput = orderData.map((item) => ({
@@ -30,6 +31,8 @@ export default function Orders({ orderData }: { orderData: Item[] }) {
     handleShippingCompleted,
   } = useOrders(orderDataWithInput);
 
+  useHandleBeforeUnload(editMode);
+
   return (
     <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <OrdersButton
@@ -48,7 +51,7 @@ export default function Orders({ orderData }: { orderData: Item[] }) {
       {ordersPageList.map((item) => (
         <Box key={item.id} sx={{ ...numberColumnLayout }}>
           <Typography sx={{ ml: 3 }}>{item.item_name}</Typography>
-          <TextFields item={item} editMode={editMode} setTabOneItemList={setOrdersPageList} />
+          <TextFields item={item} editMode={editMode} setOrdersPageList={setOrdersPageList} />
           <Calculate item={item} />
         </Box>
       ))}

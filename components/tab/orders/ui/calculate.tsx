@@ -2,7 +2,7 @@ import { CalculateProps } from '@/types';
 import { Typography } from '@mui/material';
 
 export const Calculate = ({ item }: CalculateProps) => {
-  const order = Number(item.order?.order_count ?? 0);
+  const order = Number(item.orderInInput ?? 0);
   const stock = Number(item.stock?.stock_count ?? 0);
   const product = Number(item.product?.producted_count ?? 0);
   const restOrder = Math.max(0, order - stock);

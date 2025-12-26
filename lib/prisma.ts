@@ -12,8 +12,3 @@ const adapter = new PrismaPg({
 export const prisma = global.prisma ?? new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(BigInt.prototype as any).toJSON = function () {
-  return this.toString();
-};

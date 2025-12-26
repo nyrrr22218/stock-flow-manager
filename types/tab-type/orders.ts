@@ -1,7 +1,7 @@
 import { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
 
-export type ItemDataWithInput = Item & { orderInInput: string };
+export type ItemDataWithInput = Item & { orderInInput: string; shotage?: number };
 
 export type OrderDataToSend = {
   id: string;
@@ -34,5 +34,5 @@ export type OrdersButtonProps = Pick<
 export type TextFieldsProps = {
   editMode: boolean;
   item: ItemDataWithInput;
-  setTabOneItemList: (value: SetStateAction<ItemDataWithInput[]>) => void;
+  setOrdersPageList: (value: SetStateAction<ItemDataWithInput[]>) => void;
 };

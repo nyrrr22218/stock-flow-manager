@@ -2,19 +2,15 @@
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
 import { ItemDataWithInput } from '@/types';
-import { formatData } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useOrders = (orderDataWithInput?: ItemDataWithInput[]) => {
+export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [ordersPageList, setOrdersPageList] = useState<ItemDataWithInput[]>(
-    formatData(orderDataWithInput),
-  );
-
+  const [ordersPageList, setOrdersPageList] = useState(orderDataWithInput);
   const API_PATH = '/api/orders';
 
   useEffect(() => {
