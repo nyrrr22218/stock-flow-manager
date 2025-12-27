@@ -11,7 +11,7 @@ export default function SignIn() {
     setEmail,
     password,
     setPassword,
-    showpassword,
+    showPassword,
     error,
     loading,
     handleLogin,
@@ -46,14 +46,14 @@ export default function SignIn() {
           />
           <TextField
             label="password"
-            type={showpassword ? 'text' : 'password'}
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             InputProps={{
               endAdornment: (
                 <VisibilityIconButton
                   reverseVisibility={reverseVisibility}
-                  showpassword={showpassword}
+                  showPassword={showPassword}
                 />
               ),
             }}

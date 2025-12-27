@@ -9,7 +9,7 @@ export const useSignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showpassword, setShowpassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -37,14 +37,14 @@ export const useSignIn = () => {
     router.push('/main-page/tab/orders');
   };
 
-  const reverseVisibility = () => setShowpassword(!showpassword);
+  const reverseVisibility = () => setShowPassword(!showPassword);
 
   return {
     email,
     setEmail,
     password,
     setPassword,
-    showpassword,
+    showPassword,
     error,
     loading,
     handleLogin,

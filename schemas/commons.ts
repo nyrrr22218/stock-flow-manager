@@ -15,7 +15,7 @@ const StockSchema = z.object({
 const ProductSchema = z.object({
   id: z.string(),
   item_name_id: z.string(),
-  producted_count: z.number(),
+  produced_count: z.number(),
 });
 
 export const ItemSchema = z.object({

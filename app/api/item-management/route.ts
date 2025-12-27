@@ -27,7 +27,7 @@ export async function POST(req: Request) {
           item_name,
           order: { create: { order_count: 0 } },
           stock: { create: { stock_count: 0 } },
-          product: { create: { producted_count: 0 } },
+          product: { create: { produced_count: 0 } },
         },
         include: {
           order: true,

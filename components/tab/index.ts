@@ -7,11 +7,6 @@ export const tabList = [
   { label: 'グラフ', href: '/main-page/tab/graph' },
 ] as const;
 
-export const displayName = [
-  { id: 1, value: '商品名' },
-  { id: 2, value: '注文数' },
-  { id: 3, value: '在庫数' },
-  { id: 4, value: '不足数' },
-  { id: 5, value: '生産数' },
-  { id: 6, value: '最終不足数' },
-];
+export const displayName = ['商品名', '注文数', '在庫数', '不足数', '生産数', '最終不足数'];
+
+export const sortMenu = ['[すべて]', '[出荷完了]', '[注文数]', '[在庫数]', '[生産数]', '[商品]'];

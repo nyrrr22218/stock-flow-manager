@@ -3,15 +3,15 @@
 import { useProducedCount } from '@/hooks/use-produced-count';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { ProductedCount } from '@/types';
+import { ProductsCount } from '@/types';
 import { ButtonCommon, ErrorMessage } from '@/components';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 
-export default function ProducedCount({ productData }: { productData: ProductedCount[] }) {
+export default function ProducedCount({ productData }: { productData: ProductsCount[] }) {
   const productDataWithInput = productData.map((item) => ({
     ...item,
-    productedInInput:
-      item.product?.producted_count !== undefined ? String(item.product.producted_count) : '0',
+    producedInInput:
+      item.product?.produced_count !== undefined ? String(item.product.produced_count) : '0',
   }));
   const {
     producedCountList,
@@ -49,20 +49,18 @@ export default function ProducedCount({ productData }: { productData: ProductedC
             </Typography>
             <TextField
               type="number"
-              value={pr.productedInInput}
+              value={pr.producedInInput}
               disabled={!editMode}
               onBlur={() => {
-                if (pr.productedInInput === '') {
+                if (pr.producedInInput === '') {
                   setProducedCountList((prev) =>
-                    prev.map((i) => (i.id === pr.id ? { ...i, productedInInput: '0' } : i)),
+                    prev.map((i) => (i.id === pr.id ? { ...i, producedInInput: '0' } : i)),
                   );
                 }
               }}
               onChange={(e) =>
                 setProducedCountList((prev) =>
-                  prev.map((i) =>
-                    i.id === pr.id ? { ...i, productedInInput: e.target.value } : i,
-                  ),
+                  prev.map((i) => (i.id === pr.id ? { ...i, producedInInput: e.target.value } : i)),
                 )
               }
             />

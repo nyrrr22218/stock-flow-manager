@@ -7,7 +7,9 @@ import { useState, useEffect, useMemo } from 'react';
 
 export const useLogHistory = (logData: Log[]) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
+  const [descAscLog, setDescAscLog] = useState<'desc' | 'asc'>('desc');
+  const [sortLogMenu, setSortLogMenu] = useState('');
+  const [sortLogMonth, setSortLogMonth] = useState('');
   const [log, setLog] = useState(logData || []);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export const useLogHistory = (logData: Log[]) => {
         const { data } = await axios.get('/api/log-history', { signal });
         setLog(data.logsData || []);
       } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'loghistory-useEffect');
+        const err = handleAxiosErrorAndLog(error, 'logHistory-useEffect');
         if (err) setErrorMessage(err.message);
       }
     };
@@ -28,18 +30,33 @@ export const useLogHistory = (logData: Log[]) => {
   }, [logData]);
 
   const sortLogs = useMemo(() => {
-    return Array.from(log).sort((a, b) => {
+    const filtered = log.filter((item) => {
+      if (sortLogMonth !== '') {
+        const d = new Date(item.logged_at);
+        const logYearMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        if (logYearMonth !== sortLogMonth) return false;
+      }
+      if (sortLogMenu !== '' && !item.log_message.includes(sortLogMenu)) {
+        return false;
+      }
+      return true;
+    });
+    return filtered.sort((a, b) => {
       const dateA = new Date(a.logged_at).getTime();
       const dateB = new Date(b.logged_at).getTime();
-      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+      return descAscLog === 'desc' ? dateB - dateA : dateA - dateB;
     });
-  }, [log, sortOrder]);
+  }, [log, descAscLog, sortLogMenu, sortLogMonth]);
 
   return {
     errorMessage,
     setErrorMessage,
-    sortOrder,
-    setSortOrder,
+    descAscLog,
+    setDescAscLog,
+    sortLogMenu,
+    setSortLogMenu,
+    sortLogMonth,
+    setSortLogMonth,
     sortLogs,
   };
 };

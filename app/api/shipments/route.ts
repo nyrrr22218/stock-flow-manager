@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
         const orderCount = Number(item.orderInInput) || 0;
-        const productCount = item.product?.producted_count ?? 0;
+        const productCount = item.product?.produced_count ?? 0;
         const stockCount = item.stock?.stock_count ?? 0;
         const finalCount = productCount + stockCount - orderCount;
         if (finalCount < 0) {
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             item_name_id: itemId,
           },
           data: {
-            producted_count: 0,
+            produced_count: 0,
           },
         });
         if (orderCount > 0) {

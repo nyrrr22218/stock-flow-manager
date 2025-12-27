@@ -2,15 +2,10 @@
 
 import { useOrders } from '@/hooks/use-orders';
 import { Box, Typography } from '@mui/material';
-import {
-  Calculate,
-  numberColumnLayout,
-  OrdersButton,
-  TextFields,
-  DisplayName,
-} from '../../commons';
+import { Calculate, OrdersButton, TextFields, DisplayName } from '../../commons';
 import { Item } from '@/schemas';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
+import { numberColumnLayout } from '@/styles/orders-grid-layout';
 
 export default function Orders({ orderData }: { orderData: Item[] }) {
   const orderDataWithInput = orderData.map((item) => ({

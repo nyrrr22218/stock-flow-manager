@@ -28,7 +28,7 @@ export async function PATCH(req: Request) {
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
-        const count = Number(item.productedInInput) || 0;
+        const count = Number(item.producedInInput) || 0;
         const current = await tx.product.findUnique({
           where: {
             item_name_id: itemId,
@@ -37,7 +37,7 @@ export async function PATCH(req: Request) {
             item_name: true,
           },
         });
-        const oldValue = current?.producted_count ?? 0;
+        const oldValue = current?.produced_count ?? 0;
         const itemName = current?.item_name?.item_name ?? '不明な商品';
 
         if (oldValue !== count) {
@@ -52,11 +52,11 @@ export async function PATCH(req: Request) {
             item_name_id: itemId,
           },
           update: {
-            producted_count: count,
+            produced_count: count,
           },
           create: {
             item_name_id: itemId,
-            producted_count: count,
+            produced_count: count,
           },
         });
       }

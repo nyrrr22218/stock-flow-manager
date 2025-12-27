@@ -12,6 +12,6 @@ export const ProductsSchema = z.array(ProductSchema);
 export const ProductsPatchSchema = z.array(
   z.object({
     id: z.string(),
-    productedInInput: z.string().min(0),
+    producedInInput: z.string().min(0),
   }),
 );

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { columnLayout } from '../../../commons';
 import { displayName } from '../..';
+import { columnLayout } from '@/styles/orders-grid-layout';
 
 export const DisplayName = () => {
   return (
@@ -9,9 +9,9 @@ export const DisplayName = () => {
         ...columnLayout,
       }}
     >
-      {displayName.map((li) => (
-        <Typography key={li.id} variant="h5" fontWeight="bold">
-          {li.value}
+      {displayName.map((li, index) => (
+        <Typography key={index} variant="h5" fontWeight="bold">
+          {li}
         </Typography>
       ))}
     </Box>

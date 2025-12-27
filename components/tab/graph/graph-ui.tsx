@@ -7,7 +7,7 @@ export default function GraphDisplay({ graphData }: { graphData: ItemDataWithInp
     name: item.item_name,
     注文数: Number(item.order?.order_count ?? 0),
     在庫数: Number(item.stock?.stock_count ?? 0),
-    生産数: Number(item.product?.producted_count ?? 0),
+    生産数: Number(item.product?.produced_count ?? 0),
   }));
 
   return (

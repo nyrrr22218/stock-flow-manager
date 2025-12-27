@@ -21,7 +21,13 @@ export const ButtonCommon = ({ editMode, setEditMode, loading, handleSave }: But
       >
         {editMode ? 'キャンセル' : '編集'}
       </Button>
-      <Button variant="contained" size="small" disabled={!editMode || loading} onClick={handleSave}>
+      <Button
+        variant="contained"
+        size="small"
+        sx={{ bgcolor: 'yellowgreen' }}
+        disabled={!editMode || loading}
+        onClick={handleSave}
+      >
         {loading ? 'Loading...' : '保存'}
       </Button>
     </Box>

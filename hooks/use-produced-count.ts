@@ -1,11 +1,11 @@
-'ise client';
+'use client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { ProductedCountDataWithInput } from '@/types';
+import { ProducedCountDataWithInput } from '@/types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useProducedCount = (productDataWithInput: ProductedCountDataWithInput[] = []) => {
+export const useProducedCount = (productDataWithInput: ProducedCountDataWithInput[] = []) => {
   const [producedCountList, setProducedCountList] = useState(productDataWithInput);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,10 +18,10 @@ export const useProducedCount = (productDataWithInput: ProductedCountDataWithInp
     const fetchData = async (signal?: AbortSignal) => {
       try {
         const { data } = await axios.get(API_PATH, { signal });
-        const itemAndInput: ProductedCountDataWithInput[] = (data.items ?? []).map(
-          (item: ProductedCountDataWithInput) => ({
+        const itemAndInput: ProducedCountDataWithInput[] = (data.items ?? []).map(
+          (item: ProducedCountDataWithInput) => ({
             ...item,
-            productedInInput: item.product ? String(item.product.producted_count) : '0',
+            producedInInput: item.product ? String(item.product.produced_count) : '0',
           }),
         );
         setProducedCountList(itemAndInput);

@@ -9,7 +9,7 @@ export type AddItemFormProps = {
   setErrorMessage: Dispatch<SetStateAction<string | null>>;
 };
 
-export type ItemDelteDialogProps = {
+export type ItemDeleteDialogProps = {
   open: boolean;
   loading: boolean;
   closeDialog: () => void;

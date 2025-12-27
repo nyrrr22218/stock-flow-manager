@@ -7,16 +7,32 @@ import { useLogHistory } from '@/hooks/use-log-history';
 import { ErrorMessage } from '@/components';
 
 export default function LogHistory({ logData }: { logData: Log[] }) {
-  const { errorMessage, setErrorMessage, sortOrder, setSortOrder, sortLogs } =
-    useLogHistory(logData);
+  const {
+    errorMessage,
+    setErrorMessage,
+    descAscLog,
+    setDescAscLog,
+    sortLogMenu,
+    setSortLogMenu,
+    sortLogs,
+    sortLogMonth,
+    setSortLogMonth,
+  } = useLogHistory(logData);
 
   return (
     <Box>
       <Typography variant="h4">各種変更・出荷履歴</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <SortLogs sortOrder={sortOrder} setSortOrder={setSortOrder} />
+      <SortLogs
+        sortLogMenu={sortLogMenu}
+        setSortLogMenu={setSortLogMenu}
+        descAscLog={descAscLog}
+        setDescAscLog={setDescAscLog}
+        sortLogMonth={sortLogMonth}
+        setSortLogMonth={setSortLogMonth}
+      />
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, gap: 2 }}>
-        {sortLogs.length === 0 && <Typography variant="h5">Loading...</Typography>}
+        {sortLogs.length === 0 && <Typography variant="h5">見つかりませんでした</Typography>}
         {sortLogs.map((l) => (
           <Box
             key={l.id}

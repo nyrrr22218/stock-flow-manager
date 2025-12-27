@@ -3,17 +3,17 @@ import { IconButton, InputAdornment } from '@mui/material';
 
 type VisibilityIconButtonProps = {
   reverseVisibility: () => void;
-  showpassword: boolean;
+  showPassword: boolean;
 };
 
 export const VisibilityIconButton = ({
   reverseVisibility,
-  showpassword,
+  showPassword,
 }: VisibilityIconButtonProps) => {
   return (
     <InputAdornment position="end">
       <IconButton onClick={reverseVisibility} edge="end" sx={{ color: 'skyblue' }}>
-        {showpassword ? <VisibilityOff /> : <Visibility />}
+        {showPassword ? <VisibilityOff /> : <Visibility />}
       </IconButton>
     </InputAdornment>
   );
