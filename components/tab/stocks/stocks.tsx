@@ -20,7 +20,6 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
     setStockList,
     editMode,
     setEditMode,
-    loading,
     handleSave,
     errorMessage,
   } = useStocks(stockDataWithInput);
@@ -31,12 +30,7 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
     <Box>
       <Typography variant="h4">在庫管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <ButtonCommon
-        editMode={editMode}
-        loading={loading}
-        setEditMode={setEditMode}
-        handleSave={handleSave}
-      />
+      <ButtonCommon editMode={editMode} setEditMode={setEditMode} handleSave={handleSave} />
       <Box
         sx={{
           ...gridCommon,
@@ -58,8 +52,13 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
             <TextField
               type="number"
               value={st.stockInInput ?? ''}
-              disabled={!editMode}
+              InputProps={{
+                readOnly: !editMode,
+              }}
               sx={{ ...InputStyle }}
+              onClick={() => {
+                if (!editMode) setEditMode(true);
+              }}
               onBlur={() => {
                 if (st.stockInInput === '') {
                   setStockList((prev) =>

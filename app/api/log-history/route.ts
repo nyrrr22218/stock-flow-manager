@@ -15,6 +15,6 @@ export async function GET() {
     const itemsParsed = LogsSchema.parse(itemsAsString);
     return NextResponse.json({ logsData: itemsParsed });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }

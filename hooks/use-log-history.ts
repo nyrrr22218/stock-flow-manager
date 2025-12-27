@@ -10,15 +10,18 @@ export const useLogHistory = (logData: Log[]) => {
   const [descAscLog, setDescAscLog] = useState<'desc' | 'asc'>('desc');
   const [sortLogMenu, setSortLogMenu] = useState('');
   const [sortLogMonth, setSortLogMonth] = useState('');
-  const [log, setLog] = useState(logData || []);
+  const [log, setLog] = useState(logData ?? []);
 
   useEffect(() => {
     setErrorMessage(null);
     if (logData && logData.length > 0) return;
     const fetchData = async (signal?: AbortSignal) => {
       try {
-        const { data } = await axios.get('/api/log-history', { signal });
-        setLog(data.logsData || []);
+        const { data } = await axios.get<{ success: boolean; logsData: Log[] }>(
+          '/api/log-history',
+          { signal },
+        );
+        setLog(data.logsData ?? []);
       } catch (error) {
         const err = handleAxiosErrorAndLog(error, 'logHistory-useEffect');
         if (err) setErrorMessage(err.message);

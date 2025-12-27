@@ -20,7 +20,9 @@ export const useItemManagement = (itemNameData: ItemName[] = []) => {
     setErrorMessage(null);
     const fetchData = async (signal?: AbortSignal) => {
       try {
-        const { data } = await axios.get(API_PATH, { signal });
+        const { data } = await axios.get<{ success: boolean; items: ItemName[] }>(API_PATH, {
+          signal,
+        });
         setItemNameList(data.items);
       } catch (error) {
         if (axios.isCancel(error)) return;

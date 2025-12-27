@@ -1,7 +1,7 @@
 import Graph from '@/components/tab/graph/graph';
 import { prisma } from '@/lib/prisma';
 import { ItemsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 
 export default async function GraphPage() {
   const items = await prisma.item_name.findMany({

@@ -1,7 +1,7 @@
 import { handleApiError } from '@/lib/handle-api-error';
 import { prisma } from '@/lib/prisma';
 import { ItemsSchema, OrdersPatchSchema } from '@/schemas/api/orders';
-import { itemsFromBigintToString } from '@/utils';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
@@ -17,7 +17,7 @@ export async function GET() {
     const itemsParsed = ItemsSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({ items: itemsParsed });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }
 
@@ -58,6 +58,6 @@ export async function PATCH(req: Request) {
     });
     return NextResponse.json({ success: true });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }

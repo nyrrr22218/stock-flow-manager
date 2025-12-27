@@ -1,7 +1,8 @@
+import { shippingUpdatedItems } from '@/app/api/shipments/route';
 import { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
 
-export type ItemDataWithInput = Item & { orderInInput: string; shotage?: number };
+export type ItemDataWithInput = Item & { orderInInput: string };
 
 export type CalculateProps = {
   item: ItemDataWithInput;
@@ -26,8 +27,12 @@ export type OrdersButtonProps = Pick<
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export type TextFieldsProps = {
-  editMode: boolean;
+export type TextFieldsProps = Pick<OrdersButtonProps, 'editMode' | 'setEditMode'> & {
   item: ItemDataWithInput;
   setOrdersPageList: (value: SetStateAction<ItemDataWithInput[]>) => void;
+};
+
+export type ShippingPost = {
+  success: boolean;
+  shippingUpdatedItems: shippingUpdatedItems[];
 };

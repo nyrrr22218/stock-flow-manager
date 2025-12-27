@@ -1,7 +1,7 @@
 import ProducedCount from '@/components/tab/produced-count/products';
 import { prisma } from '@/lib/prisma';
 import { ProductsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 
 export default async function ProducedCountPage() {
   const items = await prisma.item_name.findMany({

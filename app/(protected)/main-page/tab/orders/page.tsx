@@ -1,7 +1,7 @@
 import Orders from '@/components/tab/orders/orders';
 import { prisma } from '@/lib/prisma';
 import { ItemsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 
 export default async function OrdersPage() {
   const items = await prisma.item_name.findMany({

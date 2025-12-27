@@ -19,7 +19,6 @@ export default function ProducedCount({ productData }: { productData: ProductsCo
     setProducedCountList,
     editMode,
     setEditMode,
-    loading,
     handleSave,
     errorMessage,
     setErrorMessage,
@@ -31,12 +30,7 @@ export default function ProducedCount({ productData }: { productData: ProductsCo
     <Box>
       <Typography variant="h4">生産数管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <ButtonCommon
-        editMode={editMode}
-        loading={loading}
-        setEditMode={setEditMode}
-        handleSave={handleSave}
-      />
+      <ButtonCommon editMode={editMode} setEditMode={setEditMode} handleSave={handleSave} />
       <Box
         sx={{
           ...gridCommon,
@@ -51,8 +45,13 @@ export default function ProducedCount({ productData }: { productData: ProductsCo
             <TextField
               type="number"
               value={pr.producedInInput}
-              disabled={!editMode}
+              InputProps={{
+                readOnly: !editMode,
+              }}
               sx={{ ...InputStyle }}
+              onClick={() => {
+                if (!editMode) setEditMode(true);
+              }}
               onBlur={() => {
                 if (pr.producedInInput === '') {
                   setProducedCountList((prev) =>

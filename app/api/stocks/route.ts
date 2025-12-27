@@ -15,7 +15,7 @@ export async function GET() {
     const itemsParsed = StocksSchema.parse(itemsFromBigintToString(items));
     return NextResponse.json({ items: itemsParsed });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }
 
@@ -58,6 +58,6 @@ export async function PATCH(req: Request) {
     });
     return NextResponse.json({ success: true });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }

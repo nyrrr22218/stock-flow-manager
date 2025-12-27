@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ItemSchema } from '../commons';
 
-export const StockSchema = ItemSchema.pick({
+const StockSchema = ItemSchema.pick({
   id: true,
   item_name: true,
   stock: true,
@@ -15,3 +15,5 @@ export const StocksPatchSchema = z.array(
     stockInInput: z.string().min(0),
   }),
 );
+
+export type Stock = z.infer<typeof StockSchema>;

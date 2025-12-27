@@ -20,5 +20,8 @@ export const handleApiError = (err: unknown) => {
         return NextResponse.json({ error: '対象のデータが見つかりませんでした' }, { status: 404 });
     }
   }
+  if (err instanceof Error) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
+  }
   return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
 };

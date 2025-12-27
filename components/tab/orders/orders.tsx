@@ -46,7 +46,12 @@ export default function Orders({ orderData }: { orderData: Item[] }) {
       {ordersPageList.map((item) => (
         <Box key={item.id} sx={{ ...numberColumnLayout }}>
           <Typography sx={{ ml: 3 }}>{item.item_name}</Typography>
-          <TextFields item={item} editMode={editMode} setOrdersPageList={setOrdersPageList} />
+          <TextFields
+            item={item}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            setOrdersPageList={setOrdersPageList}
+          />
           <Calculate item={item} />
         </Box>
       ))}

@@ -4,11 +4,19 @@ import { Prisma } from '@prisma/client';
 import { ItemDataWithInputSchema } from '@/schemas';
 import { handleApiError } from '@/lib/handle-api-error';
 
+export type shippingUpdatedItems = {
+  id: string;
+  stock: { stock_count: number };
+  order: { order_count: number };
+  product: { produced_count: number };
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const itemsParsed = ItemDataWithInputSchema.parse(body.items ?? []);
     const itemsShipment: { id: string; name: string; count: number }[] = [];
+    const shippingUpdatedItems: shippingUpdatedItems[] = [];
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
@@ -54,6 +62,12 @@ export async function POST(req: Request) {
             count: orderCount,
           });
         }
+        shippingUpdatedItems.push({
+          id: item.id,
+          stock: { stock_count: finalCount },
+          order: { order_count: 0 },
+          product: { produced_count: 0 },
+        });
       }
       if (itemsShipment.length > 0) {
         const shippingLogs = itemsShipment
@@ -69,8 +83,8 @@ export async function POST(req: Request) {
         });
       }
     });
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, shippingUpdatedItems });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }

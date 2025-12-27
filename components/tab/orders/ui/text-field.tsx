@@ -2,14 +2,19 @@ import { InputStyle } from '@/styles/input-layout';
 import { TextFieldsProps, ItemDataWithInput } from '@/types';
 import { TextField } from '@mui/material';
 
-export const TextFields = ({ item, editMode, setOrdersPageList }: TextFieldsProps) => {
+export const TextFields = ({ item, editMode, setOrdersPageList, setEditMode }: TextFieldsProps) => {
   return (
     <TextField
       type="number"
       size="small"
       value={item.orderInInput}
-      disabled={!editMode}
+      InputProps={{
+        readOnly: !editMode,
+      }}
       sx={{ ...InputStyle }}
+      onClick={() => {
+        if (!editMode) setEditMode(true);
+      }}
       onBlur={() => {
         if (item.orderInInput === '') {
           setOrdersPageList((prev) =>
@@ -27,14 +32,14 @@ export const TextFields = ({ item, editMode, setOrdersPageList }: TextFieldsProp
             return {
               ...i,
               orderInInput: inputValue,
-              ordertable: i.order
+              order: i.order
                 ? {
                     ...i.order,
                     order_count: numInputValue,
                   }
                 : {
                     id: '',
-                    itemname_id: i.id,
+                    item_name_id: i.id,
                     order_count: numInputValue,
                   },
             };

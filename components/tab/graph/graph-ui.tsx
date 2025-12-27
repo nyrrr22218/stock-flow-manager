@@ -1,8 +1,8 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Box, Paper, Typography } from '@mui/material';
-import { ItemDataWithInput } from '@/types';
+import { Item } from '@/schemas';
 
-export default function GraphDisplay({ graphData }: { graphData: ItemDataWithInput[] }) {
+export default function GraphDisplay({ graphData }: { graphData: Item[] }) {
   const chartData = graphData.map((item) => ({
     name: item.item_name,
     注文数: Number(item.order?.order_count ?? 0),

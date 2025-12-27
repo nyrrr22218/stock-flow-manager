@@ -13,7 +13,7 @@ export async function GET() {
       items: itemsParsed,
     });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }
 
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       newItem: itemsFromBigintToString(newItem),
     });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }
 
@@ -70,6 +70,6 @@ export async function DELETE(req: Request) {
     });
     return NextResponse.json({ message: 'ok', success: true });
   } catch (err) {
-    handleApiError(err);
+    return handleApiError(err);
   }
 }
