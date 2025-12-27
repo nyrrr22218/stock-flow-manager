@@ -4,7 +4,7 @@ import { useItemManagement } from '@/hooks/use-item-management';
 import { gridCommon } from '@/styles/commons';
 import { Box, Typography } from '@mui/material';
 import { ItemName } from '@/schemas';
-import { AddItemForm, DeleteItemDialog, ItemList } from '.';
+import { AddItemForm, ItemDeleteDialog, ItemList } from '.';
 
 export default function ItemManagement({ itemNameData }: { itemNameData: ItemName[] }) {
   const {
@@ -44,7 +44,7 @@ export default function ItemManagement({ itemNameData }: { itemNameData: ItemNam
           }}
         >
           <ItemList itemNameList={itemNameList} openDialog={openDialog} />
-          <DeleteItemDialog
+          <ItemDeleteDialog
             deleteItem={deleteItem}
             open={open}
             selectedItem={selectedItem}

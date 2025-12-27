@@ -1,3 +1,4 @@
+import { InputStyle } from '@/styles/input-layout';
 import { TextFieldsProps, ItemDataWithInput } from '@/types';
 import { TextField } from '@mui/material';
 
@@ -8,6 +9,7 @@ export const TextFields = ({ item, editMode, setOrdersPageList }: TextFieldsProp
       size="small"
       value={item.orderInInput}
       disabled={!editMode}
+      sx={{ ...InputStyle }}
       onBlur={() => {
         if (item.orderInInput === '') {
           setOrdersPageList((prev) =>

@@ -1,19 +1,10 @@
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
 import { sortMenu } from '..';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { SortCalendar } from './ui/sort-calendar';
+import { SortLogsProps } from '@/types';
 dayjs.locale('ja');
-
-type SortLogsProps = {
-  descAscLog: 'desc' | 'asc';
-  setDescAscLog: Dispatch<SetStateAction<'desc' | 'asc'>>;
-  sortLogMenu: string;
-  setSortLogMenu: Dispatch<SetStateAction<string>>;
-  sortLogMonth: string;
-  setSortLogMonth: Dispatch<SetStateAction<string>>;
-};
 
 export const SortLogs = ({
   descAscLog,

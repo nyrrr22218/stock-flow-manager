@@ -1,13 +1,8 @@
-import { ItemName } from '@/schemas';
 import { paperCommon } from '@/styles/commons';
 import { Paper, Typography, Button } from '@mui/material';
+import { ItemList as ItemListType } from '@/types';
 
-type ItemList = {
-  itemNameList: ItemName[];
-  openDialog: (item: ItemName) => void;
-};
-
-export const ItemList = ({ itemNameList, openDialog }: ItemList) => {
+export const ItemList = ({ itemNameList, openDialog }: ItemListType) => {
   return (
     <>
       {itemNameList.map((item) => (

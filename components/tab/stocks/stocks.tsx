@@ -6,6 +6,7 @@ import { Box, Paper, TextField, Typography } from '@mui/material';
 import { Stock } from '@/types';
 import { ButtonCommon, ErrorMessage } from '@/components';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
+import { InputStyle } from '@/styles/input-layout';
 
 export default function Stocks({ stockData }: { stockData: Stock[] }) {
   const stockDataWithInput = stockData.map((item) => ({
@@ -58,6 +59,7 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
               type="number"
               value={st.stockInInput ?? ''}
               disabled={!editMode}
+              sx={{ ...InputStyle }}
               onBlur={() => {
                 if (st.stockInInput === '') {
                   setStockList((prev) =>

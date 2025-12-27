@@ -3,11 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 export type ItemDataWithInput = Item & { orderInInput: string; shotage?: number };
 
-export type OrderDataToSend = {
-  id: string;
-  orderInInput: string;
-};
-
 export type CalculateProps = {
   item: ItemDataWithInput;
 };

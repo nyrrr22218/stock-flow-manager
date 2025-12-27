@@ -1,3 +1,4 @@
+import { ItemName } from '@/schemas';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 
 export type AddItemFormProps = {
@@ -14,4 +15,10 @@ export type ItemDeleteDialogProps = {
   loading: boolean;
   closeDialog: () => void;
   deleteItem: (id: string, itemName: string) => Promise<void>;
+  selectedItem: ItemName | null;
+};
+
+export type ItemList = {
+  itemNameList: ItemName[];
+  openDialog: (item: ItemName) => void;
 };

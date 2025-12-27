@@ -2,14 +2,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction } from 'react';
+import { SortCalendar as SortCalendarType } from '@/types';
 
-type SortCalendar = {
-  sortLogMonth: string;
-  setSortLogMonth: Dispatch<SetStateAction<string>>;
-};
-
-export const SortCalendar = ({ sortLogMonth, setSortLogMonth }: SortCalendar) => {
+export const SortCalendar = ({ sortLogMonth, setSortLogMonth }: SortCalendarType) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <DatePicker

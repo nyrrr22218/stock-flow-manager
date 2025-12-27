@@ -6,6 +6,7 @@ import { Box, Paper, TextField, Typography } from '@mui/material';
 import { ProductsCount } from '@/types';
 import { ButtonCommon, ErrorMessage } from '@/components';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
+import { InputStyle } from '@/styles/input-layout';
 
 export default function ProducedCount({ productData }: { productData: ProductsCount[] }) {
   const productDataWithInput = productData.map((item) => ({
@@ -51,6 +52,7 @@ export default function ProducedCount({ productData }: { productData: ProductsCo
               type="number"
               value={pr.producedInInput}
               disabled={!editMode}
+              sx={{ ...InputStyle }}
               onBlur={() => {
                 if (pr.producedInInput === '') {
                   setProducedCountList((prev) =>

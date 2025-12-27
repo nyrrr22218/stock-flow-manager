@@ -1,21 +1,13 @@
-import { ItemName } from '@/schemas';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { ItemDeleteDialogProps } from '@/types';
 
-type DeleteItemDialog = {
-  deleteItem: (id: string, itemName: string) => Promise<void>;
-  open: boolean;
-  selectedItem: ItemName | null;
-  closeDialog: () => void;
-  loading: boolean;
-};
-
-export const DeleteItemDialog = ({
+export const ItemDeleteDialog = ({
   deleteItem,
   open,
   selectedItem,
   closeDialog,
   loading,
-}: DeleteItemDialog) => {
+}: ItemDeleteDialogProps) => {
   return (
     <Dialog open={open} onClose={closeDialog}>
       <DialogTitle>確認</DialogTitle>
