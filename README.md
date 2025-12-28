@@ -16,7 +16,14 @@
 
 「現場のストレスをゼロにする」ことを目標に、応答速度の最適化を徹底的に追求しました。
 
-- **応答速度**: 計測中
+- **スコア：GoogleLighthouseにて計測**
+- **パフォーマンス100 ユーザー補助95 おすすめの方法100 SEO100**
+- **FIrst Contentful Paint o.3秒**
+- **Largest Contentful Paint 0.5秒**
+- **Total Bloking Time 0ミリ秒**
+- **Cumulative Layout Shift 0**
+- **Speed Index 0.8秒**
+
 - **改善のポイント**:
   - **Server Componentsによる最適化**: Next.js 15 + Prisma を活用し、サーバーサイドでの最速取得を実現。
   - **通信経路の極力一本化**: 開発過程で発生していた fetch と XHR の重複を検知・修正。不要なレンダリングとリクエストを徹底的に削減し、無駄のないデータフローを構築しました。
