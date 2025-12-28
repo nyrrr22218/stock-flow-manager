@@ -40,7 +40,7 @@
 
 最新の技術選定により、型安全かつ高パフォーマンスな開発を実現しています。
 
-- **Framework**: [Next.js](nextjs.org) 15.5.7 (App Router) / [React](react.dev) 19.1
+- **Framework**: [Next.js](nextjs.org) 16.1.1 (App Router) / [React](react.dev) 19.1
 - **Language**: [TypeScript](www.typescriptlang.org) 5
 - **Database/ORM**: [Supabase](supabase.com) / [Prisma](www.prisma.io) 7.2
 - **Validation**: [Zod](zod.dev)
