@@ -2,7 +2,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { SortCalendar as SortCalendarType } from '@/types';
+import type { SortCalendar as SortCalendarType } from '@/types';
 
 export const SortCalendar = ({ sortLogMonth, setSortLogMonth }: SortCalendarType) => {
   return (

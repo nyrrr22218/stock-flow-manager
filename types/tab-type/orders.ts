@@ -1,12 +1,8 @@
-import { shippingUpdatedItems } from '@/app/api/shipments/route';
-import { Item } from '@/schemas/commons';
+import type { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
+import type { shippingUpdatedItems } from './shipments';
 
 export type ItemDataWithInput = Item & { orderInInput: string };
-
-export type CalculateProps = {
-  item: ItemDataWithInput;
-};
 
 export type DialogsProps = {
   open: boolean;

@@ -1,7 +1,7 @@
 'use client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { ItemName } from '@/schemas';
+import type { ItemName } from '@/schemas';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

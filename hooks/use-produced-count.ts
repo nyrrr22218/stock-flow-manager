@@ -1,8 +1,8 @@
 'use client';
 
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { Product } from '@/schemas';
-import { ProducedCountDataWithInput } from '@/types';
+import type { Product } from '@/schemas';
+import type { ProducedCountDataWithInput } from '@/types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

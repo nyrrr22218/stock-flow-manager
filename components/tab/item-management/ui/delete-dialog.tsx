@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { ItemDeleteDialogProps } from '@/types';
+import type { ItemDeleteDialogProps } from '@/types';
 
 export const ItemDeleteDialog = ({
   deleteItem,

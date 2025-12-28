@@ -1,12 +1,9 @@
 'use client';
 
-import { getSupabaseErrorMessage } from '@/lib/handle-supabase-error';
-import { supabase } from '@/lib/supabase-client';
-import { useRouter } from 'next/navigation';
+import { signIn } from '@/app/(auth)/actions';
 import { useState } from 'react';
 
 export const useSignIn = () => {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -19,14 +16,12 @@ export const useSignIn = () => {
     setLoading(true);
     setError('');
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const result = await signIn({
         email,
         password,
       });
-      if (error) {
-        const msg = getSupabaseErrorMessage(error, 'Login');
-        setError(msg);
-        return;
+      if (result?.error) {
+        setError(result.error);
       }
     } catch (err: unknown) {
       console.error('[Login_Fatal]', err);
@@ -34,7 +29,6 @@ export const useSignIn = () => {
     } finally {
       setLoading(false);
     }
-    router.push('/main-page/tab/orders');
   };
 
   const reverseVisibility = () => setShowPassword(!showPassword);

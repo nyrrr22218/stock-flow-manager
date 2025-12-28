@@ -3,13 +3,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { ItemDataWithInputSchema } from '@/schemas';
 import { handleApiError } from '@/lib/handle-api-error';
-
-export type shippingUpdatedItems = {
-  id: string;
-  stock: { stock_count: number };
-  order: { order_count: number };
-  product: { produced_count: number };
-};
+import type { shippingUpdatedItems } from '@/types/tab-type/shipments';
 
 export async function POST(req: Request) {
   try {

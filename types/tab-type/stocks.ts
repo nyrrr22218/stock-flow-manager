@@ -1,4 +1,4 @@
-import { Item } from '@/schemas/commons';
+import type { Item } from '@/schemas/commons';
 
 export type Stock = Pick<Item, 'id' | 'item_name' | 'stock'>;
 

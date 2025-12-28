@@ -1,10 +1,17 @@
 'use client';
 
-import { TabContents, LoadingMotion } from '@/components';
-import { SignInMotion } from '@/components/sign-in';
+import { TabContents } from '@/components/commons/tab-contents';
 import { Box } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, ReactNode } from 'react';
+
+const SignInMotion = dynamic(() =>
+  import('@/components/sign-in/sign-in-motion').then((mod) => mod.SignInMotion),
+);
+const LoadingMotion = dynamic(() =>
+  import('@/components/commons/loading-motion').then((mod) => mod.LoadingMotion),
+);
 
 export default function MainPageLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();

@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { displayName } from '../..';
+import { displayName } from '../../objects';
 import { columnLayout } from '@/styles/orders-grid-layout';
 
 export const DisplayName = () => {

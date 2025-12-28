@@ -1,35 +1,24 @@
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
-import { redirect } from 'next/navigation';
 
-export default async function createSupabaseServerClient() {
+export async function createClient() {
   const cookieStore = await cookies();
-  const supabase = createServerClient(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
-          return cookieStore.get(name)?.value;
+        getAll() {
+          return cookieStore.getAll();
         },
-        set(name, value, options?) {
+        setAll(cookiesToSet) {
           try {
-            cookieStore.set(name, value, options);
-          } catch {}
-        },
-        remove(name) {
-          try {
-            cookieStore.delete(name);
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
           } catch {}
         },
       },
     },
   );
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    redirect('/sign-in');
-  }
-  return supabase;
 }

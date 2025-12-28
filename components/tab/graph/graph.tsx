@@ -3,10 +3,15 @@
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Item } from '@/schemas/commons';
+import type { Item } from '@/schemas/commons';
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import { ErrorMessage } from '@/components';
-import GraphDisplay from './graph-ui';
+import { ErrorMessage } from '@/components/commons/error-message';
+import dynamic from 'next/dynamic';
+
+const GraphDisplay = dynamic(() => import('./graph-ui'), {
+  ssr: false,
+  loading: () => <Typography variant="h5">Loading Chart...</Typography>,
+});
 
 export default function Graph({ graphData }: { graphData: Item[] }) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,7 +38,7 @@ export default function Graph({ graphData }: { graphData: Item[] }) {
     <Box sx={{ p: 2 }}>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       {itemGraphData.length > 0 ? (
-        <GraphDisplay graphData={graphData} />
+        <GraphDisplay itemGraphData={itemGraphData} />
       ) : (
         <Typography variant="h5">Loading...</Typography>
       )}

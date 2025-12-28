@@ -1,5 +1,5 @@
 import { InputStyle } from '@/styles/input-layout';
-import { TextFieldsProps, ItemDataWithInput } from '@/types';
+import type { TextFieldsProps, ItemDataWithInput } from '@/types';
 import { TextField } from '@mui/material';
 
 export const TextFields = ({ item, editMode, setOrdersPageList, setEditMode }: TextFieldsProps) => {

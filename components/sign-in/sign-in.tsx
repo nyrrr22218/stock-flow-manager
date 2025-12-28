@@ -1,9 +1,22 @@
 'use client';
 
-import { SignInButton, VisibilityIconButton } from '@/components/sign-in';
+import dynamic from 'next/dynamic';
 import { useSignIn } from '@/hooks/use-sign-in';
 import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+
+const SignInButton = dynamic(
+  () => import('@/components/sign-in/sign-in-button').then((mod) => mod.SignInButton),
+  {
+    ssr: false,
+  },
+);
+
+const VisibilityIconButton = dynamic(
+  () =>
+    import('@/components/sign-in/visibility-icon-button').then((mod) => mod.VisibilityIconButton),
+  { ssr: false },
+);
 
 export default function SignIn() {
   const {

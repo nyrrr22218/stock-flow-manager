@@ -1,10 +1,15 @@
 'use client';
 
-import { SortLogs } from './sort';
 import { Box, Typography } from '@mui/material';
-import { Log } from '@/schemas';
+import type { Log } from '@/schemas';
 import { useLogHistory } from '@/hooks/use-log-history';
-import { ErrorMessage } from '@/components';
+import { ErrorMessage } from '@/components/commons/error-message';
+import dynamic from 'next/dynamic';
+
+const SortLogs = dynamic(() => import('./sort').then((mod) => mod.SortLogs), {
+  ssr: false,
+  loading: () => <Box sx={{ height: 40 }} />,
+});
 
 export default function LogHistory({ logData }: { logData: Log[] }) {
   const {

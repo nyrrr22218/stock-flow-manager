@@ -1,45 +1,27 @@
 'use client';
 
-import { supabase } from '@/lib/supabase-client';
+import { logout } from '@/app/(auth)/actions';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-export default function Header() {
-  const [userEmail, setUserEmail] = useState('');
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user?.email) {
-        setUserEmail(user.email);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      alert('ログアウトエラー' + error.message);
-      console.error('ログアウトエラー', error.message);
-      return;
-    }
-    router.push('/sign-in');
-    router.refresh();
-  };
-
+export default function Header({ userEmail }: { userEmail: string }) {
   return (
     <>
-      <AppBar sx={{ height: '60px', bgcolor: 'gray' }}>
+      <AppBar sx={{ height: '60px', bgcolor: 'gray', position: 'fixed' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h3">Stock Flow Manager</Typography>
           <Box sx={{ display: 'flex', gap: 4 }}>
-            <Typography sx={{ mt: 1 }}>ようこそ {userEmail} さん</Typography>
-            <Button sx={{ color: 'white' }} onClick={handleLogout}>
+            <Typography sx={{ mt: 1 }}>
+              {userEmail ? `ようこそ ${userEmail} さん` : 'ログインしていません'}
+            </Typography>
+            <Button
+              sx={{ color: 'white' }}
+              onClick={async () => {
+                const result = await logout();
+                if (result?.error) {
+                  alert(result.error);
+                }
+              }}
+            >
               Logout
             </Button>
           </Box>

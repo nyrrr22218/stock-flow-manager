@@ -3,10 +3,11 @@
 import { useStocks } from '@/hooks/use-stocks';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import { Stock } from '@/types';
-import { ButtonCommon, ErrorMessage } from '@/components';
+import type { Stock } from '@/types';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 import { InputStyle } from '@/styles/input-layout';
+import { ErrorMessage } from '@/components/commons/error-message';
+import { ButtonCommon } from '@/components/commons/button-common';
 
 export default function Stocks({ stockData }: { stockData: Stock[] }) {
   const stockDataWithInput = stockData.map((item) => ({

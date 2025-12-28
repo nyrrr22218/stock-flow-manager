@@ -1,10 +1,6 @@
 import { Button, CircularProgress } from '@mui/material';
 
-type SignInButtonProps = {
-  loading: boolean;
-};
-
-export const SignInButton = ({ loading }: SignInButtonProps) => {
+export const SignInButton = ({ loading }: { loading: boolean }) => {
   return (
     <Button
       type="submit"

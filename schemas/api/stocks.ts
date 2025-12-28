@@ -15,5 +15,3 @@ export const StocksPatchSchema = z.array(
     stockInInput: z.string().min(0),
   }),
 );
-
-export type Stock = z.infer<typeof StockSchema>;

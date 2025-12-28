@@ -1,6 +1,6 @@
 import { paperCommon } from '@/styles/commons';
 import { Paper, Typography, Button } from '@mui/material';
-import { ItemList as ItemListType } from '@/types';
+import type { ItemList as ItemListType } from '@/types';
 
 export const ItemList = ({ itemNameList, openDialog }: ItemListType) => {
   return (

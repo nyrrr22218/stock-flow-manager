@@ -3,8 +3,10 @@
 import { useItemManagement } from '@/hooks/use-item-management';
 import { gridCommon } from '@/styles/commons';
 import { Box, Typography } from '@mui/material';
-import { ItemName } from '@/schemas';
-import { AddItemForm, ItemDeleteDialog, ItemList } from '.';
+import type { ItemName } from '@/schemas';
+import { ItemDeleteDialog } from './ui/delete-dialog';
+import { AddItemForm } from './ui/item-add-form';
+import { ItemList } from './ui/item-list';
 
 export default function ItemManagement({ itemNameData }: { itemNameData: ItemName[] }) {
   const {
