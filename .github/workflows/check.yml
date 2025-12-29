@@ -28,4 +28,4 @@ jobs:
           vercel-token: ${{ secrets.NYRRR_ACTIONS_TOKEN }}
           vercel-org-id: ${{ secrets.team_9jK8CZ14XKIBkwZuDBBVoAxJ }}
           vercel-project-id: ${{ secrets.prj_O3cnfIjvOVec0jn2WFBnN73dhvWH }}
-          vercel-args: '--prod'
+          vercel-args: '--prod --yes'
