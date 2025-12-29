@@ -8,6 +8,7 @@ export default function Footer() {
     >
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
         <Typography>問題報告時のフォーム作成予定</Typography>
+        <aaa></aaa>
         <Link color="inherit" href="https://github.com/nyrrr22218">
           Go to My GitHub
         </Link>
