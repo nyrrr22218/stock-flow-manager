@@ -1,6 +1,6 @@
 import type { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
-import type { shippingUpdatedItems } from './shipments';
+import type { ShippingUpdatedItems } from './shipments';
 
 export type ItemDataWithInput = Item & { orderInInput: string };
 
@@ -30,5 +30,5 @@ export type TextFieldsProps = Pick<OrdersButtonProps, 'editMode' | 'setEditMode'
 
 export type ShippingPost = {
   success: boolean;
-  shippingUpdatedItems: shippingUpdatedItems[];
+  shippingUpdatedItems: ShippingUpdatedItems[];
 };
