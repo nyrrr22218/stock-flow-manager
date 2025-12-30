@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { ItemDataWithInputSchema } from '@/schemas';
 import { handleApiError } from '@/lib/handle-api-error';
-import type { shippingUpdatedItems } from '@/types/tab-type/shipments';
+import type { ShippingUpdatedItems } from '@/types/tab-type/shipments';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const itemsParsed = ItemDataWithInputSchema.parse(body.items ?? []);
     const itemsShipment: { id: string; name: string; count: number }[] = [];
-    const shippingUpdatedItems: shippingUpdatedItems[] = [];
+    const shippingUpdatedItems: ShippingUpdatedItems[] = [];
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);

@@ -3,6 +3,7 @@
 import { handleAxiosErrorAndLog } from '@/lib/axios-error';
 import type { Item } from '@/schemas';
 import type { ItemDataWithInput, ShippingPost } from '@/types';
+import { ShippingUpdatedItems } from '@/types/tab-type/shipments';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -63,23 +64,7 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
         items: ordersPageList,
       });
       if (data.success) {
-        setOrdersPageList((prev) =>
-          prev.map((list) => {
-            const updated = data.shippingUpdatedItems.find((u) => u.id === list.id);
-            return {
-              ...list,
-              orderInInput: '0',
-              stock: list.stock
-                ? {
-                    ...list.stock,
-                    stock_count: updated ? updated.stock.stock_count : list.stock.stock_count,
-                  }
-                : list.stock,
-              order: list.order ? { ...list.order, order_count: 0 } : list.order,
-              product: list.product ? { ...list.product, produced_count: 0 } : list.product,
-            };
-          }),
-        );
+        setOrdersPageList((prev) => transformAfterShipping(prev, data.shippingUpdatedItems));
         setEditMode(false);
       }
     } catch (error) {
@@ -103,4 +88,25 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
     setOpen,
     handleShippingCompleted,
   };
+};
+
+export const transformAfterShipping = (
+  prevList: ItemDataWithInput[],
+  updatedItems: ShippingUpdatedItems[],
+): ItemDataWithInput[] => {
+  return prevList.map((list) => {
+    const updated = updatedItems.find((u) => u.id === list.id);
+    return {
+      ...list,
+      orderInInput: '0',
+      stock: list.stock
+        ? {
+            ...list.stock,
+            stock_count: updated ? updated.stock.stock_count : list.stock.stock_count,
+          }
+        : list.stock,
+      order: list.order ? { ...list.order, order_count: 0 } : list.order,
+      product: list.product ? { ...list.product, produced_count: 0 } : list.product,
+    };
+  });
 };

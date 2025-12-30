@@ -10,10 +10,18 @@ export const Calculate = ({ item }: { item: ItemDataWithInput }) => {
 
   return (
     <>
-      <Typography align="right">{result.stock}</Typography>
-      <Typography align="right">{result.restOrder}</Typography>
-      <Typography align="right">{result.product}</Typography>
-      <Typography align="right">{result.finalRestOrder}</Typography>
+      <Typography align="right" data-testid="res-stock">
+        {result.stock}
+      </Typography>
+      <Typography align="right" data-testid="res-restOrder">
+        {result.restOrder}
+      </Typography>
+      <Typography align="right" data-testid="res-product">
+        {result.product}
+      </Typography>
+      <Typography align="right" data-testid="res-finalRestOrder">
+        {result.finalRestOrder}
+      </Typography>
     </>
   );
 };

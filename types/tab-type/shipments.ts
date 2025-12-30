@@ -1,6 +1,6 @@
-export type shippingUpdatedItems = {
+export type ShippingUpdatedItems = {
   id: string;
   stock: { stock_count: number };
-  order: { order_count: number };
-  product: { produced_count: number };
+  order?: { order_count: number };
+  product?: { produced_count: number };
 };
