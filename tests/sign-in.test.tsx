@@ -27,6 +27,8 @@ describe('useSignIn', () => {
   });
 
   it('通信エラー（例外）が発生したとき、エラーメッセージがセットされること', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     vi.mocked(signIn).mockRejectedValue(new Error('Network Error'));
 
     const { result } = renderHook(() => useSignIn());
@@ -36,5 +38,7 @@ describe('useSignIn', () => {
     });
 
     expect(result.current.error).toBe('通信エラーが発生しました');
+
+    consoleSpy.mockRestore();
   });
 });

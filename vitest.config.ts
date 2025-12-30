@@ -11,5 +11,10 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './'),
     },
+    onConsoleLog(log, type) {
+      if (type === 'stderr' && log.includes('Error: Network Error')) {
+        return false;
+      }
+    },
   },
 });
