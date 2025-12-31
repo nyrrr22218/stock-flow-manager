@@ -1,28 +1,35 @@
-import { handleApiError } from '@/lib/handle-api-error';
-import { prisma } from '@/lib/prisma';
-import { StocksSchema, StocksPatchSchema } from '@/schemas/api/stocks';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
-import { Prisma } from '@prisma/client';
-import { NextResponse } from 'next/server';
+'use server';
 
-export async function GET() {
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import type { StockDataWithInput } from '@/types';
+import { StocksPatchSchema, StocksSchema } from '@/schemas';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { handleActionsError } from '@/lib/handle-actions-error';
+import { Prisma } from '@prisma/client';
+
+export async function getStocks() {
   try {
     const items = await prisma.item_name.findMany({
-      include: {
-        stock: true,
-      },
+      include: { stock: true },
     });
-    const itemsParsed = StocksSchema.parse(itemsFromBigintToString(items));
-    return NextResponse.json({ items: itemsParsed });
-  } catch (err) {
-    return handleApiError(err);
+    const itemsAsString = itemsFromBigintToString(items);
+    const itemsParsed = StocksSchema.parse(itemsAsString);
+
+    const stockDataWithInput: StockDataWithInput[] = (itemsParsed ?? []).map((item) => ({
+      ...item,
+      stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
+    }));
+
+    return stockDataWithInput;
+  } catch (error) {
+    return handleActionsError(error, 'getStocks');
   }
 }
 
-export async function PATCH(req: Request) {
+export async function patchStocks(stockList: StockDataWithInput[]) {
   try {
-    const body = await req.json();
-    const itemsParsed = StocksPatchSchema.parse(body.items ?? []);
+    const itemsParsed = StocksPatchSchema.parse(stockList ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
@@ -56,8 +63,9 @@ export async function PATCH(req: Request) {
         });
       }
     });
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    return handleApiError(err);
+    revalidatePath('/main-page/tab/stocks');
+    return { success: true };
+  } catch (error) {
+    return handleActionsError(error, 'patchStocks');
   }
 }

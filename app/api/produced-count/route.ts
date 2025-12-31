@@ -1,3 +1,5 @@
+// axiosの使用方法のために置いておく
+
 import { NextResponse } from 'next/server';
 import { ProductsSchema, ProductsPatchSchema } from '@/schemas/api/produced-count';
 import { prisma } from '@/lib/prisma';

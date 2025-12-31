@@ -1,77 +1,48 @@
 'use client';
 
-import { handleAxiosErrorAndLog } from '@/lib/axios-error';
+import { deleteItem, postItem } from '@/app/actions/item-management-actions';
 import type { ItemName } from '@/schemas';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export const useItemManagement = (itemNameData: ItemName[] = []) => {
+export const useItemManagement = () => {
   const [newItemName, setNewItemName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ItemName | null>(null);
-  const [itemNameList, setItemNameList] = useState(itemNameData);
-
-  const API_PATH = '/api/item-management';
-
-  useEffect(() => {
-    if (itemNameData) return;
-    setErrorMessage(null);
-    const fetchData = async (signal?: AbortSignal) => {
-      try {
-        const { data } = await axios.get<{ success: boolean; items: ItemName[] }>(API_PATH, {
-          signal,
-        });
-        setItemNameList(data.items);
-      } catch (error) {
-        if (axios.isCancel(error)) return;
-        const err = handleAxiosErrorAndLog(error, 'itemManagement-useEffect');
-        if (err) setErrorMessage(err.message);
-      }
-    };
-    const controller = new AbortController();
-    fetchData(controller.signal);
-    return () => controller.abort();
-  }, [itemNameData]);
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
+    if (loading || !newItemName.trim()) return;
     setLoading(true);
     setErrorMessage(null);
     try {
-      const { data } = await axios.post(API_PATH, { item_name: newItemName });
-      if (data.success) {
-        setItemNameList((prev) => [
-          ...prev,
-          {
-            id: data.newItem.id,
-            item_name: data.newItem.item_name,
-          },
-        ]);
-        console.log('送信成功');
+      const result = await postItem(newItemName);
+      if (!result.success) {
+        setErrorMessage(result.error || '保存に失敗しました');
+        return;
       }
       setNewItemName('');
-    } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'itemManagement-handleItemAdd');
-      if (err) setErrorMessage(err.message);
+    } catch {
+      setErrorMessage('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteItem = async (id: string, itemName: string) => {
+  const handleItemDelete = async (id: string, itemName: string) => {
     if (loading) return;
     setLoading(true);
     setOpen(false);
     setErrorMessage(null);
     try {
-      await axios.delete(API_PATH, { data: { id, itemName } });
-      setItemNameList((prev) => prev.filter((item) => String(item.id) !== String(id)));
-    } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'itemManagement-deleteItem');
-      if (err) setErrorMessage(err.message);
+      const result = await deleteItem(id, itemName);
+      if (result.success === false) {
+        setErrorMessage(result.error || '出荷処理に失敗しました');
+        return;
+      }
+    } catch {
+      setErrorMessage('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }
@@ -92,9 +63,9 @@ export const useItemManagement = (itemNameData: ItemName[] = []) => {
     setNewItemName,
     errorMessage,
     setErrorMessage,
-    itemNameList,
     loading,
     handleItemAdd,
+    handleItemDelete,
     deleteItem,
     open,
     setOpen,

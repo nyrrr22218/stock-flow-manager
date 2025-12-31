@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import type { ItemDeleteDialogProps } from '@/types';
 
 export const ItemDeleteDialog = ({
-  deleteItem,
+  handleItemDelete,
   open,
   selectedItem,
   closeDialog,
@@ -17,7 +17,7 @@ export const ItemDeleteDialog = ({
         <Button
           onClick={() => {
             if (selectedItem) {
-              deleteItem(selectedItem.id, selectedItem.item_name);
+              handleItemDelete(selectedItem.id, selectedItem.item_name);
             }
             closeDialog();
           }}

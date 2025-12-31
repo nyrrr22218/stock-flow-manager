@@ -1,31 +1,44 @@
 'use client';
 
-import { useStocks } from '@/hooks/use-stocks';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import type { Stock } from '@/types';
+import type { StockDataWithInput } from '@/types';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 import { InputStyle } from '@/styles/input-layout';
 import { ErrorMessage } from '@/components/commons/error-message';
 import { ButtonCommon } from '@/components/commons/button-common';
+import { useState } from 'react';
+import { patchStocks } from '@/app/actions/stock-actions';
 
-export default function Stocks({ stockData }: { stockData: Stock[] }) {
-  const stockDataWithInput = stockData.map((item) => ({
-    ...item,
-    stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
-  }));
-
-  const {
-    setErrorMessage,
-    stockList,
-    setStockList,
-    editMode,
-    setEditMode,
-    handleSave,
-    errorMessage,
-  } = useStocks(stockDataWithInput);
+export default function Stocks({
+  stockDataWithInput,
+}: {
+  stockDataWithInput: StockDataWithInput[];
+}) {
+  const [stockList, setStockList] = useState(stockDataWithInput);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useHandleBeforeUnload(editMode);
+
+  const handleSave = async () => {
+    if (loading) return;
+    setLoading(true);
+    setErrorMessage(null);
+    try {
+      const result = await patchStocks(stockList);
+      if (!result.success) {
+        setErrorMessage(result.error || '保存に失敗しました');
+        return;
+      }
+      setEditMode(false);
+    } catch {
+      setErrorMessage('エラー');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box>
@@ -51,6 +64,7 @@ export default function Stocks({ stockData }: { stockData: Stock[] }) {
               {st.item_name}
             </Typography>
             <TextField
+              id={`stock-input-${st.id}`}
               type="number"
               value={st.stockInInput ?? ''}
               InputProps={{

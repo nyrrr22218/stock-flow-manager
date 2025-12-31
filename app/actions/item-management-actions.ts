@@ -1,27 +1,28 @@
-import { handleApiError } from '@/lib/handle-api-error';
+'use server';
+
+import { handleActionsError } from '@/lib/handle-actions-error';
 import { prisma } from '@/lib/prisma';
-import { ItemNameAddSchema, ItemNamesSchema } from '@/schemas/api/item-management';
+import { ItemNameAddSchema, ItemNamesSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 import { Prisma } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
-export async function GET() {
+type DeleteResult = { success: true; error?: never } | { success: false; error: string };
+
+export async function getItems() {
   try {
     const itemsAsString = await prisma.item_name.findMany();
     const itemsParsed = ItemNamesSchema.parse(itemsFromBigintToString(itemsAsString));
-    return NextResponse.json({
-      items: itemsParsed,
-    });
-  } catch (err) {
-    return handleApiError(err);
+    return itemsParsed;
+  } catch (error) {
+    return handleActionsError(error, 'getItems');
   }
 }
 
-export async function POST(req: Request) {
+export async function postItem(newItemName: string) {
   try {
-    const body = await req.json();
-    const { item_name } = ItemNameAddSchema.parse(body);
-    const newItem = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    const { item_name } = ItemNameAddSchema.parse({ item_name: newItemName });
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const item = await tx.item_name.create({
         data: {
           item_name,
@@ -42,18 +43,15 @@ export async function POST(req: Request) {
       });
       return item;
     });
-    return NextResponse.json({
-      success: true,
-      newItem: itemsFromBigintToString(newItem),
-    });
-  } catch (err) {
-    return handleApiError(err);
+    revalidatePath('/main-page/tab/item-management');
+    return { success: true };
+  } catch (error) {
+    return handleActionsError(error, 'postItem');
   }
 }
 
-export async function DELETE(req: Request) {
+export async function deleteItem(id: string, itemName: string): Promise<DeleteResult> {
   try {
-    const { id, itemName } = await req.json();
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return (
         await tx.item_name.delete({
@@ -68,8 +66,13 @@ export async function DELETE(req: Request) {
         })
       );
     });
-    return NextResponse.json({ message: 'ok', success: true });
-  } catch (err) {
-    return handleApiError(err);
+    revalidatePath('/main-page/tab/item-management');
+    return { success: true };
+  } catch (error) {
+    const err = handleActionsError(error, 'deleteItem');
+    return {
+      success: false,
+      error: err.error || '商品削除中に予期せぬエラーが発生しました',
+    };
   }
 }

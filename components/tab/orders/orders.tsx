@@ -2,19 +2,19 @@
 
 import { useOrders } from '@/hooks/use-orders';
 import { Box, Typography } from '@mui/material';
-import type { Item } from '@/schemas';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 import { numberColumnLayout } from '@/styles/orders-grid-layout';
 import { OrdersButton } from './ui/button';
 import { DisplayName } from './ui/display-name';
 import { TextFields } from './ui/text-field';
 import { Calculate } from './ui/calculate';
+import { ItemDataWithInput } from '@/types';
 
-export default function Orders({ orderData }: { orderData: Item[] }) {
-  const orderDataWithInput = orderData.map((item) => ({
-    ...item,
-    orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
-  }));
+export default function Orders({
+  orderDataWithInput,
+}: {
+  orderDataWithInput: ItemDataWithInput[];
+}) {
   const {
     errorMessage,
     setErrorMessage,

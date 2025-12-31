@@ -9,7 +9,7 @@ test('OKボタンを押すと deleteItem が正しい引数で呼ばれるか', 
 
   render(
     <ItemDeleteDialog
-      deleteItem={deleteItemMock}
+      handleItemDelete={deleteItemMock}
       open={true}
       selectedItem={selectedItem}
       closeDialog={closeDialogMock}
@@ -30,7 +30,7 @@ test('キャンセルボタンを押すと closeDialog が呼ばれるか', () =
 
   render(
     <ItemDeleteDialog
-      deleteItem={vi.fn()}
+      handleItemDelete={vi.fn()}
       open={true}
       selectedItem={{ id: '1', item_name: '商品' }}
       closeDialog={closeDialogMock}

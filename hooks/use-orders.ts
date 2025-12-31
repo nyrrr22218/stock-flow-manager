@@ -1,54 +1,31 @@
 'use client';
 
-import { handleAxiosErrorAndLog } from '@/lib/axios-error';
-import type { Item } from '@/schemas';
-import type { ItemDataWithInput, ShippingPost } from '@/types';
-import { ShippingUpdatedItems } from '@/types/tab-type/shipments';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { patchOrders } from '@/app/actions/order-actions';
+import { shippingCompleted } from '@/app/actions/shipment-actions';
+import type { ItemDataWithInput } from '@/types';
+import { ShippingUpdatedItems } from '@/types/tab-type/orders';
+import { useState } from 'react';
 
-export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
+export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [ordersPageList, setOrdersPageList] = useState(orderDataWithInput);
-  const API_PATH = '/api/orders';
-
-  useEffect(() => {
-    if (orderDataWithInput && orderDataWithInput.length > 0) return;
-    setErrorMessage(null);
-    const fetchData = async (signal?: AbortSignal) => {
-      try {
-        const { data } = await axios.get<{ success: boolean; items: Item[] }>(API_PATH, { signal });
-        const itemAndInput: ItemDataWithInput[] = (data.items ?? []).map((item) => ({
-          ...item,
-          orderInInput:
-            item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
-        }));
-        setOrdersPageList(itemAndInput);
-      } catch (error) {
-        const err = handleAxiosErrorAndLog(error, 'orders-useEffect');
-        if (err) setErrorMessage(err.message);
-      }
-    };
-    const controller = new AbortController();
-    fetchData(controller.signal);
-    return () => controller.abort();
-  }, [orderDataWithInput]);
 
   const handleSave = async () => {
     if (loading) return;
     setLoading(true);
     setErrorMessage(null);
     try {
-      await axios.patch<{ success: boolean }>(API_PATH, {
-        items: ordersPageList,
-      });
+      const result = await patchOrders(ordersPageList);
+      if (!result.success) {
+        setErrorMessage(result.error || '保存に失敗しました');
+        return;
+      }
       setEditMode(false);
-    } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'orders-handleSave');
-      if (err) setErrorMessage(err.message);
+    } catch {
+      setErrorMessage('エラー');
     } finally {
       setLoading(false);
     }
@@ -60,16 +37,18 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
     setLoading(true);
     setErrorMessage(null);
     try {
-      const { data } = await axios.post<ShippingPost>('/api/shipments', {
-        items: ordersPageList,
-      });
-      if (data.success) {
-        setOrdersPageList((prev) => transformAfterShipping(prev, data.shippingUpdatedItems));
+      const result = await shippingCompleted(ordersPageList);
+      if (result.success === false) {
+        setErrorMessage(result.error || '出荷処理に失敗しました');
+        setEditMode(false);
+        return;
+      }
+      if ('shippingUpdatedItems' in result) {
+        setOrdersPageList((prev) => transformAfterShipping(prev, result.shippingUpdatedItems));
         setEditMode(false);
       }
-    } catch (error) {
-      const err = handleAxiosErrorAndLog(error, 'orders-handleShippingCompleted');
-      if (err) setErrorMessage(err.message);
+    } catch {
+      setErrorMessage('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }
@@ -91,11 +70,11 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[] = []) => {
 };
 
 export const transformAfterShipping = (
-  prevList: ItemDataWithInput[],
-  updatedItems: ShippingUpdatedItems[],
+  prev: ItemDataWithInput[],
+  shippingUpdatedItems: ShippingUpdatedItems[],
 ): ItemDataWithInput[] => {
-  return prevList.map((list) => {
-    const updated = updatedItems.find((u) => u.id === list.id);
+  return prev.map((list) => {
+    const updated = shippingUpdatedItems.find((u) => u.id === list.id);
     return {
       ...list,
       orderInInput: '0',

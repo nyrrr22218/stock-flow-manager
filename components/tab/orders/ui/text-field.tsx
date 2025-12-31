@@ -5,6 +5,7 @@ import { TextField } from '@mui/material';
 export const TextFields = ({ item, editMode, setOrdersPageList, setEditMode }: TextFieldsProps) => {
   return (
     <TextField
+      id={`order-input-${item.id}`}
       type="number"
       size="small"
       value={item.orderInInput}

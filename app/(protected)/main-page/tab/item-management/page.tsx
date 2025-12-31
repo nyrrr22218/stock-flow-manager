@@ -1,12 +1,11 @@
+import { getItems } from '@/app/actions/item-management-actions';
 import ItemManagement from '@/components/tab/item-management/item-add';
-import { prisma } from '@/lib/prisma';
-import { ItemNamesSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { Box } from '@mui/material';
 
 export default async function ItemManagementPage() {
-  const items = await prisma.item_name.findMany();
-  const itemsAsString = itemsFromBigintToString(items);
-  const itemsParsed = ItemNamesSchema.parse(itemsAsString);
-
-  return <ItemManagement itemNameData={itemsParsed} />;
+  const itemData = await getItems();
+  if (!Array.isArray(itemData)) {
+    return <Box>error: {itemData.error}</Box>;
+  }
+  return <ItemManagement itemNameData={itemData} />;
 }

@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import Stocks from '../components/tab/stocks/stocks';
-import { Stock } from '@/types';
+import { StockDataWithInput } from '@/types';
 
 test('在庫入力が正しく反映されるか', () => {
-  const dummyData: Stock[] = [
+  const dummyData: StockDataWithInput[] = [
     {
       id: '1',
       item_name: 'テスト商品',
@@ -13,10 +13,11 @@ test('在庫入力が正しく反映されるか', () => {
         item_name_id: '1',
         stock_count: 10,
       },
+      stockInInput: '20',
     },
   ];
 
-  render(<Stocks stockData={dummyData} />);
+  render(<Stocks stockDataWithInput={dummyData} />);
 
   const input = screen.getByRole('spinbutton') as HTMLInputElement;
 

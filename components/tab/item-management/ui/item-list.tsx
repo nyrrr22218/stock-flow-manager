@@ -2,10 +2,10 @@ import { paperCommon } from '@/styles/commons';
 import { Paper, Typography, Button } from '@mui/material';
 import type { ItemList as ItemListType } from '@/types';
 
-export const ItemList = ({ itemNameList, openDialog }: ItemListType) => {
+export const ItemList = ({ itemNameData, openDialog }: ItemListType) => {
   return (
     <>
-      {itemNameList.map((item) => (
+      {itemNameData.map((item) => (
         <Paper
           key={item.id}
           elevation={1}

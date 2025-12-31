@@ -1,6 +1,5 @@
 import type { Item } from '@/schemas/commons';
 import { Dispatch, SetStateAction } from 'react';
-import type { ShippingUpdatedItems } from './shipments';
 
 export type ItemDataWithInput = Item & { orderInInput: string };
 
@@ -28,7 +27,13 @@ export type TextFieldsProps = Pick<OrdersButtonProps, 'editMode' | 'setEditMode'
   setOrdersPageList: (value: SetStateAction<ItemDataWithInput[]>) => void;
 };
 
-export type ShippingPost = {
-  success: boolean;
-  shippingUpdatedItems: ShippingUpdatedItems[];
+export type ShippingUpdatedItems = {
+  id: string;
+  stock: { stock_count: number };
+  order?: { order_count: number };
+  product?: { produced_count: number };
 };
+
+export type ShippingResult =
+  | { success: true; shippingUpdatedItems: ShippingUpdatedItems[]; error?: never }
+  | { success: false; error: string; shippingUpdatedItems?: never };

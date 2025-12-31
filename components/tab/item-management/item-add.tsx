@@ -14,15 +14,14 @@ export default function ItemManagement({ itemNameData }: { itemNameData: ItemNam
     setNewItemName,
     errorMessage,
     setErrorMessage,
-    itemNameList,
     loading,
     handleItemAdd,
-    deleteItem,
+    handleItemDelete,
     open,
     selectedItem,
     openDialog,
     closeDialog,
-  } = useItemManagement(itemNameData);
+  } = useItemManagement();
 
   return (
     <Box>
@@ -35,7 +34,7 @@ export default function ItemManagement({ itemNameData }: { itemNameData: ItemNam
         loading={loading}
       />
       <Box sx={{ ml: 2 }}>
-        {itemNameList.length === 0 && (
+        {itemNameData.length === 0 && (
           <Typography variant="h5" color="text.secondary" sx={{ mt: 4 }}>
             Loading...
           </Typography>
@@ -45,9 +44,9 @@ export default function ItemManagement({ itemNameData }: { itemNameData: ItemNam
             ...gridCommon,
           }}
         >
-          <ItemList itemNameList={itemNameList} openDialog={openDialog} />
+          <ItemList itemNameData={itemNameData} openDialog={openDialog} />
           <ItemDeleteDialog
-            deleteItem={deleteItem}
+            handleItemDelete={handleItemDelete}
             open={open}
             selectedItem={selectedItem}
             closeDialog={closeDialog}

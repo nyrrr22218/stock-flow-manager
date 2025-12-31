@@ -1,44 +1,52 @@
-import { renderHook, act } from '@testing-library/react';
-import { vi, describe, it, expect } from 'vitest';
-import { useSignIn } from '../hooks/use-sign-in';
-import { signIn } from '@/app/(auth)/actions';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { redirect } from 'next/navigation';
+import { signIn } from '../app/actions/sign-in-actions';
+import { createClient } from '@/lib/supabase-server';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-vi.mock('@/app/(auth)/actions', () => ({
-  signIn: vi.fn(),
+vi.mock('@/lib/supabase-server', () => ({
+  createClient: vi.fn(),
 }));
 
-describe('useSignIn', () => {
-  it('ログインに失敗したとき、エラーメッセージがセットされること', async () => {
-    vi.mocked(signIn).mockResolvedValue({ error: 'メールアドレスまたはパスワードが違います' });
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+}));
 
-    const { result } = renderHook(() => useSignIn());
-
-    act(() => {
-      result.current.setEmail('test@example.com');
-      result.current.setPassword('wrong-password');
-    });
-
-    await act(async () => {
-      await result.current.handleLogin({ preventDefault: () => {} } as React.FormEvent);
-    });
-
-    expect(result.current.error).toBe('メールアドレスまたはパスワードが違います');
-    expect(result.current.loading).toBe(false);
+describe('signIn Server Action', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it('通信エラー（例外）が発生したとき、エラーメッセージがセットされること', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    vi.mocked(signIn).mockRejectedValue(new Error('Network Error'));
-
-    const { result } = renderHook(() => useSignIn());
-
-    await act(async () => {
-      await result.current.handleLogin({ preventDefault: () => {} } as React.FormEvent);
+  it('ログインに失敗したとき、エラーメッセージを返すこと', async () => {
+    const mockSignInWithPassword = vi.fn().mockResolvedValue({
+      error: { message: 'メールアドレスまたはパスワードが違います' },
     });
 
-    expect(result.current.error).toBe('通信エラーが発生しました');
+    vi.mocked(createClient).mockResolvedValue({
+      auth: { signInWithPassword: mockSignInWithPassword },
+    } as unknown as SupabaseClient);
 
-    consoleSpy.mockRestore();
+    const result = await signIn({
+      email: 'test@example.com',
+      password: 'wrong-password',
+    });
+
+    expect(result?.error).toBe('メールアドレスまたはパスワードが違います');
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('ログインに成功したとき、指定のパスへリダイレクトすること', async () => {
+    const mockSignInWithPassword = vi.fn().mockResolvedValue({ error: null });
+
+    vi.mocked(createClient).mockResolvedValue({
+      auth: { signInWithPassword: mockSignInWithPassword },
+    } as unknown as SupabaseClient);
+
+    await signIn({
+      email: 'test@example.com',
+      password: 'correct-password',
+    });
+
+    expect(redirect).toHaveBeenCalledWith('/main-page/tab/orders');
   });
 });

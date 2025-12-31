@@ -2,9 +2,9 @@
 
 import { Box, Typography } from '@mui/material';
 import type { Log } from '@/schemas';
-import { useLogHistory } from '@/hooks/use-log-history';
 import { ErrorMessage } from '@/components/commons/error-message';
 import dynamic from 'next/dynamic';
+import { useMemo, useState } from 'react';
 
 const SortLogs = dynamic(() => import('./sort').then((mod) => mod.SortLogs), {
   ssr: false,
@@ -12,17 +12,29 @@ const SortLogs = dynamic(() => import('./sort').then((mod) => mod.SortLogs), {
 });
 
 export default function LogHistory({ logData }: { logData: Log[] }) {
-  const {
-    errorMessage,
-    setErrorMessage,
-    descAscLog,
-    setDescAscLog,
-    sortLogMenu,
-    setSortLogMenu,
-    sortLogs,
-    sortLogMonth,
-    setSortLogMonth,
-  } = useLogHistory(logData);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [descAscLog, setDescAscLog] = useState<'desc' | 'asc'>('desc');
+  const [sortLogMenu, setSortLogMenu] = useState('');
+  const [sortLogMonth, setSortLogMonth] = useState('');
+
+  const sortLogs = useMemo(() => {
+    const filtered = logData.filter((item) => {
+      if (sortLogMonth !== '') {
+        const d = new Date(item.logged_at);
+        const logYearMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        if (logYearMonth !== sortLogMonth) return false;
+      }
+      if (sortLogMenu !== '' && !item.log_message.includes(sortLogMenu)) {
+        return false;
+      }
+      return true;
+    });
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.logged_at).getTime();
+      const dateB = new Date(b.logged_at).getTime();
+      return descAscLog === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+  }, [logData, descAscLog, sortLogMenu, sortLogMonth]);
 
   return (
     <Box>

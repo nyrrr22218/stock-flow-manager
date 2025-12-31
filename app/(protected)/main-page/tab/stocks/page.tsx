@@ -1,17 +1,13 @@
+import { getStocks } from '@/app/actions/stock-actions';
 import Stocks from '@/components/tab/stocks/stocks';
-import { prisma } from '@/lib/prisma';
-import { StocksSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { Box } from '@mui/material';
 
 export default async function StocksPage() {
-  const items = await prisma.item_name.findMany({
-    include: {
-      stock: true,
-    },
-  });
+  const stockDataWithInput = await getStocks();
 
-  const itemsAsString = itemsFromBigintToString(items);
-  const itemsParsed = StocksSchema.parse(itemsAsString);
+  if (!Array.isArray(stockDataWithInput)) {
+    return <Box>error: {stockDataWithInput.error}</Box>;
+  }
 
-  return <Stocks stockData={itemsParsed} />;
+  return <Stocks stockDataWithInput={stockDataWithInput} />;
 }

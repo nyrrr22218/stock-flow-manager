@@ -14,11 +14,11 @@ export type ItemDeleteDialogProps = {
   open: boolean;
   loading: boolean;
   closeDialog: () => void;
-  deleteItem: (id: string, itemName: string) => Promise<void>;
+  handleItemDelete: (id: string, itemName: string) => Promise<void>;
   selectedItem: ItemName | null;
 };
 
 export type ItemList = {
-  itemNameList: ItemName[];
+  itemNameData: ItemName[];
   openDialog: (item: ItemName) => void;
 };

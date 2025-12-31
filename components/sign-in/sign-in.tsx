@@ -1,9 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useSignIn } from '@/hooks/use-sign-in';
 import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { signIn } from '@/app/actions/sign-in-actions';
 
 const SignInButton = dynamic(
   () => import('@/components/sign-in/sign-in-button').then((mod) => mod.SignInButton),
@@ -19,25 +19,41 @@ const VisibilityIconButton = dynamic(
 );
 
 export default function SignIn() {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    showPassword,
-    error,
-    loading,
-    handleLogin,
-    reverseVisibility,
-  } = useSignIn();
-
   const [mount, setMount] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMount(true);
   }, []);
 
+  const reverseVisibility = () => setShowPassword(!showPassword);
+
   if (!mount) return null;
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    setError('');
+    try {
+      const result = await signIn({
+        email,
+        password,
+      });
+      if (result?.error) {
+        setError(result.error);
+      }
+    } catch (err: unknown) {
+      console.error('[Login_Fatal]', err);
+      setError('通信エラーが発生しました');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Container maxWidth="xs" sx={{ mt: 15 }}>

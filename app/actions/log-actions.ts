@@ -1,10 +1,11 @@
-import { handleApiError } from '@/lib/handle-api-error';
+'use server';
+
+import { handleActionsError } from '@/lib/handle-actions-error';
 import { prisma } from '@/lib/prisma';
 import { LogsSchema } from '@/schemas/api/log-history';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
-import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function getLogs() {
   try {
     const logs = await prisma.logs.findMany({
       orderBy: {
@@ -13,8 +14,8 @@ export async function GET() {
     });
     const itemsAsString = itemsFromBigintToString(logs);
     const itemsParsed = LogsSchema.parse(itemsAsString);
-    return NextResponse.json({ logsData: itemsParsed });
-  } catch (err) {
-    return handleApiError(err);
+    return itemsParsed;
+  } catch (error) {
+    return handleActionsError(error, 'getLogs');
   }
 }

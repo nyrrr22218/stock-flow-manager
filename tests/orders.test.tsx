@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import Orders from '@/components/tab/orders/orders';
-import { Item } from '@/schemas';
+import { ItemDataWithInput } from '@/types';
 
 test('注文数入力が正しく反映されるか', () => {
-  const dummyData: Item[] = [
+  const dummyData: ItemDataWithInput[] = [
     {
       id: '1',
       item_name: 'テスト商品',
@@ -23,14 +23,15 @@ test('注文数入力が正しく反映されるか', () => {
         item_name_id: '1',
         produced_count: 10,
       },
+      orderInInput: '40',
     },
   ];
 
-  render(<Orders orderData={dummyData} />);
+  render(<Orders orderDataWithInput={dummyData} />);
 
   const input = screen.getByRole('spinbutton') as HTMLInputElement;
 
-  fireEvent.change(input, { target: { value: '999' } });
+  fireEvent.change(input, { target: { value: '300' } });
 
-  expect(input.value).toBe('999');
+  expect(input.value).toBe('300');
 });

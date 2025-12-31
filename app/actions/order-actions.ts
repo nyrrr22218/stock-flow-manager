@@ -1,11 +1,14 @@
-import { handleApiError } from '@/lib/handle-api-error';
-import { prisma } from '@/lib/prisma';
-import { ItemsSchema, OrdersPatchSchema } from '@/schemas/api/orders';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
-import { Prisma } from '@prisma/client';
-import { NextResponse } from 'next/server';
+'use server';
 
-export async function GET() {
+import { handleActionsError } from '@/lib/handle-actions-error';
+import { ItemsSchema, OrdersPatchSchema } from '@/schemas';
+import { ItemDataWithInput } from '@/types';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
+
+export async function getOrders() {
   try {
     const items = await prisma.item_name.findMany({
       include: {
@@ -14,17 +17,23 @@ export async function GET() {
         stock: true,
       },
     });
-    const itemsParsed = ItemsSchema.parse(itemsFromBigintToString(items));
-    return NextResponse.json({ items: itemsParsed });
-  } catch (err) {
-    return handleApiError(err);
+    const itemsAsString = itemsFromBigintToString(items);
+    const itemsParsed = ItemsSchema.parse(itemsAsString);
+
+    const orderDataWithInput: ItemDataWithInput[] = (itemsParsed ?? []).map((item) => ({
+      ...item,
+      orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+    }));
+
+    return orderDataWithInput;
+  } catch (error) {
+    return handleActionsError(error, 'getOrders');
   }
 }
 
-export async function PATCH(req: Request) {
+export async function patchOrders(ordersPageList: ItemDataWithInput[]) {
   try {
-    const body = await req.json();
-    const itemsParsed = OrdersPatchSchema.parse(body.items ?? []);
+    const itemsParsed = OrdersPatchSchema.parse(ordersPageList ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
@@ -56,8 +65,9 @@ export async function PATCH(req: Request) {
         });
       }
     });
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    return handleApiError(err);
+    revalidatePath('/main-page/tab/orders');
+    return { success: true };
+  } catch (error) {
+    return handleActionsError(error, 'patchOrders');
   }
 }

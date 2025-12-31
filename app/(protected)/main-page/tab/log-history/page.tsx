@@ -1,15 +1,11 @@
+import { getLogs } from '@/app/actions/log-actions';
 import LogHistory from '@/components/tab/log-history/log-history';
-import { prisma } from '@/lib/prisma';
-import { LogsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { Box } from '@mui/material';
 
 export default async function LogsPage() {
-  const logs = await prisma.logs.findMany({
-    orderBy: {
-      logged_at: 'desc',
-    },
-  });
-  const itemsAsString = itemsFromBigintToString(logs);
-  const itemsParsed = LogsSchema.parse(itemsAsString);
-  return <LogHistory logData={itemsParsed} />;
+  const logData = await getLogs();
+  if (!Array.isArray(logData)) {
+    return <Box>error: {logData.error}</Box>;
+  }
+  return <LogHistory logData={logData} />;
 }
