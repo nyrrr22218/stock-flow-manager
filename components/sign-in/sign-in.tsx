@@ -45,7 +45,7 @@ export default function SignIn() {
         password,
       });
       if (result?.error) {
-        setError(result.error);
+        setError('emailもしくはパスワードが違います');
       }
     } catch (err: unknown) {
       console.error('[Login_Fatal]', err);
