@@ -1,29 +1,42 @@
 'use client';
 
-import { useProducedCount } from '@/hooks/use-produced-count';
 import { gridCommon, paperCommon } from '@/styles/commons';
 import { Box, Paper, TextField, Typography } from '@mui/material';
-import type { ProductsCount } from '@/types';
+import type { ProducedCountDataWithInput } from '@/types';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
 import { InputStyle } from '@/styles/input-layout';
 import { ErrorMessage } from '@/components/commons/error-message';
 import { ButtonCommon } from '@/components/commons/button-common';
+import { useState } from 'react';
+import { patchProducts } from '@/app/actions/produced-count-actions';
 
-export default function ProducedCount({ productData }: { productData: ProductsCount[] }) {
-  const productDataWithInput = productData.map((item) => ({
-    ...item,
-    producedInInput:
-      item.product?.produced_count !== undefined ? String(item.product.produced_count) : '0',
-  }));
-  const {
-    producedCountList,
-    setProducedCountList,
-    editMode,
-    setEditMode,
-    handleSave,
-    errorMessage,
-    setErrorMessage,
-  } = useProducedCount(productDataWithInput);
+export default function ProducedCount({
+  productDataWithInput,
+}: {
+  productDataWithInput: ProducedCountDataWithInput[];
+}) {
+  const [producedCountList, setProducedCountList] = useState(productDataWithInput);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleSave = async () => {
+    if (loading) return;
+    setLoading(true);
+    setErrorMessage(null);
+    try {
+      const result = await patchProducts(producedCountList);
+      if (!result.success) {
+        setErrorMessage(result.error || '保存に失敗しました');
+        return;
+      }
+      setEditMode(false);
+    } catch {
+      setErrorMessage('エラー');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useHandleBeforeUnload(editMode);
 

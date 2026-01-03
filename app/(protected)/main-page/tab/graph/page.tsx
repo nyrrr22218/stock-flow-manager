@@ -1,19 +1,13 @@
+import { getOrders } from '@/app/actions/order-actions';
 import Graph from '@/components/tab/graph/graph';
-import { prisma } from '@/lib/prisma';
-import { ItemsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { Box } from '@mui/material';
 
 export default async function GraphPage() {
-  const items = await prisma.item_name.findMany({
-    include: {
-      stock: true,
-      order: true,
-      product: true,
-    },
-  });
+  const orderDataWithInput = await getOrders();
 
-  const itemsAsString = itemsFromBigintToString(items);
-  const itemsParsed = ItemsSchema.parse(itemsAsString);
+  if (!Array.isArray(orderDataWithInput)) {
+    return <Box>error: {orderDataWithInput.error}</Box>;
+  }
 
-  return <Graph graphData={itemsParsed} />;
+  return <Graph graphData={orderDataWithInput} />;
 }

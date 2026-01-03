@@ -1,5 +1,5 @@
 import type { Item } from '@/schemas/commons';
 
-export type ProductsCount = Pick<Item, 'id' | 'item_name' | 'product'>;
+type ProductsCount = Pick<Item, 'id' | 'item_name' | 'product'>;
 
 export type ProducedCountDataWithInput = ProductsCount & { producedInInput: string };

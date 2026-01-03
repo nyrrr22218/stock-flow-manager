@@ -1,17 +1,13 @@
+import { getProducts } from '@/app/actions/produced-count-actions';
 import ProducedCount from '@/components/tab/produced-count/products';
-import { prisma } from '@/lib/prisma';
-import { ProductsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { Box } from '@mui/material';
 
 export default async function ProducedCountPage() {
-  const items = await prisma.item_name.findMany({
-    include: {
-      product: true,
-    },
-  });
+  const productDataWithInput = await getProducts();
 
-  const itemsAsString = itemsFromBigintToString(items);
-  const itemsParsed = ProductsSchema.parse(itemsAsString);
+  if (!Array.isArray(productDataWithInput)) {
+    return <Box>error: {productDataWithInput.error}</Box>;
+  }
 
-  return <ProducedCount productData={itemsParsed} />;
+  return <ProducedCount productDataWithInput={productDataWithInput} />;
 }

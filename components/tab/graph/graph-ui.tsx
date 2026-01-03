@@ -2,8 +2,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import { Box, Paper, Typography } from '@mui/material';
 import type { Item } from '@/schemas';
 
-export default function GraphDisplay({ itemGraphData }: { itemGraphData: Item[] }) {
-  const chartData = itemGraphData.map((item) => ({
+export default function GraphDisplay({ graphData }: { graphData: Item[] }) {
+  const chartData = graphData.map((item) => ({
     name: item.item_name,
     注文数: Number(item.order?.order_count ?? 0),
     在庫数: Number(item.stock?.stock_count ?? 0),
@@ -18,7 +18,7 @@ export default function GraphDisplay({ itemGraphData }: { itemGraphData: Item[] 
       <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#f9f9f9' }}>
         <BarChart
           data={chartData}
-          width={Math.max(800, itemGraphData.length * 60)}
+          width={Math.max(800, graphData.length * 60)}
           height={600}
           margin={{ top: 20, right: 20, left: 20, bottom: 50 }}
         >

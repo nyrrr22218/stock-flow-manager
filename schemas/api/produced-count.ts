@@ -15,5 +15,3 @@ export const ProductsPatchSchema = z.array(
     producedInInput: z.string().min(0),
   }),
 );
-
-export type Product = z.infer<typeof ProductSchema>;

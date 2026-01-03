@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { expect, test } from 'vitest';
-import { ProductsCount } from '@/types';
+import { ProducedCountDataWithInput } from '@/types';
 import ProducedCount from '@/components/tab/produced-count/products';
 
 test('生産数入力が正しく反映されるか', () => {
-  const dummyData: ProductsCount[] = [
+  const dummyData: ProducedCountDataWithInput[] = [
     {
       id: '1',
       item_name: 'テスト商品',
@@ -13,10 +13,11 @@ test('生産数入力が正しく反映されるか', () => {
         item_name_id: '1',
         produced_count: 10,
       },
+      producedInInput: '20',
     },
   ];
 
-  render(<ProducedCount productData={dummyData} />);
+  render(<ProducedCount productDataWithInput={dummyData} />);
 
   const input = screen.getByRole('spinbutton') as HTMLInputElement;
 

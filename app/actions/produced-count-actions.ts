@@ -1,32 +1,36 @@
-// axiosの使用方法のために置いておく
+'use server';
 
-import { NextResponse } from 'next/server';
-import { ProductsSchema, ProductsPatchSchema } from '@/schemas/api/produced-count';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { ProductsPatchSchema, ProductsSchema } from '@/schemas';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+import { handleActionsError } from '@/lib/handle-actions-error';
 import { Prisma } from '@prisma/client';
-import { handleApiError } from '@/lib/handle-api-error';
+import { ProducedCountDataWithInput } from '@/types';
 
-export async function GET() {
+export async function getProducts() {
   try {
     const items = await prisma.item_name.findMany({
-      include: {
-        product: true,
-      },
+      include: { product: true },
     });
-    const itemsParsed = ProductsSchema.parse(itemsFromBigintToString(items));
-    return NextResponse.json({
-      items: itemsParsed,
-    });
-  } catch (err) {
-    return handleApiError(err);
+    const itemsAsString = itemsFromBigintToString(items);
+    const itemsParsed = ProductsSchema.parse(itemsAsString);
+
+    const productDataWithInput: ProducedCountDataWithInput[] = (itemsParsed ?? []).map((item) => ({
+      ...item,
+      producedInInput:
+        item.product?.produced_count !== undefined ? String(item.product.produced_count) : '0',
+    }));
+
+    return productDataWithInput;
+  } catch (error) {
+    return handleActionsError(error, 'getProducts');
   }
 }
 
-export async function PATCH(req: Request) {
+export async function patchProducts(producedCountList: ProducedCountDataWithInput[]) {
   try {
-    const body = await req.json();
-    const itemsParsed = ProductsPatchSchema.parse(body.items ?? []);
+    const itemsParsed = ProductsPatchSchema.parse(producedCountList ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
@@ -35,13 +39,10 @@ export async function PATCH(req: Request) {
           where: {
             item_name_id: itemId,
           },
-          include: {
-            item_name: true,
-          },
+          include: { item_name: true },
         });
         const oldValue = current?.produced_count ?? 0;
         const itemName = current?.item_name?.item_name ?? '不明な商品';
-
         if (oldValue !== count) {
           await tx.logs.create({
             data: {
@@ -63,8 +64,9 @@ export async function PATCH(req: Request) {
         });
       }
     });
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    return handleApiError(err);
+    revalidatePath('/main-page/tab/produced-count');
+    return { success: true };
+  } catch (error) {
+    return handleActionsError(error, 'patchProducts');
   }
 }
