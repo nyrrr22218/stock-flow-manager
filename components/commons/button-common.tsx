@@ -2,21 +2,20 @@
 
 import { buttonCommonStyles } from '@/styles/commons';
 
-import { Dispatch, SetStateAction } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
 type ButtonCommonProps = {
   editMode: boolean;
-  setEditMode: Dispatch<SetStateAction<boolean>>;
   handleSave: () => void;
+  handleCancel: () => void;
 };
 
-export const ButtonCommon = ({ editMode, setEditMode, handleSave }: ButtonCommonProps) => {
+export const ButtonCommon = ({ editMode, handleSave, handleCancel }: ButtonCommonProps) => {
   return (
     <>
       {editMode ? (
         <Box sx={{ ...buttonCommonStyles }}>
-          <Button onClick={() => setEditMode(false)}>キャンセル</Button>
+          <Button onClick={handleCancel}>キャンセル</Button>
           <Button onClick={handleSave} variant="contained" color="success">
             保存する
           </Button>

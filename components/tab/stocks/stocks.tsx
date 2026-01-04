@@ -43,11 +43,17 @@ export default function Stocks({
     }
   };
 
+  const handleCancel = () => {
+    setStockList(stockDataWithInput);
+    setEditMode(false);
+    setErrorMessage(null);
+  };
+
   return (
     <Box>
       <Typography variant="h4">在庫管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <ButtonCommon editMode={editMode} setEditMode={setEditMode} handleSave={handleSave} />
+      <ButtonCommon editMode={editMode} handleSave={handleSave} handleCancel={handleCancel} />
       <Box
         sx={{
           ...gridCommon,

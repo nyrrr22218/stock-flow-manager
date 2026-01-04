@@ -23,6 +23,8 @@ export default function ProducedCount({
   const [editMode, setEditMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useHandleBeforeUnload(editMode);
+
   const handleSave = async () => {
     if (loading) return;
     setLoading(true);
@@ -41,13 +43,17 @@ export default function ProducedCount({
     }
   };
 
-  useHandleBeforeUnload(editMode);
+  const handleCancel = () => {
+    setProducedCountList(productDataWithInput);
+    setEditMode(false);
+    setErrorMessage(null);
+  };
 
   return (
     <Box>
       <Typography variant="h4">生産数管理</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <ButtonCommon editMode={editMode} setEditMode={setEditMode} handleSave={handleSave} />
+      <ButtonCommon editMode={editMode} handleSave={handleSave} handleCancel={handleCancel} />
       <Box
         sx={{
           ...gridCommon,
