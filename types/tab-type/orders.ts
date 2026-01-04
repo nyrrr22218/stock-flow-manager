@@ -16,15 +16,17 @@ export type OrdersButtonProps = Pick<
   'open' | 'loading' | 'handleShippingCompleted'
 > & {
   editMode: boolean;
-  setEditMode: Dispatch<SetStateAction<boolean>>;
   handleSave: () => void;
+  handleCancel: () => void;
   errorMessage: string | null;
   setErrorMessage: Dispatch<SetStateAction<string | null>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export type TextFieldsProps = Pick<OrdersButtonProps, 'editMode' | 'setEditMode'> & {
+export type TextFieldsProps = {
   item: ItemDataWithInput;
+  editMode: boolean;
+  setEditMode: Dispatch<SetStateAction<boolean>>;
   setOrdersPageList: (value: SetStateAction<ItemDataWithInput[]>) => void;
 };
 

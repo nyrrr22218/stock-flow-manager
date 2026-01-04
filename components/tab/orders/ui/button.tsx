@@ -13,9 +13,9 @@ export const OrdersButton = ({
   errorMessage,
   setErrorMessage,
   editMode,
-  setEditMode,
   loading,
   handleSave,
+  handleCancel,
   open,
   setOpen,
   handleShippingCompleted,
@@ -46,7 +46,7 @@ export const OrdersButton = ({
         <Box sx={{ ...InputStyle, display: 'flex', gap: 2 }}>
           {editMode ? (
             <Box sx={{ ...buttonCommonStyles }}>
-              <Button onClick={() => setEditMode(false)}>キャンセル</Button>
+              <Button onClick={handleCancel}>キャンセル</Button>
               <Button onClick={handleSave} variant="contained" color="success">
                 保存する
               </Button>

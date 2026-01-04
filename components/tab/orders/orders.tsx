@@ -27,6 +27,7 @@ export default function Orders({
     setEditMode,
     loading,
     handleSave,
+    handleCancel,
     open,
     setOpen,
     handleShippingCompleted,
@@ -39,12 +40,12 @@ export default function Orders({
       <OrdersButton
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
-        setEditMode={setEditMode}
         editMode={editMode}
         loading={loading}
         open={open}
         setOpen={setOpen}
         handleSave={handleSave}
+        handleCancel={handleCancel}
         handleShippingCompleted={handleShippingCompleted}
       />
       <DisplayName />

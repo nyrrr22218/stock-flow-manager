@@ -33,6 +33,12 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
     }
   };
 
+  const handleCancel = () => {
+    setOrdersPageList(orderDataWithInput);
+    setEditMode(false);
+    setErrorMessage(null);
+  };
+
   const handleShippingCompleted = async () => {
     if (loading) return;
     setOpen(false);
@@ -65,6 +71,7 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
     setEditMode,
     loading,
     handleSave,
+    handleCancel,
     open,
     setOpen,
     handleShippingCompleted,
