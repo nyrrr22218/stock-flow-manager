@@ -1,9 +1,10 @@
 'use server';
 
-import { handleActionsError } from '@/lib/handle-actions-error';
 import { prisma } from '@/lib/prisma';
-import { LogsSchema } from '@/schemas/api/log-history';
+import { handleActionsError } from '@/lib/handle-actions-error';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+
+import { LogsSchema } from '@/schemas/api/log-history';
 
 export async function getLogs() {
   try {

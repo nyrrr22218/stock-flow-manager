@@ -2,16 +2,18 @@
 
 import { patchOrders } from '@/app/actions/order-actions';
 import { shippingCompleted } from '@/app/actions/shipment-actions';
+
 import type { ItemDataWithInput } from '@/types';
-import { ShippingUpdatedItems } from '@/types/tab-type/orders';
+import type { ShippingUpdatedItems } from '@/types/tab-type/orders';
+
 import { useState } from 'react';
 
 export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
-  const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [ordersPageList, setOrdersPageList] = useState(orderDataWithInput);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSave = async () => {
     if (loading) return;

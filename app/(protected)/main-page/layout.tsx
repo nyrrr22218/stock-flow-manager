@@ -1,8 +1,9 @@
 'use client';
 
 import { TabContents } from '@/components/commons/tab-contents';
-import { Box } from '@mui/material';
+
 import dynamic from 'next/dynamic';
+import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, ReactNode } from 'react';
 

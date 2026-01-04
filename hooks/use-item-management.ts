@@ -1,15 +1,17 @@
 'use client';
 
 import { deleteItem, postItem } from '@/app/actions/item-management-actions';
+
 import type { ItemName } from '@/schemas';
+
 import { useState } from 'react';
 
 export const useItemManagement = () => {
-  const [newItemName, setNewItemName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ItemName | null>(null);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [newItemName, setNewItemName] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();

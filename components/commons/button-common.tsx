@@ -1,6 +1,9 @@
+'use client';
+
 import { buttonCommonStyles } from '@/styles/commons';
-import { Box, Button, Typography } from '@mui/material';
+
 import { Dispatch, SetStateAction } from 'react';
+import { Box, Button, Typography } from '@mui/material';
 
 type ButtonCommonProps = {
   editMode: boolean;

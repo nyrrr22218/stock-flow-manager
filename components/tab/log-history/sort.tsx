@@ -1,9 +1,14 @@
-import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+'use client';
+
 import { sortMenu } from '../contents/objects';
+import { SortCalendar } from './ui/sort-calendar';
+
+import type { SortLogsProps } from '@/types';
+
+import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
-import { SortCalendar } from './ui/sort-calendar';
-import type { SortLogsProps } from '@/types';
 dayjs.locale('ja');
 
 export const SortLogs = ({

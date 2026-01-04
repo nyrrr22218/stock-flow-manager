@@ -1,11 +1,13 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
-import { Prisma } from '@prisma/client';
-import { ItemDataWithInputSchema } from '@/schemas';
 import { handleActionsError } from '@/lib/handle-actions-error';
-import { ItemDataWithInput, ShippingResult, ShippingUpdatedItems } from '@/types';
+
+import { ItemDataWithInputSchema } from '@/schemas';
+import type { ItemDataWithInput, ShippingResult, ShippingUpdatedItems } from '@/types';
+
+import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 export async function shippingCompleted(
   ordersPageList: ItemDataWithInput[],

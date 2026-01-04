@@ -1,14 +1,17 @@
 'use client';
 
-import { gridCommon, paperCommon } from '@/styles/commons';
-import { Box, Paper, TextField, Typography } from '@mui/material';
-import type { StockDataWithInput } from '@/types';
 import { useHandleBeforeUnload } from '@/hooks/use-handle-before-unload';
+import { patchStocks } from '@/app/actions/stock-actions';
+
 import { InputStyle } from '@/styles/input-layout';
+import { gridCommon, paperCommon } from '@/styles/commons';
 import { ErrorMessage } from '@/components/commons/error-message';
 import { ButtonCommon } from '@/components/commons/button-common';
+
+import type { StockDataWithInput } from '@/types';
+
 import { useState } from 'react';
-import { patchStocks } from '@/app/actions/stock-actions';
+import { Box, Paper, TextField, Typography } from '@mui/material';
 
 export default function Stocks({
   stockDataWithInput,
@@ -16,8 +19,8 @@ export default function Stocks({
   stockDataWithInput: StockDataWithInput[];
 }) {
   const [stockList, setStockList] = useState(stockDataWithInput);
-  const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useHandleBeforeUnload(editMode);

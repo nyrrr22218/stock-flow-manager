@@ -1,6 +1,7 @@
 'use client';
 
 import { logout } from '@/app/actions/sign-in-actions';
+
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 export default function Header({ userEmail }: { userEmail: string }) {

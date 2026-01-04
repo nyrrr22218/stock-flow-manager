@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { expect, test } from 'vitest';
-import { ProducedCountDataWithInput } from '@/types';
 import ProducedCount from '@/components/tab/produced-count/products';
+
+import type { ProducedCountDataWithInput } from '@/types';
+
+import { expect, test } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 test('生産数入力が正しく反映されるか', () => {
   const dummyData: ProducedCountDataWithInput[] = [

@@ -1,9 +1,13 @@
-import type { OrdersButtonProps } from '@/types';
-import { Box, Button, Typography } from '@mui/material';
+'use client';
+
 import { InputStyle } from '@/styles/input-layout';
 import { buttonCommonStyles } from '@/styles/commons';
 import { ErrorMessage } from '@/components/commons/error-message';
+
+import type { OrdersButtonProps } from '@/types';
+
 import { Dialogs } from './dialog';
+import { Box, Button, Typography } from '@mui/material';
 
 export const OrdersButton = ({
   errorMessage,

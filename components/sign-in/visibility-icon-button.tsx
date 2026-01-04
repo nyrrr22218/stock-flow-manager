@@ -1,5 +1,7 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+'use client';
+
 import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 type VisibilityIconButtonProps = {
   reverseVisibility: () => void;

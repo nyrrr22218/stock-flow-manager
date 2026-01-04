@@ -1,6 +1,9 @@
-import { Box, Typography } from '@mui/material';
+'use client';
+
 import { displayName } from '../../contents/objects';
 import { columnLayout } from '@/styles/orders-grid-layout';
+
+import { Box, Typography } from '@mui/material';
 
 export const DisplayName = () => {
   return (

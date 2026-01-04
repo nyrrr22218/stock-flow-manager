@@ -1,6 +1,9 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Box, Paper, Typography } from '@mui/material';
+'use client';
+
 import type { Item } from '@/schemas';
+
+import { Box, Paper, Typography } from '@mui/material';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export default function GraphDisplay({ graphData }: { graphData: Item[] }) {
   const chartData = graphData.map((item) => ({

@@ -1,7 +1,8 @@
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import { Box } from '@mui/material';
 import { createClient } from '@/lib/supabase-server';
+
+import { Box } from '@mui/material';
 import { redirect } from 'next/navigation';
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {

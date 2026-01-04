@@ -1,9 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { Box, Container, Paper, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { signIn } from '@/app/actions/sign-in-actions';
+
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+import { Box, Container, Paper, TextField, Typography } from '@mui/material';
 
 const SignInButton = dynamic(
   () => import('@/components/sign-in/sign-in-button').then((mod) => mod.SignInButton),
@@ -19,12 +20,12 @@ const VisibilityIconButton = dynamic(
 );
 
 export default function SignIn() {
+  const [error, setError] = useState('');
   const [mount, setMount] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMount(true);

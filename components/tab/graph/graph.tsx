@@ -1,10 +1,12 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
-import type { Item } from '@/schemas/commons';
 import { ErrorMessage } from '@/components/commons/error-message';
+
+import type { Item } from '@/schemas/commons';
+
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { Box, Typography } from '@mui/material';
 
 const GraphDisplay = dynamic(() => import('./graph-ui'), {
   ssr: false,

@@ -1,12 +1,14 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
-import { ProductsPatchSchema, ProductsSchema } from '@/schemas';
-import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 import { handleActionsError } from '@/lib/handle-actions-error';
+import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
+
+import type { ProducedCountDataWithInput } from '@/types';
+import { ProductsPatchSchema, ProductsSchema } from '@/schemas';
+
+import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
-import { ProducedCountDataWithInput } from '@/types';
 
 export async function getProducts() {
   try {

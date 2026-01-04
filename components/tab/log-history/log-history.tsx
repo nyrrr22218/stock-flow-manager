@@ -1,10 +1,12 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
-import type { Log } from '@/schemas';
 import { ErrorMessage } from '@/components/commons/error-message';
+
+import type { Log } from '@/schemas';
+
 import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
+import { Box, Typography } from '@mui/material';
 
 const SortLogs = dynamic(() => import('./sort').then((mod) => mod.SortLogs), {
   ssr: false,
@@ -12,10 +14,10 @@ const SortLogs = dynamic(() => import('./sort').then((mod) => mod.SortLogs), {
 });
 
 export default function LogHistory({ logData }: { logData: Log[] }) {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [descAscLog, setDescAscLog] = useState<'desc' | 'asc'>('desc');
   const [sortLogMenu, setSortLogMenu] = useState('');
   const [sortLogMonth, setSortLogMonth] = useState('');
+  const [descAscLog, setDescAscLog] = useState<'desc' | 'asc'>('desc');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // filter => sortの順で成形
   const sortLogs = useMemo(() => {

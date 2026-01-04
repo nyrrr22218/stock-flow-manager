@@ -1,7 +1,10 @@
-import { Tab, Tabs } from '@mui/material';
+'use client';
+
 import { tabList } from '../tab/contents/objects';
-import { usePathname } from 'next/navigation';
+
 import Link from 'next/link';
+import { Tab, Tabs } from '@mui/material';
+import { usePathname } from 'next/navigation';
 
 export const TabContents = () => {
   const pathname = usePathname();

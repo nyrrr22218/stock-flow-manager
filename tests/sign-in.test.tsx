@@ -1,8 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { redirect } from 'next/navigation';
 import { signIn } from '../app/actions/sign-in-actions';
+
 import { createClient } from '@/lib/supabase-server';
+
+import { redirect } from 'next/navigation';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@/lib/supabase-server', () => ({
   createClient: vi.fn(),

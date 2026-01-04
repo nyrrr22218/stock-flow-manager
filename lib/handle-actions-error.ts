@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
+import { Prisma } from '@prisma/client';
 
 type ResponseError = {
   success: boolean;

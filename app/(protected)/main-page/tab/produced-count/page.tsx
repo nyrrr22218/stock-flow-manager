@@ -1,5 +1,6 @@
 import { getProducts } from '@/app/actions/produced-count-actions';
 import ProducedCount from '@/components/tab/produced-count/products';
+
 import { Box } from '@mui/material';
 
 export default async function ProducedCountPage() {

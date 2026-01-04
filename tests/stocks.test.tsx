@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { expect, test } from 'vitest';
 import Stocks from '../components/tab/stocks/stocks';
-import { StockDataWithInput } from '@/types';
+
+import type { StockDataWithInput } from '@/types';
+
+import { expect, test } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 test('在庫入力が正しく反映されるか', () => {
   const dummyData: StockDataWithInput[] = [

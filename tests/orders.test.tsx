@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { expect, test } from 'vitest';
 import Orders from '@/components/tab/orders/orders';
-import { ItemDataWithInput } from '@/types';
+
+import type { ItemDataWithInput } from '@/types';
+
+import { expect, test } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 test('注文数入力が正しく反映されるか', () => {
   const dummyData: ItemDataWithInput[] = [

@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import { expect, test } from 'vitest';
-import { ItemDataWithInput } from '@/types';
 import { Calculate } from '@/components/tab/orders/ui/calculate';
+
+import type { ItemDataWithInput } from '@/types';
+
+import { expect, test } from 'vitest';
+import { render, screen } from '@testing-library/react';
 
 test('計算に結果が画面に表示されるか', () => {
   const dummyData: ItemDataWithInput = {

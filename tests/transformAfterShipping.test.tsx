@@ -1,6 +1,8 @@
-import { expect, test } from 'vitest';
 import { transformAfterShipping } from '../hooks/use-orders';
-import { ShippingUpdatedItems } from '@/types/tab-type/orders';
+
+import type { ShippingUpdatedItems } from '@/types/tab-type/orders';
+
+import { expect, test } from 'vitest';
 
 test('出荷完了時に更新されリセットされること', () => {
   const dummyPrev = [

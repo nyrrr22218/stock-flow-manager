@@ -1,4 +1,7 @@
+'use client';
+
 import type { ItemDataWithInput } from '@/types';
+
 import { Typography } from '@mui/material';
 
 function stockCalculate(order: number, stock: number, product: number) {

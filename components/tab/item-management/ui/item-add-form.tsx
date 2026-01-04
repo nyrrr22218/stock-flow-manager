@@ -1,5 +1,9 @@
+'use client';
+
 import { ErrorMessage } from '@/components/commons/error-message';
+
 import type { AddItemFormProps } from '@/types';
+
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 export const AddItemForm = ({

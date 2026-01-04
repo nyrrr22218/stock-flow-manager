@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, CircularProgress } from '@mui/material';
 
 export const SignInButton = ({ loading }: { loading: boolean }) => {
