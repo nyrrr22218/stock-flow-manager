@@ -17,6 +17,7 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
   const [sortLogMenu, setSortLogMenu] = useState('');
   const [sortLogMonth, setSortLogMonth] = useState('');
 
+  // filter => sortの順で成形
   const sortLogs = useMemo(() => {
     const filtered = logData.filter((item) => {
       if (sortLogMonth !== '') {

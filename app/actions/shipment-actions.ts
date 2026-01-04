@@ -22,6 +22,7 @@ export async function shippingCompleted(
         const orderCount = Number(item.orderInInput) || 0;
         const productCount = item.product?.produced_count ?? 0;
         const stockCount = item.stock?.stock_count ?? 0;
+        // 最終不足数 = 生産数 + 在庫数 - 注文数
         const finalCount = productCount + stockCount - orderCount;
 
         if (finalCount < 0) {

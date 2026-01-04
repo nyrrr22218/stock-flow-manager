@@ -1,6 +1,11 @@
-import { stockCalculate } from '@/src/stock-calculator';
 import type { ItemDataWithInput } from '@/types';
 import { Typography } from '@mui/material';
+
+function stockCalculate(order: number, stock: number, product: number) {
+  const restOrder = Math.max(0, order - stock);
+  const finalRestOrder = Math.max(0, restOrder - product);
+  return { stock, restOrder, product, finalRestOrder };
+}
 
 export const Calculate = ({ item }: { item: ItemDataWithInput }) => {
   const order = Number(item.orderInInput ?? 0);
