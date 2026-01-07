@@ -7,10 +7,6 @@ import type { SortLogsProps } from '@/types';
 
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/ja';
-dayjs.locale('ja');
-
 export const SortLogs = ({
   descAscLog,
   setDescAscLog,

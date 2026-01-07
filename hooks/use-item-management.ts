@@ -32,6 +32,7 @@ export const useItemManagement = () => {
     }
   };
 
+  // item_nameをitemNameとしています
   const handleItemDelete = async (id: string, itemName: string) => {
     if (loading) return;
     setLoading(true);

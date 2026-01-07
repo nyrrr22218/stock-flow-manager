@@ -9,8 +9,6 @@ import { ItemNameAddSchema, ItemNamesSchema } from '@/schemas';
 import { Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
-type DeleteResult = { success: true; error?: never } | { success: false; error: string };
-
 export async function getItems() {
   try {
     const itemsAsString = await prisma.item_name.findMany();
@@ -52,7 +50,7 @@ export async function postItem(newItemName: string) {
   }
 }
 
-export async function deleteItem(id: string, itemName: string): Promise<DeleteResult> {
+export async function deleteItem(id: string, itemName: string) {
   try {
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return (
@@ -71,10 +69,6 @@ export async function deleteItem(id: string, itemName: string): Promise<DeleteRe
     revalidatePath('/main-page/tab/item-management');
     return { success: true };
   } catch (error) {
-    const err = handleActionsError(error, 'deleteItem');
-    return {
-      success: false,
-      error: err.error || '商品削除中に予期せぬエラーが発生しました',
-    };
+    return handleActionsError(error, 'deleteItem');
   }
 }

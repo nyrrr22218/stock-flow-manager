@@ -11,6 +11,7 @@ export default function Footer() {
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
         <Link
           target="_blank"
+          rel="noopener"
           color="inherit"
           href="https://docs.google.com/forms/d/e/1FAIpQLSembPoKJ5hspVCyvB7KFGG6LtSgHRJGbX5I42ptobodInQcRA/viewform?usp=header"
         >

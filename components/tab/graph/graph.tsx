@@ -10,7 +10,11 @@ import { Box, Typography } from '@mui/material';
 
 const GraphDisplay = dynamic(() => import('./graph-ui'), {
   ssr: false,
-  loading: () => <Typography variant="h5">Loading Chart...</Typography>,
+  loading: () => (
+    <Box sx={{ height: 600 }}>
+      <Typography variant="h5">Loading Chart...</Typography>
+    </Box>
+  ),
 });
 
 export default function Graph({ graphData }: { graphData: Item[] }) {
