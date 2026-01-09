@@ -20,7 +20,7 @@ export default function MainPageLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 300);
+    const timer = setTimeout(() => setLoading(false), 100);
     return () => clearTimeout(timer);
   }, [pathname]);
 

@@ -7,7 +7,15 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": [
+    "autoincrement",
+    "Bloking",
+    "Contentful",
+    "Findy",
+    "itemname",
+    "pkey",
     "Ranmaru",
-    "sslaccept"
+    "sslaccept",
+    "Timestamptz",
+    "Versel"
   ]
 }
