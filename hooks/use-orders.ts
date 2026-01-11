@@ -32,7 +32,6 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
       setLoading(false);
     }
   };
-
   const handleCancel = () => {
     setOrdersPageList(orderDataWithInput);
     setEditMode(false);
@@ -78,6 +77,7 @@ export const useOrders = (orderDataWithInput: ItemDataWithInput[]) => {
   };
 };
 
+// error用でundefinedでも起動するように
 export const transformAfterShipping = (
   prev: ItemDataWithInput[],
   shippingUpdatedItems: ShippingUpdatedItems[],
@@ -90,11 +90,11 @@ export const transformAfterShipping = (
       stock: list.stock
         ? {
             ...list.stock,
-            stock_count: updated ? updated.stock.stock_count : list.stock.stock_count,
+            stock_count: updated?.stock.stock_count ?? list.stock.stock_count,
           }
         : list.stock,
-      order: list.order ? { ...list.order, order_count: 0 } : list.order,
-      product: list.product ? { ...list.product, produced_count: 0 } : list.product,
+      order: list.order && { ...list.order, order_count: 0 },
+      product: list.product && { ...list.product, produced_count: 0 },
     };
   });
 };

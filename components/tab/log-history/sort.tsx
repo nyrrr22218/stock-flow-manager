@@ -1,19 +1,16 @@
 'use client';
 
 import { sortMenu } from '../contents/objects';
-import { SortCalendar } from './ui/sort-calendar';
 
 import type { SortLogsProps } from '@/types';
 
-import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 export const SortLogs = ({
   descAscLog,
   setDescAscLog,
   sortLogMenu,
   setSortLogMenu,
-  sortLogMonth,
-  setSortLogMonth,
 }: SortLogsProps) => {
   const descAscLogChange = (e: SelectChangeEvent<'desc' | 'asc'>) => {
     setDescAscLog(e.target.value);
@@ -24,8 +21,7 @@ export const SortLogs = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-      <SortCalendar sortLogMonth={sortLogMonth} setSortLogMonth={setSortLogMonth} />
+    <>
       <FormControl sx={{ width: 150 }}>
         <InputLabel id="log-sort-label" shrink>
           絞り込み
@@ -65,6 +61,6 @@ export const SortLogs = ({
           <MenuItem value="asc">古い順</MenuItem>
         </Select>
       </FormControl>
-    </Box>
+    </>
   );
 };

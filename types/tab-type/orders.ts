@@ -40,3 +40,10 @@ export type ShippingUpdatedItems = {
 export type ShippingResult =
   | { success: true; shippingUpdatedItems: ShippingUpdatedItems[]; error?: never }
   | { success: false; error: string; shippingUpdatedItems?: never };
+
+export type Result = {
+  stock: number;
+  restOrder: number;
+  product: number;
+  finalRestOrder: number;
+};

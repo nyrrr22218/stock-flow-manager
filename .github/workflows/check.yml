@@ -1,23 +1,23 @@
 name: Code Quality Check
 
-on: [push, pull_request] # プッシュかプルリクを送ると起動
+on: [push, pull_request]
 
 jobs:
   lint-and-test:
-    runs-on: ubuntu-latest # GitHubが貸してくれるLinuxマシンで実行
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # コードをコピー
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Node.jsのバージョン指定
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install # ライブラリをインストール
+        run: npm install
 
       - name: Run Lint
-        run: npm run lint # コードの書き間違いチェックを実行
+        run: npm run lint
 
       - name: Run Test
         run: echo "No tests to run"

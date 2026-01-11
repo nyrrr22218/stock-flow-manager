@@ -5,8 +5,9 @@ export type SortLogsProps = {
   setDescAscLog: Dispatch<SetStateAction<'desc' | 'asc'>>;
   sortLogMenu: string;
   setSortLogMenu: Dispatch<SetStateAction<string>>;
+};
+
+export type SortCalendar = {
   sortLogMonth: string;
   setSortLogMonth: Dispatch<SetStateAction<string>>;
 };
-
-export type SortCalendar = Pick<SortLogsProps, 'sortLogMonth' | 'setSortLogMonth'>;

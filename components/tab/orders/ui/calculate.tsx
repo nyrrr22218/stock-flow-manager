@@ -1,5 +1,6 @@
 'use client';
 
+import { calculateStyle } from '@/styles/variants-style';
 import type { ItemDataWithInput } from '@/types';
 
 import { Typography } from '@mui/material';
@@ -31,12 +32,7 @@ export const Calculate = ({ item }: { item: ItemDataWithInput }) => {
         align="right"
         data-testid="res-finalRestOrder"
         sx={{
-          display: 'inline-block',
-          width: 'fit-content',
-          ml: 'auto',
-          pb: 0.2,
-          color: result.finalRestOrder > 0 ? 'red' : 'inherit',
-          fontWeight: result.finalRestOrder > 0 ? 'bold' : 'normal',
+          ...calculateStyle(result),
         }}
       >
         {result.finalRestOrder}

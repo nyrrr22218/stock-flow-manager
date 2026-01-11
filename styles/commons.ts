@@ -20,3 +20,16 @@ export const paperCommon = {
   gap: 1,
   '&:hover': { boxShadow: 3 },
 };
+
+export const loadingMotion = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  bgcolor: 'rgba(255, 255, 255, 0.7)',
+  zIndex: 1,
+};

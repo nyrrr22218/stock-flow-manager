@@ -8,11 +8,21 @@ import { redirect } from 'next/navigation';
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) {
     redirect('/sign-in');
   }
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (!user || error) {
+    redirect('/sign-in');
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header userEmail={user.email ?? ''} />

@@ -1,6 +1,7 @@
 'use client';
 
 import { tabList } from '../tab/contents/objects';
+import { tabContentsCommon } from '@/styles/variants-style';
 
 import Link from 'next/link';
 import { Tab, Tabs } from '@mui/material';
@@ -20,17 +21,7 @@ export const TabContents = () => {
             component={Link}
             href={tab.href}
             sx={{
-              fontSize: '20px',
-              mx: 2,
-              transition: '0.3s',
-              color: isActive ? 'blueviolet' : 'inherit',
-              fontWeight: isActive ? 'bold' : 'normal',
-              borderBottom: isActive ? '3px solid blueviolet' : '3px solid transparent',
-              borderRadius: '8px 8px 0 0',
-              '&:hover': {
-                bgcolor: 'rgba(0, 0, 0, 0.04)',
-                color: 'blueviolet',
-              },
+              ...tabContentsCommon(isActive),
             }}
           />
         );

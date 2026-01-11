@@ -1,5 +1,6 @@
 'use client';
 
+import { SortCalendar } from './ui/sort-calendar';
 import { ErrorMessage } from '@/components/commons/error-message';
 
 import type { Log } from '@/schemas';
@@ -43,14 +44,15 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
     <Box>
       <Typography variant="h4">各種変更・出荷履歴</Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
-      <SortLogs
-        sortLogMenu={sortLogMenu}
-        setSortLogMenu={setSortLogMenu}
-        descAscLog={descAscLog}
-        setDescAscLog={setDescAscLog}
-        sortLogMonth={sortLogMonth}
-        setSortLogMonth={setSortLogMonth}
-      />
+      <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+        <SortCalendar sortLogMonth={sortLogMonth} setSortLogMonth={setSortLogMonth} />
+        <SortLogs
+          sortLogMenu={sortLogMenu}
+          setSortLogMenu={setSortLogMenu}
+          descAscLog={descAscLog}
+          setDescAscLog={setDescAscLog}
+        />
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, gap: 2 }}>
         {sortLogs.length === 0 && <Typography variant="h5">見つかりませんでした</Typography>}
         {sortLogs.map((l) => (
