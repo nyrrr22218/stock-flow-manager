@@ -43,6 +43,7 @@ export async function shippingCompleted(
           where: { item_name_id: itemId },
           data: { produced_count: 0 },
         });
+        // 注文があった商品を配列として保持
         if (orderCount > 0) {
           itemsShipment.push({
             id: item.id,
@@ -50,6 +51,7 @@ export async function shippingCompleted(
             count: orderCount,
           });
         }
+        // 返り値として表示するdata
         shippingUpdatedItems.push({
           id: item.id,
           stock: { stock_count: finalCount },
@@ -57,6 +59,7 @@ export async function shippingCompleted(
           product: { produced_count: 0 },
         });
       }
+      // log保存,shipmentstableへ追加
       if (itemsShipment.length > 0) {
         const shippingLogs = itemsShipment
           .map((item) => `${item.name}: ${item.count}枚`)
@@ -74,7 +77,7 @@ export async function shippingCompleted(
     revalidatePath('/main-page/tab/orders');
     return { success: true, shippingUpdatedItems };
   } catch (error) {
-    const err = handleActionsError(error, 'completeShipping');
+    const err = handleActionsError(error, 'shippingCompleted');
     return {
       success: false,
       error: err.error || '出荷処理中に予期せぬエラーが発生しました',

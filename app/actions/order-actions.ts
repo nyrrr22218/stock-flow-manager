@@ -24,7 +24,7 @@ export async function getOrders() {
 
     const orderDataWithInput: ItemDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      orderInInput: item.order?.order_count !== undefined ? String(item.order.order_count) : '0',
+      orderInInput: String(item.order?.order_count ?? '0'),
     }));
 
     return orderDataWithInput;

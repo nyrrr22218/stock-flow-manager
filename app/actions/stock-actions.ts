@@ -20,7 +20,7 @@ export async function getStocks() {
 
     const stockDataWithInput: StockDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      stockInInput: item.stock?.stock_count !== undefined ? String(item.stock.stock_count) : '0',
+      stockInInput: String(item.stock?.stock_count ?? '0'),
     }));
 
     return stockDataWithInput;

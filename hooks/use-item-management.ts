@@ -15,7 +15,10 @@ export const useItemManagement = () => {
 
   const handleItemAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading || !newItemName.trim()) return;
+    if (loading || !newItemName.trim()) {
+      setErrorMessage('使用できません');
+      return;
+    }
     setLoading(true);
     setErrorMessage(null);
     try {
@@ -41,7 +44,7 @@ export const useItemManagement = () => {
     try {
       const result = await deleteItem(id, itemName);
       if (result.success === false) {
-        setErrorMessage(result.error || '出荷処理に失敗しました');
+        setErrorMessage(result.error || '削除に失敗しました');
         return;
       }
     } catch {

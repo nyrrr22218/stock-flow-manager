@@ -20,8 +20,7 @@ export async function getProducts() {
 
     const productDataWithInput: ProducedCountDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      producedInInput:
-        item.product?.produced_count !== undefined ? String(item.product.produced_count) : '0',
+      producedInInput: String(item.product?.produced_count ?? '0'),
     }));
 
     return productDataWithInput;
