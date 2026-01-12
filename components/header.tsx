@@ -23,7 +23,7 @@ export default function Header({ userEmail }: { userEmail: string }) {
                 }
               }}
             >
-              Logout
+              Signout
             </Button>
           </Box>
         </Toolbar>
