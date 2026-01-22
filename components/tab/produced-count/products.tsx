@@ -66,7 +66,6 @@ export default function ProducedCount({
               {pr.item_name}
             </Typography>
             <TextField
-              type="number"
               value={pr.producedInInput}
               InputProps={{
                 readOnly: !editMode,
@@ -82,11 +81,12 @@ export default function ProducedCount({
                   );
                 }
               }}
-              onChange={(e) =>
+              onChange={(e) => {
+                const sanitizedValue = e.target.value.replace(/[^0-9]/g, '');
                 setProducedCountList((prev) =>
-                  prev.map((i) => (i.id === pr.id ? { ...i, producedInInput: e.target.value } : i)),
-                )
-              }
+                  prev.map((i) => (i.id === pr.id ? { ...i, producedInInput: sanitizedValue } : i)),
+                );
+              }}
             />
           </Paper>
         ))}

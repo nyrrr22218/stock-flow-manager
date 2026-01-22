@@ -74,7 +74,6 @@ export default function Stocks({
             </Typography>
             <TextField
               id={`stock-input-${st.id}`}
-              type="number"
               value={st.stockInInput ?? ''}
               InputProps={{
                 readOnly: !editMode,
@@ -90,11 +89,12 @@ export default function Stocks({
                   );
                 }
               }}
-              onChange={(e) =>
+              onChange={(e) => {
+                const sanitizedValue = e.target.value.replace(/[^0-9]/g, '');
                 setStockList((prev) =>
-                  prev.map((i) => (i.id === st.id ? { ...i, stockInInput: e.target.value } : i)),
-                )
-              }
+                  prev.map((i) => (i.id === st.id ? { ...i, stockInInput: sanitizedValue } : i)),
+                );
+              }}
             />
           </Paper>
         ))}
