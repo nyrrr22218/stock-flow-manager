@@ -13,7 +13,11 @@ export const DisplayName = () => {
       }}
     >
       {displayName.map((li, index) => (
-        <Typography key={index} variant="h5" fontWeight="bold">
+        <Typography
+          key={index}
+          variant="h5"
+          sx={{ fontSize: { xs: '0.8rem', md: '1.2rem' }, fontWeight: 'bold' }}
+        >
           {li}
         </Typography>
       ))}

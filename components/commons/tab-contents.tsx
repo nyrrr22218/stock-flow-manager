@@ -11,7 +11,20 @@ export const TabContents = () => {
   const pathname = usePathname();
 
   return (
-    <Tabs value={false} variant="scrollable" scrollButtons="auto">
+    <Tabs
+      value={false}
+      variant="standard"
+      sx={{
+        '& .MuiTabs-flexContainer': {
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'left',
+        },
+        '& .MuiTabs-indicator': {
+          display: 'none',
+        },
+      }}
+    >
       {tabList.map((tab) => {
         const isActive = pathname === tab.href;
         return (

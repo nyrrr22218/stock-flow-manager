@@ -1,8 +1,9 @@
 import { Result } from '@/types';
 
 export const tabContentsCommon = (isActive: boolean) => ({
-  fontSize: '20px',
-  mx: 2,
+  width: { xs: '33.33%', sm: 'auto' },
+  fontSize: { xs: '14px', md: '20px' },
+  mx: { xs: 0, md: 2 },
   transition: '0.3s',
   color: isActive ? 'blueviolet' : 'inherit',
   fontWeight: isActive ? 'bold' : 'normal',

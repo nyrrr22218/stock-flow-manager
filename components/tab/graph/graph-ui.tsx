@@ -7,24 +7,31 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 
 export default function GraphDisplay({ graphData }: { graphData: Item[] }) {
   const chartData = graphData.map((item) => ({
-    name: item.ItemName,
+    name: item.name,
     注文数: Number(item.order?.orderCount ?? 0),
     在庫数: Number(item.stock?.stockCount ?? 0),
-    生産数: Number(item.product?.producedCount ?? 0),
+    生産数: Number(item.producedCount?.producedCount ?? 0),
   }));
 
   return (
-    <Paper sx={{ p: 3, width: '100%', mt: 2 }}>
+    <Paper sx={{ p: { xs: 0, md: 3 }, width: '100%', mt: 2 }}>
       <Typography variant="h4" gutterBottom>
         製品数値比較
       </Typography>
-      <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#f9f9f9' }}>
+      <Box
+        sx={{
+          width: '100%',
+          overflowX: 'auto',
+          bgcolor: '#f9f9f9',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         <BarChart
           data={chartData}
           // データ長に応じ可変,最低幅確保
-          width={Math.max(800, graphData.length * 60)}
-          height={600}
-          margin={{ top: 20, right: 20, left: 20, bottom: 50 }}
+          width={Math.max(window?.innerWidth < 600 ? 500 : 800, graphData.length * 50)}
+          height={window?.innerWidth < 600 ? 400 : 600}
+          margin={{ top: 20, right: 10, left: 15, bottom: 80 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" interval={0} angle={-45} textAnchor="end" height={5} />

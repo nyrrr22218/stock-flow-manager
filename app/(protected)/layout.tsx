@@ -26,7 +26,10 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header userEmail={user.email ?? ''} />
-      <Box component="main" sx={{ flexGrow: 1, minHeight: 'calc(100vh - 120px)' }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, minHeight: { xs: 'calc(100vh - 100px)', md: 'calc(100vh - 120px)' } }}
+      >
         {children}
       </Box>
       <Footer />

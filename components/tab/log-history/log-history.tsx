@@ -42,7 +42,9 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
 
   return (
     <Box>
-      <Typography variant="h4">各種変更・出荷履歴</Typography>
+      <Typography variant="h4" sx={{ pb: 3 }}>
+        各種変更・出荷履歴
+      </Typography>
       <ErrorMessage errorMessage={errorMessage} clearError={() => setErrorMessage(null)} />
       <Box sx={{ display: 'flex', justifyContent: 'right' }}>
         <SortCalendar sortLogMonth={sortLogMonth} setSortLogMonth={setSortLogMonth} />
@@ -65,10 +67,11 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
               borderBottom: 1,
               borderColor: 'divider',
               p: 1,
+              gap: 1,
             }}
           >
             <Typography>{l.logMessage}</Typography>
-            <Typography>
+            <Typography sx={{ fontSize: '0.8rem' }}>
               {new Date(l.loggedAt).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}
             </Typography>
           </Box>

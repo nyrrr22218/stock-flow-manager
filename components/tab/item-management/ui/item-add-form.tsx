@@ -5,6 +5,7 @@ import { ErrorMessage } from '@/components/commons/error-message';
 import type { AddItemFormProps } from '@/types';
 
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { useId } from 'react';
 
 export const AddItemForm = ({
   handleItemAdd,
@@ -14,6 +15,7 @@ export const AddItemForm = ({
   errorMessage,
   setErrorMessage,
 }: AddItemFormProps) => {
+  const textFieldId = useId();
   return (
     <>
       <Typography variant="h4">商品追加</Typography>
@@ -31,6 +33,7 @@ export const AddItemForm = ({
           >
             <Box sx={{ flexGrow: 1 }}>
               <TextField
+                id={textFieldId}
                 label="商品名"
                 variant="outlined"
                 size="small"
