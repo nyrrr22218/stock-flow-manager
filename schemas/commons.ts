@@ -3,19 +3,19 @@ import { z } from 'zod';
 const OrderSchema = z.object({
   id: z.string(),
   item_name_id: z.string(),
-  order_count: z.number(),
+  order_count: z.number().min(0),
 });
 
 const StockSchema = z.object({
   id: z.string(),
   item_name_id: z.string(),
-  stock_count: z.number(),
+  stock_count: z.number().min(0),
 });
 
 const ProductSchema = z.object({
   id: z.string(),
   item_name_id: z.string(),
-  produced_count: z.number(),
+  produced_count: z.number().min(0),
 });
 
 export const ItemSchema = z.object({
