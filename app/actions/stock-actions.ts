@@ -12,7 +12,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function getStocks() {
   try {
-    const items = await prisma.item_name.findMany({
+    const items = await prisma.itemName.findMany({
       include: { stock: true },
     });
     const itemsAsString = itemsFromBigintToString(items);
@@ -20,7 +20,7 @@ export async function getStocks() {
 
     const stockDataWithInput: StockDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      stockInInput: String(item.stock?.stock_count ?? '0'),
+      stockInInput: String(item.stock?.stockCount ?? '0'),
     }));
 
     return stockDataWithInput;
@@ -38,29 +38,29 @@ export async function patchStocks(stockList: StockDataWithInput[]) {
         const count = Number(item.stockInInput) || 0;
         const current = await tx.stock.findUnique({
           where: {
-            item_name_id: itemId,
+            itemName_id: itemId,
           },
-          include: { item_name: true },
+          include: { ItemName: true },
         });
-        const oldValue = current?.stock_count ?? 0;
-        const itemName = current?.item_name?.item_name ?? '不明な商品';
+        const oldValue = current?.stockCount ?? 0;
+        const itemName = current?.ItemName?.name ?? '不明な商品';
         if (oldValue !== count) {
-          await tx.logs.create({
+          await tx.log.create({
             data: {
-              log_message: `[在庫数]${itemName} : ${oldValue} => ${count}へ変更しました`,
+              logMessage: `[在庫数]${itemName} : ${oldValue} => ${count}へ変更しました`,
             },
           });
         }
         await tx.stock.upsert({
           where: {
-            item_name_id: itemId,
+            itemName_id: itemId,
           },
           update: {
-            stock_count: count,
+            stockCount: count,
           },
           create: {
-            item_name_id: itemId,
-            stock_count: count,
+            itemName_id: itemId,
+            stockCount: count,
           },
         });
       }

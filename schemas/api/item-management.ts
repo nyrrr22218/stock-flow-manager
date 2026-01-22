@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 const ItemNameSchema = z.object({
   id: z.string(),
-  item_name: z.string(),
+  name: z.string(),
 });
 
 export const ItemNameAddSchema = ItemNameSchema.pick({
-  item_name: true,
+  name: true,
 });
 
 export const ItemNamesSchema = z.array(ItemNameSchema);

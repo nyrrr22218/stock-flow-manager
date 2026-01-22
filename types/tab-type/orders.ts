@@ -32,9 +32,9 @@ export type TextFieldsProps = {
 
 export type ShippingUpdatedItems = {
   id: string;
-  stock: { stock_count: number };
-  order?: { order_count: number };
-  product?: { produced_count: number };
+  stock: { stockCount: number };
+  order?: { orderCount: number };
+  producedCount?: { producedCount: number };
 };
 
 export type ShippingResult =

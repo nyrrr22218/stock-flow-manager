@@ -90,11 +90,11 @@ export const transformAfterShipping = (
       stock: list.stock
         ? {
             ...list.stock,
-            stock_count: updated?.stock.stock_count ?? list.stock.stock_count,
+            stockCount: updated?.stock.stockCount ?? list.stock.stockCount,
           }
         : list.stock,
-      order: list.order && { ...list.order, order_count: 0 },
-      product: list.product && { ...list.product, produced_count: 0 },
+      order: list.order && { ...list.order, orderCount: 0 },
+      producedCount: list.producedCount && { ...list.producedCount, producedCount: 0 },
     };
   });
 };

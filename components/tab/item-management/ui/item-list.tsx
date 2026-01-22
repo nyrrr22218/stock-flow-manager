@@ -18,7 +18,7 @@ export const ItemList = ({ itemNameData, openDialog }: ItemListType) => {
           }}
         >
           <Typography variant="subtitle1" fontWeight="bold">
-            {item.item_name}
+            {item.ItemName}
           </Typography>
           <Button
             onClick={() => openDialog(item)}

@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const StockSchema = ItemSchema.pick({
   id: true,
-  item_name: true,
+  name: true,
   stock: true,
 });
 

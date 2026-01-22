@@ -20,7 +20,7 @@ export const ItemDeleteDialog = ({
         <Button
           onClick={() => {
             if (selectedItem) {
-              handleItemDelete(selectedItem.id, selectedItem.item_name);
+              handleItemDelete(selectedItem.id, selectedItem.ItemName);
             }
             closeDialog();
           }}

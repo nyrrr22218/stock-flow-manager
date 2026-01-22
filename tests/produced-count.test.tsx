@@ -9,11 +9,11 @@ test('生産数入力が正しく反映されるか', () => {
   const dummyData: ProducedCountDataWithInput[] = [
     {
       id: '1',
-      item_name: 'テスト商品',
-      product: {
+      name: 'テスト商品',
+      producedCount: {
         id: 'stock-1',
-        item_name_id: '1',
-        produced_count: 10,
+        itemName_id: '1',
+        producedCount: 10,
       },
       producedInInput: '20',
     },
@@ -21,7 +21,7 @@ test('生産数入力が正しく反映されるか', () => {
 
   render(<ProducedCount productDataWithInput={dummyData} />);
 
-  const input = screen.getByRole('spinbutton') as HTMLInputElement;
+  const input = screen.getByRole('textbox') as HTMLInputElement;
 
   fireEvent.change(input, { target: { value: '999' } });
 

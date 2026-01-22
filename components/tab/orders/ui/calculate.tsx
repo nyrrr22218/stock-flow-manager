@@ -13,8 +13,8 @@ function stockCalculate(order: number, stock: number, product: number) {
 
 export const Calculate = ({ item }: { item: ItemDataWithInput }) => {
   const order = Number(item.orderInInput ?? 0);
-  const stock = Number(item.stock?.stock_count ?? 0);
-  const product = Number(item.product?.produced_count ?? 0);
+  const stock = Number(item.stock?.stockCount ?? 0);
+  const product = Number(item.producedCount?.producedCount ?? 0);
   const result = stockCalculate(order, stock, product);
 
   return (

@@ -12,10 +12,10 @@ import { revalidatePath } from 'next/cache';
 
 export async function getOrders() {
   try {
-    const items = await prisma.item_name.findMany({
+    const items = await prisma.itemName.findMany({
       include: {
         order: true,
-        product: true,
+        producedCount: true,
         stock: true,
       },
     });
@@ -24,7 +24,7 @@ export async function getOrders() {
 
     const orderDataWithInput: ItemDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      orderInInput: String(item.order?.order_count ?? '0'),
+      orderInInput: String(item.order?.orderCount ?? '0'),
     }));
 
     return orderDataWithInput;
@@ -41,28 +41,28 @@ export async function patchOrders(ordersPageList: ItemDataWithInput[]) {
         const itemId = BigInt(item.id);
         const count = Number(item.orderInInput) || 0;
         const current = await tx.order.findUnique({
-          where: { item_name_id: itemId },
-          include: { item_name: true },
+          where: { itemName_id: itemId },
+          include: { ItemName: true },
         });
-        const oldValue = current?.order_count ?? 0;
-        const itemName = current?.item_name?.item_name ?? '不明な商品';
+        const oldValue = current?.orderCount ?? 0;
+        const itemName = current?.ItemName?.name ?? '不明な商品';
         if (oldValue !== count) {
-          await tx.logs.create({
+          await tx.log.create({
             data: {
-              log_message: `[注文数]${itemName} : ${oldValue} => ${count}へ変更しました`,
+              logMessage: `[注文数]${itemName} : ${oldValue} => ${count}へ変更しました`,
             },
           });
         }
         await tx.order.upsert({
           where: {
-            item_name_id: itemId,
+            itemName_id: itemId,
           },
           update: {
-            order_count: count,
+            orderCount: count,
           },
           create: {
-            item_name_id: itemId,
-            order_count: count,
+            itemName_id: itemId,
+            orderCount: count,
           },
         });
       }

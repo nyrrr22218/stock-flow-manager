@@ -22,41 +22,41 @@ export async function shippingCompleted(
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
         const orderCount = Number(item.orderInInput) || 0;
-        const productCount = item.product?.produced_count ?? 0;
-        const stockCount = item.stock?.stock_count ?? 0;
+        const productCount = item.producedCount?.producedCount ?? 0;
+        const stockCount = item.stock?.stockCount ?? 0;
         // 最終不足数 = 生産数 + 在庫数 - 注文数
         const finalCount = productCount + stockCount - orderCount;
 
         if (finalCount < 0) {
-          throw new Error(`「${item.item_name}」の出荷数が不足しています`);
+          throw new Error(`「${item.name}」の出荷数が不足しています`);
         }
         await tx.stock.upsert({
-          where: { item_name_id: itemId },
-          update: { stock_count: finalCount },
-          create: { item_name_id: itemId, stock_count: finalCount },
+          where: { itemName_id: itemId },
+          update: { stockCount: finalCount },
+          create: { itemName_id: itemId, stockCount: finalCount },
         });
         await tx.order.update({
-          where: { item_name_id: itemId },
-          data: { order_count: 0 },
+          where: { itemName_id: itemId },
+          data: { orderCount: 0 },
         });
-        await tx.product.update({
-          where: { item_name_id: itemId },
-          data: { produced_count: 0 },
+        await tx.producedCount.update({
+          where: { itemName_id: itemId },
+          data: { producedCount: 0 },
         });
         // 注文があった商品を配列として保持
         if (orderCount > 0) {
           itemsShipment.push({
             id: item.id,
-            name: item.item_name,
+            name: item.name,
             count: orderCount,
           });
         }
         // 返り値として表示するdata
         shippingUpdatedItems.push({
           id: item.id,
-          stock: { stock_count: finalCount },
-          order: { order_count: 0 },
-          product: { produced_count: 0 },
+          stock: { stockCount: finalCount },
+          order: { orderCount: 0 },
+          producedCount: { producedCount: 0 },
         });
       }
       // log保存,shipmentstableへ追加
@@ -64,12 +64,12 @@ export async function shippingCompleted(
         const shippingLogs = itemsShipment
           .map((item) => `${item.name}: ${item.count}枚`)
           .join(' / ');
-        await tx.logs.create({
-          data: { log_message: `[出荷完了] 内容 : ${shippingLogs}` },
+        await tx.log.create({
+          data: { logMessage: `[出荷完了] 内容 : ${shippingLogs}` },
         });
-        await tx.shipments.create({
+        await tx.shipment.create({
           data: {
-            order_snapshot: itemsShipment,
+            orderSnapshot: itemsShipment,
           },
         });
       }

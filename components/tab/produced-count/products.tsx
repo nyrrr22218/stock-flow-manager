@@ -63,7 +63,7 @@ export default function ProducedCount({
         {producedCountList.map((pr) => (
           <Paper key={pr.id} elevation={1} variant="outlined" sx={{ ...paperCommon }}>
             <Typography variant="subtitle1" fontWeight="bold">
-              {pr.item_name}
+              {pr.name}
             </Typography>
             <TextField
               value={pr.producedInInput}

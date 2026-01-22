@@ -70,7 +70,7 @@ export default function Stocks({
             }}
           >
             <Typography variant="subtitle1" fontWeight="bold">
-              {st.item_name}
+              {st.name}
             </Typography>
             <TextField
               id={`stock-input-${st.id}`}

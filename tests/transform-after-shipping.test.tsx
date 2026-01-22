@@ -8,22 +8,22 @@ test('出荷完了時に更新されリセットされること', () => {
   const dummyPrev = [
     {
       id: '1',
-      item_name: 'テスト商品',
+      name: 'テスト商品',
       orderInInput: '10',
       order: {
         id: 'order-1',
-        item_name_id: '1',
-        order_count: 10,
+        itemName_id: '1',
+        orderCount: 10,
       },
       stock: {
         id: 'stock-1',
-        item_name_id: '1',
-        stock_count: 100,
+        itemName_id: '1',
+        stockCount: 100,
       },
-      product: {
+      producedCount: {
         id: 'product-1',
-        item_name_id: '1',
-        produced_count: 5,
+        itemName_id: '1',
+        producedCount: 5,
       },
     },
   ];
@@ -31,14 +31,14 @@ test('出荷完了時に更新されリセットされること', () => {
   const dummyApi: ShippingUpdatedItems[] = [
     {
       id: '1',
-      stock: { stock_count: 90 },
+      stock: { stockCount: 90 },
     },
   ];
 
   const result = transformAfterShipping(dummyPrev, dummyApi);
 
   expect(result[0].orderInInput).toBe('0');
-  expect(result[0].stock?.stock_count).toBe(90);
-  expect(result[0].order?.order_count).toBe(0);
-  expect(result[0].product?.produced_count).toBe(0);
+  expect(result[0].stock?.stockCount).toBe(90);
+  expect(result[0].order?.orderCount).toBe(0);
+  expect(result[0].producedCount?.producedCount).toBe(0);
 });

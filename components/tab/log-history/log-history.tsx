@@ -24,18 +24,18 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
   const sortLogs = useMemo(() => {
     const filtered = logData.filter((item) => {
       if (sortLogMonth !== '') {
-        const d = new Date(item.logged_at);
+        const d = new Date(item.loggedAt);
         const logYearMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
         if (logYearMonth !== sortLogMonth) return false;
       }
-      if (sortLogMenu !== '' && !item.log_message.includes(sortLogMenu)) {
+      if (sortLogMenu !== '' && !item.logMessage.includes(sortLogMenu)) {
         return false;
       }
       return true;
     });
     return filtered.sort((a, b) => {
-      const dateA = new Date(a.logged_at).getTime();
-      const dateB = new Date(b.logged_at).getTime();
+      const dateA = new Date(a.loggedAt).getTime();
+      const dateB = new Date(b.loggedAt).getTime();
       return descAscLog === 'desc' ? dateB - dateA : dateA - dateB;
     });
   }, [logData, descAscLog, sortLogMenu, sortLogMonth]);
@@ -67,9 +67,9 @@ export default function LogHistory({ logData }: { logData: Log[] }) {
               p: 1,
             }}
           >
-            <Typography>{l.log_message}</Typography>
+            <Typography>{l.logMessage}</Typography>
             <Typography>
-              {new Date(l.logged_at).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}
+              {new Date(l.loggedAt).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}
             </Typography>
           </Box>
         ))}

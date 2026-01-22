@@ -11,7 +11,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function getItems() {
   try {
-    const itemsAsString = await prisma.item_name.findMany();
+    const itemsAsString = await prisma.itemName.findMany();
     const itemsParsed = ItemNamesSchema.parse(itemsFromBigintToString(itemsAsString));
     return itemsParsed;
   } catch (error) {
@@ -21,24 +21,24 @@ export async function getItems() {
 
 export async function postItem(newItemName: string) {
   try {
-    const { item_name } = ItemNameAddSchema.parse({ item_name: newItemName });
+    const { name } = ItemNameAddSchema.parse({ ItemName: newItemName });
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      const item = await tx.item_name.create({
+      const item = await tx.itemName.create({
         data: {
-          item_name,
-          order: { create: { order_count: 0 } },
-          stock: { create: { stock_count: 0 } },
-          product: { create: { produced_count: 0 } },
+          name,
+          order: { create: { orderCount: 0 } },
+          stock: { create: { stockCount: 0 } },
+          producedCount: { create: { producedCount: 0 } },
         },
         include: {
           order: true,
           stock: true,
-          product: true,
+          producedCount: true,
         },
       });
-      await tx.logs.create({
+      await tx.log.create({
         data: {
-          log_message: `[商品]${item_name} を追加しました`,
+          logMessage: `[商品]${name} を追加しました`,
         },
       });
       return item;
@@ -54,14 +54,14 @@ export async function deleteItem(id: string, itemName: string) {
   try {
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return (
-        await tx.item_name.delete({
+        await tx.itemName.delete({
           where: {
             id: BigInt(id),
           },
         }),
-        await tx.logs.create({
+        await tx.log.create({
           data: {
-            log_message: `[商品]${itemName} を削除しました`,
+            logMessage: `[商品]${itemName} を削除しました`,
           },
         })
       );

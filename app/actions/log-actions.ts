@@ -8,9 +8,9 @@ import { LogsSchema } from '@/schemas/api/log-history';
 
 export async function getLogs() {
   try {
-    const logs = await prisma.logs.findMany({
+    const logs = await prisma.log.findMany({
       orderBy: {
-        logged_at: 'desc',
+        loggedAt: 'desc',
       },
     });
     const itemsAsString = itemsFromBigintToString(logs);

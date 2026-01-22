@@ -5,22 +5,22 @@ import { handleActionsError } from '@/lib/handle-actions-error';
 import { itemsFromBigintToString } from '@/utils/items-from-bigint-to-string';
 
 import type { ProducedCountDataWithInput } from '@/types';
-import { ProductsPatchSchema, ProductsSchema } from '@/schemas';
+import { ProducedCountsPatchSchema, ProducedCountsSchema } from '@/schemas';
 
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 export async function getProducts() {
   try {
-    const items = await prisma.item_name.findMany({
-      include: { product: true },
+    const items = await prisma.itemName.findMany({
+      include: { producedCount: true },
     });
     const itemsAsString = itemsFromBigintToString(items);
-    const itemsParsed = ProductsSchema.parse(itemsAsString);
+    const itemsParsed = ProducedCountsSchema.parse(itemsAsString);
 
     const productDataWithInput: ProducedCountDataWithInput[] = (itemsParsed ?? []).map((item) => ({
       ...item,
-      producedInInput: String(item.product?.produced_count ?? '0'),
+      producedInInput: String(item.producedCount?.producedCount ?? '0'),
     }));
 
     return productDataWithInput;
@@ -31,36 +31,36 @@ export async function getProducts() {
 
 export async function patchProducts(producedCountList: ProducedCountDataWithInput[]) {
   try {
-    const itemsParsed = ProductsPatchSchema.parse(producedCountList ?? []);
+    const itemsParsed = ProducedCountsPatchSchema.parse(producedCountList ?? []);
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of itemsParsed) {
         const itemId = BigInt(item.id);
         const count = Number(item.producedInInput) || 0;
-        const current = await tx.product.findUnique({
+        const current = await tx.producedCount.findUnique({
           where: {
-            item_name_id: itemId,
+            itemName_id: itemId,
           },
-          include: { item_name: true },
+          include: { ItemName: true },
         });
-        const oldValue = current?.produced_count ?? 0;
-        const itemName = current?.item_name?.item_name ?? '不明な商品';
+        const oldValue = current?.producedCount ?? 0;
+        const itemName = current?.ItemName?.name ?? '不明な商品';
         if (oldValue !== count) {
-          await tx.logs.create({
+          await tx.log.create({
             data: {
-              log_message: `[生産数]${itemName} : ${oldValue} => ${count}へ変更しました`,
+              logMessage: `[生産数]${itemName} : ${oldValue} => ${count}へ変更しました`,
             },
           });
         }
-        await tx.product.upsert({
+        await tx.producedCount.upsert({
           where: {
-            item_name_id: itemId,
+            itemName_id: itemId,
           },
           update: {
-            produced_count: count,
+            producedCount: count,
           },
           create: {
-            item_name_id: itemId,
-            produced_count: count,
+            itemName_id: itemId,
+            producedCount: count,
           },
         });
       }

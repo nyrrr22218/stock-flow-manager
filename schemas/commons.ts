@@ -2,39 +2,39 @@ import { z } from 'zod';
 
 const OrderSchema = z.object({
   id: z.string(),
-  item_name_id: z.string(),
-  order_count: z.number().min(0),
+  itemName_id: z.string(),
+  orderCount: z.number().min(0),
 });
 
 const StockSchema = z.object({
   id: z.string(),
-  item_name_id: z.string(),
-  stock_count: z.number().min(0),
+  itemName_id: z.string(),
+  stockCount: z.number().min(0),
 });
 
-const ProductSchema = z.object({
+const ProducedCountSchema = z.object({
   id: z.string(),
-  item_name_id: z.string(),
-  produced_count: z.number().min(0),
+  itemName_id: z.string(),
+  producedCount: z.number().min(0),
 });
 
 export const ItemSchema = z.object({
   id: z.string(),
-  item_name: z.string().min(1),
+  name: z.string().min(1),
   order: OrderSchema.nullish(),
   stock: StockSchema.nullish(),
-  product: ProductSchema.nullish(),
+  producedCount: ProducedCountSchema.nullish(),
 });
 
 export const LogSchema = z.object({
   id: z.string(),
-  log_message: z.string(),
-  logged_at: z.union([z.string(), z.date()]),
+  logMessage: z.string(),
+  loggedAt: z.union([z.string(), z.date()]),
 });
 
 const ShipmentSchema = z.object({
   id: z.string(),
-  order_snapshot: z.json(),
+  orderSnapshot: z.json(),
 });
 
 export const ItemDataWithInputSchema = z.array(

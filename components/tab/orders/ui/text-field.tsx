@@ -40,12 +40,12 @@ export const TextFields = ({ item, editMode, setOrdersPageList, setEditMode }: T
               order: i.order
                 ? {
                     ...i.order,
-                    order_count: numInputValue,
+                    orderCount: numInputValue,
                   }
                 : {
                     id: '',
-                    item_name_id: i.id,
-                    order_count: numInputValue,
+                    itemName_id: i.id,
+                    orderCount: numInputValue,
                   },
             };
           }),

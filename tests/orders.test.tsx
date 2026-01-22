@@ -9,21 +9,21 @@ test('注文数入力が正しく反映されるか', () => {
   const dummyData: ItemDataWithInput[] = [
     {
       id: '1',
-      item_name: 'テスト商品',
+      name: 'テスト商品',
       order: {
         id: 'order-1',
-        item_name_id: '1',
-        order_count: 10,
+        itemName_id: '1',
+        orderCount: 10,
       },
       stock: {
         id: 'stock-1',
-        item_name_id: '1',
-        stock_count: 10,
+        itemName_id: '1',
+        stockCount: 10,
       },
-      product: {
+      producedCount: {
         id: 'product-1',
-        item_name_id: '1',
-        produced_count: 10,
+        itemName_id: '1',
+        producedCount: 10,
       },
       orderInInput: '40',
     },
