@@ -9,9 +9,6 @@
 
 以下で、実際の操作感を確認いただけます。
 
-現在ログイン不可となっており調整中です。
-ご迷惑をおかけします。
-
 - **URL**: [stock-flow-manager.vercel.app](stock-flow-manager.vercel.app)
 - **Email**: `kyomo@gmail.com`
 - **Password**: `19941203`
