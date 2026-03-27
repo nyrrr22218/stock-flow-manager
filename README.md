@@ -8,6 +8,7 @@
 ## 🌐 デモアカウント
 
 以下で、実際の操作感を確認いただけます。
+(復旧しました)
 
 - **URL**: [stock-flow-manager.vercel.app](stock-flow-manager.vercel.app)
 - **Email**: `kyomo@gmail.com`
