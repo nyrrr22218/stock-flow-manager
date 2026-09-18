@@ -116,6 +116,9 @@ Speed Index 0.8s
 - グラフ内部ソート
 - UXを意識したUIへのアップグレード
 
+Update(2026/09/18)
+- Updated Supabase/Prisma database connection settings.
+
 ---
 
 ### 開発の想い
