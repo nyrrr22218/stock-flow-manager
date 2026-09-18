@@ -21,7 +21,7 @@ test('OKボタンを押すと deleteItem が正しい引数で呼ばれるか', 
   const okButton = screen.getByRole('button', { name: 'OK' });
   fireEvent.click(okButton);
 
-  expect(deleteItemMock).toHaveBeenCalledWith('item-123', undefined);
+  expect(deleteItemMock).toHaveBeenCalledWith('item-123', '消したい商品');
 
   expect(closeDialogMock).toHaveBeenCalled();
 });
